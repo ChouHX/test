@@ -1,0 +1,128 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.VAR_ONLINE_RATES}</h3>
+            </div>
+            <div class="box-body" id="chart1" style="height: 230px;">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.FLUX_TREND}&nbsp;(MB)</h3>
+            </div>
+            <div class="box-body" id="chart2" style="height: 230px;">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.ONLINE_TREND}</h3>
+            </div>
+            <div class="box-body" id="chart3" style="height: 230px;">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.VAR_DEVICE_LIST}</h3>
+            </div>
+            <div class="box-body jqgrid_c">
+              <div class="btn-toolbar" role="toolbar" style="margin: 5px 0 20px; width: 100%">
+                <form class="form-inline" role="form" id="search_fm">
+                  <div class="btns">
+                    <!-- 统计报表 -->
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-line-chart"></i>&nbsp;{$Think.lang.VAR_MENU_OVERVIEW}
+                      </button>
+                      <ul class="dropdown-menu export-excel">
+                        <li><a href="javascript:;" onclick="javascript:$.gf.export('online');">{$Think.lang.EXPORT_ONLINE_MOBILE}</a></li>
+                        <li><a href="javascript:;" onclick="javascript:$.gf.export('history');">{$Think.lang.EXPORT_HISTORY_MOBILE}</a></li>
+                      </ul>
+                    </div>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default" title="{$Think.lang.VAR_REFRESH}" onclick="javascript:$('#list1').trigger('reloadGrid');">
+                        <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                      </button>
+                    </div>
+                    <div class="btn-group input-group">
+                      <input type="text" name="searchString" class="form-control" placeholder="{$Think.lang.VAR_QUERY}" style="width: 130px" data-toggle="tooltip"  title="<?PHP echo sprintf('%s，%s',L('VAR_SN2'),L('VAR_SYSCFG_ALIAS'))?>">
+                      <span class="input-group-btn">
+                        <button type="submit" class="btn btn-flat btn-search-border"><i class="fa fa-search"></i></button>
+                      </span>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <table id="list1"></table>
+              <div id="pager1" style="margin-top: 5px !important;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+<!--模态框-->
+<div class="modal fade" id="myLgModal">
+    <div class="modal-dialog modal-lg" style="width:800px;">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<!--模态框2，查看(在线/历史)移动设备-->
+<div class="modal fade" id="myLgModal2" data-jqgrid-type="0">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+          <form class="form-inline" role="form" id="search_fm2">
+            <div class="btns">
+              <div class="btn-group input-group">
+                <input type="text" name="searchString" class="form-control" placeholder="{$Think.lang.VAR_QUERY}" style="width: 130px" data-toggle="tooltip"  title="{$Think.lang.VAR_DEVICE_MAC}">
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-flat btn-search-border"><i class="fa fa-search"></i></button>
+                </span>
+              </div>
+            </div>
+          </form>
+        </div>
+        <table id="list2"></table>
+        <div id="pager2" style="margin-top: 30px !important;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" onclick="javascript:$('#list2').trigger('reloadGrid');"><i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="Homepage/footer"/>
+<script type="text/javascript" src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/highcharts/highcharts.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/highcharts/no-data-to-display.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- export excel -->
+<script type="text/javascript" src="../Public/js/buttons/jszip.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/js/buttons/buttons.html5.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">$.gf.xs = {$xs};</script>
+<script type="text/javascript" src="__ROOT__/Tpl/Portal/sblb.js?rand={$Think.const.CACHE_VERSION}"></script>

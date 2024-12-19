@@ -1,0 +1,113 @@
+<include file="Mobile/mheader" />
+    <div class="mui-card">
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_TG}:</span>{$row['gname']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_TERM_STATUS}:</span>{$row['status']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_SN1}:</span>{$row['ud_sn']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_SN2}:</span>{$row['sn']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_SYSCFG_ALIAS}:</span>{$row['alias']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">IP:</span>{$row['ip']}
+            </li>
+			<li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_PORT}:</span>{$row['port']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_TERM_FLUX}:</span>{$row['flux']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.FLUX_CURRENT_MONTH}:</span>{$row['month_flux']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.LATEST_SEVEN_FUX}:</span>{$row['last_7days_flux']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.SIM_POS}:</span>{$row['sim_pos']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_NET_MODE}:</span>{$row['net_mode']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_TERM_SIGNAL}:</span>{$row['term_signal']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_SWV}:</span>{$row['sw_version']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">SSID:</span>{$row['wifi_ssid']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.TERM_OPERATOR}:</span>{$row['operator']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.TERM_MODULE_VENDOR}:</span>{$row['module_vendor']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.TERM_MODULE_TYPE}:</span>{$row['module_type']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_FIRST_LOGIN}:</span>{$row['first_login']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_LOGIN_TIME}:</span>{$row['login_time']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_LAST_LOGIN}:</span>{$row['last_time']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.GUIJI_CODE}:</span>{$row['host_sn']}
+            </li>
+			<li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">Vpn ip:</span>{$row['virtual_ip']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_VSN}:</span>{$row['vsn']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">SIM:</span>{$row['sim']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">IMEI:</span>{$row['imei']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">IMSI:</span>{$row['imsi']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">ICCID:</span>{$row['iccid']}
+            </li>
+			<li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VPN_LINK_STATUS}:</span>{$row['virtual_is_online']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VPN_LAST_TIME}:</span>{$row['virtual_last_time']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_BASE_ADDRESS}:</span>{$row['lac_cellid']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_WIFI_MAC}:</span>{$row['ap_mac']}
+            </li>           
+        </ul>
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <a class="mui-icon mui-icon-back mui-pull-left"></a>
+        <h1 class="mui-title">{$Think.lang.VAR_TIPS_DETAIL_INFO}</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script>
+function initpage($, doc){
+    $(doc.body).on('tap', '#webheader .mui-icon-back', function(e){
+        history.go(-1);
+    });
+}
+</script>

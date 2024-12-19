@@ -1,0 +1,140 @@
+<style type="text/css">
+#modal_fm div.checkbox-inline{
+    margin-right: 15px;
+}
+#modal_fm div.checkbox-inline label{
+    cursor: pointer;
+}
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title" id="h4_add_edit">{$Think.lang.DATA_SEND}</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="modal_fm">
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VALUE_TYPE}:</label>
+            <div class="col-md-8">
+                <select class="form-control" name="data_type">
+                    <option value="hex" selected>{$Think.lang.DATA_TYPE_BYTES}</option>
+                    <option value="str">{$Think.lang.DATA_TYPE_STRING}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_SENSOR}:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <select class="form-control" name="rtds_id">%s</select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.SELECT_COMMON_CMD}:</label>
+            <div class="col-md-8">
+                <select class="form-control" name="common_cmd">%s</select>
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-default btn-xs delete-common-cmd" style="margin-top: 7px; display: none;" type="button" title="{$Think.lang.DELETE_COMMON_CMD}"><i class="fa fa fa-close"></i></button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_DATA}:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <textarea class="form-control" name="data_content"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.SAVEAS_COMMON_CMD}:</span></label>
+            <div class="col-md-1">
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="saveas_common" style="top: 0">
+                </label>
+            </div>
+            <div class="col-md-7">
+                <input type="text" class="form-control" name="cmd_name" placeholder="{$Think.lang.CMD_NAME}" disabled="disabled">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success submit_data_send">{$Think.lang.SAVE_TEMPLATE}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    $('.submit_data_send').on('click', function(){
+        var obj = $("#modal_fm").data('bootstrapValidator');
+        obj.validate();
+        if (!obj.isValid()){
+            return;
+        }
+        var sns = $('#list2').jqGrid('getGridParam','selarrrow');
+        ajax(tpurl('Task','rtuDataSend'), $('#modal_fm').serialize()+'&act=term&term_list='+sns[0], function(msg){
+            $.notice(msg);
+            if (msg.status == 0){
+                $('#myLgModal').modal('hide');
+            }
+        });
+    });
+
+    $('#modal_fm').bootstrapValidator({
+       feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            rtds_id: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            },
+            data_content: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            },
+            cmd_name: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            }
+        }
+    });
+
+    $('select[name=common_cmd]').change(function(){
+        var v = $(this).val(), del_button = $('button.delete-common-cmd');
+        $('textarea[name=data_content]').val(v);
+        var bootstrapValidator = $("#modal_fm").data('bootstrapValidator');
+        bootstrapValidator.updateStatus('data_content', 'NOT_VALIDATED').validateField('data_content'); //错误提示信息变了
+        v ? del_button.show() : del_button.hide();
+    });
+
+    $('input[name=saveas_common]').change(function(){
+        var o = $('input[name=cmd_name]'), chk = $(this).is(':checked');
+        $('#modal_fm').bootstrapValidator('enableFieldValidators', 'cmd_name', chk);
+        chk ? o.removeAttr('disabled') : o.attr('disabled',true);
+    });
+
+    $('button.delete-common-cmd').click(function(){
+        $.confirm($lang.OPERATE_CONFIRM, function(){
+            ajax(tpurl('Rtu','delteCommonCmd'), {name:$('select[name=common_cmd] option:selected').text()}, function(msg){
+                $.notice(msg);
+                if (msg.status == 0){
+                    $('select[name=common_cmd] option:selected').detach();
+                    $('button.delete-common-cmd').hide();
+                    $('textarea[name=data_content]').val('');
+                    $("#modal_fm").data('bootstrapValidator').updateStatus('data_content', 'NOT_VALIDATED').validateField('data_content');
+                }
+            });
+        });
+    });
+});
+})(jQuery);
+</script>

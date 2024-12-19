@@ -1,0 +1,92 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title">{$Think.lang.VAR_EDIT_PASS}</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="modal_fm">
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_USER_OLD_PWD}:<span class="required-field"></span></label>
+            <div class="col-md-6">
+                <input type="password" class="form-control" name="old_pass">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_USER_NEW_PWD}:<span class="required-field"></span></label>
+            <div class="col-md-6">
+                <input type="password" class="form-control" name="new_pass" id="new_pass">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_USER_REPWD}:<span class="required-field"></span></label>
+            <div class="col-md-6">
+                <input type="password" class="form-control" name="confirm_pass" id="confirm_pass">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success submit_edit_pass">{$Think.lang.SAVE_TEMPLATE}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    $('.submit_edit_pass').on('click', function(){
+        var obj = $("#modal_fm").data('bootstrapValidator');
+        obj.validate();
+        if (!obj.isValid()){
+            return;
+        }
+        ajax(tpurl('Syscfg','editPass'), $('#modal_fm').serialize(), function(msg){
+            $.notice(msg);
+            if (msg.status == 0){
+                $('#myLgModal').modal('hide');
+            }
+        });
+    });
+
+    $('#modal_fm').bootstrapValidator({
+       feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            old_pass: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            },
+            new_pass: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    },
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9]{5,32}$/,
+                        message: $lang.VAR_PASSWORD_FORMAT
+                    },
+                    identical: {
+                        field: 'confirm_pass',
+                        message: $lang.PWD_NOT_SAME
+                    }
+                }
+            },
+            confirm_pass: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    },
+                    identical: {
+                        field: 'new_pass',
+                        message: $lang.PWD_NOT_SAME
+                    }
+                }
+            },
+        }
+    });
+});
+})(jQuery);
+</script>

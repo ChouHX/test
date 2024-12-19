@@ -1,0 +1,89 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" rel="stylesheet" type="text/css" href="../Public/bootstrap_validator/bv.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Syscfg/grzx.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+<!--fileinput-->
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Public/bootstrap_fileinput/css/fileinput.min.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <!--服务器配置-->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.CONFIG_INFO}</h3>
+            </div>
+            <div class="box-body">
+              <div class="my-loading"></div><!--loading div-->
+              <form class="form-horizontal" role="form" id="form_param_1">
+                <div class="form-group">
+                  <label class="col-lg-2 control-label fw700">{$Think.lang.SOFTWARE_NAME}：</label>
+                  <div class="col-lg-2">
+                    <input type="text" class="form-control" name="swu_name" id="tpid_swu_name" readonly="readonly" />
+                  </div>
+                  <label class="col-lg-8 control-label input-notes"></label>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label fw700">{$Think.lang.CURRENT_SOFTWARE}：</label>
+                  <div class="col-lg-2">
+                    <input type="text" class="form-control" name="swu_version" id="tpid_swu_version" readonly="readonly" />
+                  </div>
+                  <label class="col-lg-8 control-label input-notes">{$Think.lang.SOFTWARE_EMPTY_DESC}</label>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label fw700">{$Think.lang.UPGRADE_SERVER_ADDR}：</label>
+                  <div class="col-lg-2">
+                    <input type="text" class="form-control" name="swu_server" id="tpid_swu_server" />
+                  </div>
+                  <label class="col-lg-8 control-label input-notes">&nbsp;</label>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label fw700">{$Think.lang.PAGE_DESC}：</label>
+                  <div class="col-sm-10">
+                    <p class="form-control-static">{$Think.lang.UPGRADE_FUNC_DESC}</p>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="box-footer">
+              <div role="toolbar" class="text-center">
+                <button type="button" class="btn btn-default btn-sm" id="btn_reload_params"><i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-default btn-sm" id="btn_confirm"><i class="fa fa-pencil"></i>&nbsp;{$Think.lang.VAR_UPDATE}</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-default btn-sm" id="btn_upgrade"><i class="fa fa-cloud-upload"></i>&nbsp;{$Think.lang.START_UPGRADE}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--升级历史-->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.SOFTWARE_UPGRADE_HISTORY}</h3>
+              <div class="pull-right box-tools"></div>
+            </div>
+            <div class="box-body jqgrid_c">
+              <table id="list2"></table>
+              <div id="pager2" style="margin-top: 30px !important;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<include file="Homepage/footer"/>
+<script type="text/javascript" src="../Public/bootstrap_validator/bv.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/bootstrap_validator/lang/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--jqgrid-->
+<script type="text/javascript" src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="__ROOT__/Tpl/Syscfg/SystemParamsJson.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="__ROOT__/Tpl/Syscfg/rjsj.js?rand={$Think.const.CACHE_VERSION}"></script>

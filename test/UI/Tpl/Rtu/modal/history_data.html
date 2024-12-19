@@ -1,0 +1,198 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title">{$Think.lang.HISTORY_DATA} (%s)</h4>
+</div>
+<div class="modal-body">
+    <p>
+        {$Think.lang.VAR_TIME_RANGE}:&nbsp;<input type="text" id="start_dt" class="form-control" style="display: inline; width: 200px; margin-right: 15px">
+        {$Think.lang.VALUE_TYPE}:&nbsp;<select id="sensor_type" class="form-control" style="display: inline-block; width: 130px; margin-right: 15px;">%s</select>
+        {$Think.lang.DISPLAY_METHOD}:&nbsp;<select id="sensor_show_type" class="form-control" style="display: inline-block; width: 130px">
+            <option value="0">{$Think.lang.CHART_SHOW}</option>
+            <option value="1">{$Think.lang.LIST_SHOW}</option>
+        </select>
+    </p>
+    <div id="history_data_chart" style="height: 350px"></div>
+    <div id="history_data_grid"  style="height: 350px; display: none">
+        <table id="history_data_list"></table>
+        <div id="history_data_pager" style="margin-top: 10px !important;"></div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-warning" onclick="javascript:$.gf.download_excel()">{$Think.lang.VAR_CP_DOWNLOAD}</button>
+    <button type="button" class="btn btn-success" onclick="javascript:$.gf.refresh_charts()">{$Think.lang.VAR_REFRESH}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    $.gf.ranges = {
+      '{$Think.lang.VAR_TODAY}' : [moment(), moment()],
+      '{$Think.lang.VAR_YESTERDAY}' : [moment().subtract('days', 1), moment().subtract('days', 1)],
+      '{$Think.lang.LAST_7DAYS}': [moment().subtract('days', 7), moment().subtract('days', 1)],
+      '{$Think.lang.LAST_30DAYS}': [moment().subtract('days', 30), moment().subtract('days', 1)],
+      '{$Think.lang.THIS_MONTH}': [moment().startOf('month'), moment()],
+      '{$Think.lang.LAST_MONTH}': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+    };
+    $.gf.month_arr = $lang.VAR_MONTH.replace('[','').replace(']','').replace(/'/g,'').split(',');
+
+    $.gf.download_excel = function(){
+        if ((typeof $.gf.excel_data.status != 'undefined' && $.gf.excel_data.status == -1) || $.gf.excel_data.length == 0){
+            $.notice(1, $lang.EXT_PAGING_1);
+            return;
+        }
+        for (var i=0,len=$.gf.excel_data.length; i<len; i++){
+            $.gf.excel_data[i][0] = new Date($.gf.excel_data[i][0]).format('yyyy-MM-dd hh:mm:ss');
+            $.gf.excel_data[i][1] = new Date($.gf.excel_data[i][1]).format('yyyy-MM-dd hh:mm:ss');
+        }
+        var d = {
+            body: $.gf.excel_data,
+            filename: $('#sensor_type').find("option:selected").text()+' ('+$('#start_dt').val()+')',
+            footer: null,
+            header: [$lang.VAR_DEVICE_URL_REPORT_TIME, $lang.CATCH_TIME, $lang.VAR_SYSCFG_VALUE],
+            type: 'rtu_history_data'
+        }
+        generateExcel(d);
+    };
+
+    $.gf.refresh_charts = function(){
+        var div = layer.load(1, {
+          shade: [0.1,'#fff']
+        });
+        var dates = $('#start_dt').val().split(' - '), slave_id_addr = $('#sensor_type').val().split('_');
+        var start = new Date(dates[0].replace(/-/g,'/') +' 00:00:00').getTime(), end = new Date(dates[1].replace(/-/g,'/') +' 23:59:59').getTime();
+        var sto = $('#sensor_type').find("option:selected");
+        $.gf.history_data_chart.subtitle.update({text:sto.text()+'('+sto.attr('data-unit')+')'+'：'+dates[0]+' ~ '+dates[1]});
+        ajax(tpurl('Rtu','getSensorHistoryData'),{
+            start: start/1000,
+            end: end/1000,
+            sn: "{$_REQUEST['sn']}",
+            slave_id: slave_id_addr[0],
+            addr: slave_id_addr[1]
+        },function(msg){
+            $.gf.excel_data = msg;
+            var data = [], jqgridData = [];
+            $('#history_data_list').jqGrid('clearGridData');
+            for (var k=0; k<msg.length; k++){
+                data.push([msg[k][0], msg[k][2]]);
+                jqgridData.push({
+                    id:k+1,
+                    report_time: new Date(msg[k][0]).toYmdhis(),
+                    catch_time: new Date(msg[k][1]).toYmdhis(),
+                    value: msg[k][2]
+                });
+            }
+            $.gf.history_data_chart.series[0].setData(data);
+            $('#history_data_list').setGridParam({data:jqgridData}).trigger('reloadGrid');
+        },'',function(){
+            layer.close(div);
+        });
+    };
+
+    $('#start_dt').daterangepicker({
+        "locale": {
+            "format": "YYYY-MM-DD",
+            "daysOfWeek": $lang.VAR_WEEK_ARR,
+            "monthNames": $.gf.month_arr
+        },
+        drops: 'down',
+        ranges: $.gf.ranges,
+        alwaysShowCalendars: true,
+        showCustomRangeLabel: false,
+        startDate: moment(),
+        endDate: moment(),
+        autoApply: true
+    }).on('apply.daterangepicker', function(){
+        $.gf.refresh_charts();
+    });
+
+    $('#sensor_type').on('change',function(){
+        $.gf.refresh_charts();
+    });
+
+    //History data - chart
+    Highcharts.setOptions($.gf.highChartsOptions);
+    // $.gf.history_data_chart = Highcharts.chart('history_data_chart', {
+    $.gf.history_data_chart = new Highcharts.StockChart({
+        chart: {
+            zoomType: 'x',
+            renderTo: 'history_data_chart',
+        },
+        rangeSelector: {enabled: false},
+        navigator: {
+            enabled: true,
+            maskFill: 'rgba(180, 198, 220, 0.3)'
+        },
+        boost: {
+            useGPUTranslations: true
+        },
+        credits:{text:'', href:''},
+        title: {
+            text: ''
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            type: 'datetime'
+        },
+        tooltip: {
+            valueDecimals: 3
+        },
+        yAxis: {
+            title: {
+                text: ''
+            },
+            opposite: false,
+            lineWidth: 1
+        },
+        colors: ['#00c0ef'],
+        legend: {
+            enabled: false
+        },
+        series: [{
+            name: $lang.VAR_SYSCFG_VALUE,
+            unit: '',
+            type: 'spline'
+        }]
+    });
+
+    //History data - grid
+    $('#history_data_list').jqGrid({
+        datatype: 'local',
+        data: [],
+        colNames: ['id', $lang.VAR_DEVICE_URL_REPORT_TIME, $lang.CATCH_TIME, $lang.VAR_SYSCFG_VALUE],
+        colModel:[
+            {name:'id',           index:'id',           jsonmap:'id',          width:50,   align:'center', hidden:true,  search:false, key:true},
+            {name:'report_time',  index:'report_time',  jsonmap:'report_time', width:150,  align:'center', hidden:false, search:false},
+            {name:'catch_time',   index:'catch_time',   jsonmap:'catch_time',  width:150,  align:'center', hidden:false, search:false},
+            {name:'value',        index:'value',        jsonmap:'value',       width:100,  align:'center', hidden:false, search:false}
+        ],
+        shrinkToFit: true,
+        width: $('#myLgModal3 .modal-dialog').width()-50,
+        height: $('#history_data_chart').height()-50,
+        rownumbers: true,
+        rownumWidth: 50,
+        sortname: 'report_time',
+        sortorder: 'DESC',
+        pager: '#history_data_pager',
+        rowNum: 10,
+        rowList: [10, 20, 30, 40, 50, 100],
+        page: 1,
+        pagerpos: 'center',
+        pgbuttons: true,
+        pginput: true,
+        viewrecords: true
+    });
+
+    $('#sensor_show_type').on('change',function(){
+        if ($(this).val() == '0'){
+            $('#history_data_chart').show().next().hide();
+        } else {
+            $('#history_data_grid').show().prev().hide();
+        }
+    });
+
+    $.gf.refresh_charts();
+});
+})(jQuery);
+</script>

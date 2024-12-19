@@ -1,0 +1,178 @@
+<include file="Mobile/mheader" />
+    <link rel="stylesheet" type="text/css" href="../Public/mui/css/mui.picker.min.css"/>
+    <div class="mui-card">
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_CP_START}:</span><button id="starttime" type="button" class="btn timebtn mui-btn"><?PHP echo date('Y-m-d H:i')?></button>
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.EXPIRED_TIME}:</span><button id="endtime" type="button" class="btn timebtn mui-btn" disabled><?PHP echo date('Y-m-d H:i',strtotime('+1 month'))?></button>
+            </li>
+            <li class="mui-table-view-cell">
+                任务目标:
+                <?PHP if (empty($_REQUEST['ids'])){
+              $check_models = explode(',',$_REQUEST['types']);
+              foreach ($models as $k => $v){ $checked = in_array($v,$check_models,true) ? 'checked':''; ?>
+              <label  style="margin-left: 10px"><input type="checkbox" {$checked} name="dest_device_model" value="{$v}">&nbsp;&nbsp;{$v}&nbsp;&nbsp;</label>
+            <?PHP }}else{
+              echo '<span style="display:inline-block;margin-top:5px;margin-right:10px;">'.$dest.'</span>';
+            }?>
+            </li>          
+        </ul>
+        <ul id="li_actions" class="mui-table-view mui-grid-view mui-grid-9">
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" data-cmd="mupgrade">
+                <a href="#"><span class="mui-icon iconfont icon-sj"></span><div class="mui-media-body">{$Think.lang.VAR_UPGRADE}</div></a>
+            </li>
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" data-cmd="termRestart">
+                <a href="#"><span class="mui-icon iconfont icon-cq"></span><div class="mui-media-body">{$Think.lang.VAR_RESTART}</div></a>
+            </li>	
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" data-cmd="mcatchPackage">
+                <a href="#"><span class="mui-icon iconfont icon-zb"></span><div class="mui-media-body">{$Think.lang.VAR_CATCH_PACKAGE}</div></a>
+            </li>	
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" data-cmd="configGet">
+                <a href="#"><span class="mui-icon iconfont icon-cxcs"></span><div class="mui-media-body">{$Think.lang.VAR_TERM_GET_PARAM}</div></a>
+            </li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" data-cmd="mconfigset">
+                <a href="#"><span class="mui-icon iconfont icon-xgcs"></span><div class="mui-media-body">{$Think.lang.VAR_EDIT_PARAM}</div></a>
+            </li>			
+			<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" data-cmd="clearFlash">
+                <a href="#"><span class="mui-icon iconfont icon-qchc"></span><div class="mui-media-body">{$Think.lang.CLEAR_FLASH}</div></a>
+            </li>
+			<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-3" data-cmd="cfgFileUpload">
+                <a href="#"><span class="mui-icon iconfont icon-wjsb"></span><div class="mui-media-body">{$Think.lang.CFG_FILE_UPLOAD}</div></a>
+            </li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-3" data-cmd="mdownloadcfg">
+                <a href="#"><span class="mui-icon iconfont icon-wjxf"></span><div class="mui-media-body">{$Think.lang.VAR_CFG_ISSUED}</div></a>
+            </li>           
+			<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-3" data-cmd="rtuScriptGet">
+                <a href="#"><span class="mui-icon iconfont icon-cxjb"></span><div class="mui-media-body">查询RTU采集脚本</div></a>
+            </li>
+			<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-3" data-cmd="mrtuScriptSet">
+                <a href="#"><span class="mui-icon iconfont icon-szjb"></span><div class="mui-media-body">设置RTU采集脚本</div></a>
+            </li>			
+			<li class="mui-table-view-cell mui-media mui-col-xs-6 mui-col-sm-3" data-cmd="cleanRunInfo">
+                <a href="#"><span class="mui-icon iconfont icon-qlsj"></span><div class="mui-media-body">{$Think.lang.CLEAN_RUN_INFO}</div></a>
+            </li>
+        </ul>
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <a class="mui-icon mui-icon-back mui-pull-left"></a>
+        <h1 class="mui-title">{$Think.lang.VAR_CMD_PARAM}</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script src="../Public/mui/js/mui.picker.min.js"></script>
+<script>
+ var enable_rtu_script_get = <?PHP  echo json_encode(C('ENABLE_RTU_SCRIPT_GET'))?>;
+ var router = <?php echo json_encode(C('PARAMS_TYPE'))?>;
+ router = router['router'];
+function initpage($, doc){
+    var btns = $('.timebtn'), endtime = doc.getElementById('endtime');
+    btns.each(function(i, btn) {
+        btn.addEventListener('tap', function() {
+            var e = this, optionsJson = e.getAttribute('data-options') || '{}';
+            var options = JSON.parse(optionsJson), picker = new $.DtPicker(options);
+            picker.show(function(rs){
+                e.innerText = rs.text;
+                picker.dispose();
+            });
+        });
+    });
+
+   /*  doc.getElementById("never_expire").addEventListener("toggle",function(event){
+        if (event.detail.isActive){
+            endtime.disabled = true;
+        }else{
+            endtime.removeAttribute('disabled');
+        }
+    }); */
+
+    $(doc.body).on('tap', '#webheader .mui-icon-back', function(e){
+        $.openWindow({
+            id: 'mobile-term',
+            url: "{:U('Mobile/mterm')}"
+        });
+    });
+
+   /* $(doc.body).on('tap', '.div_destterm', function(e){
+        var r = this.parentNode.getElementsByClassName('destterm')[0];
+        doc.getElementById('selectgroup').style.display = r.value=='group'?'block':'none';
+    }); */
+
+    $(doc.body).on('tap', '#li_actions li', function(e){
+		var tmp_st = doc.getElementById('starttime').innerText.split(' '), p = '', sn=[], cmd = this.getAttribute('data-cmd');
+		var ids = "<?PHP echo $_REQUEST['ids']?>",sns =ids.split(',');   
+		if((cmd == 'cfgFileUpload' || cmd == 'mcatchPackage') && sns.length != 1){
+			mui.alert($lang.ONLY_SELECT_ONE, $lang.VAR_PROMPT);
+			return;
+		}
+		if (cmd == 'mconfigset'){				
+			for (i=0;i<sns.length;i++){
+				var tmp1=sns[i].split('@');
+				if(router.indexOf(tmp1[1]) === -1){
+					mui.alert($lang.UNSUPPORTED_DEVICE_TYPE,$lang.VAR_PROMPT);
+					return;
+				}
+			}
+		} 
+		if (cmd == 'rtuScriptGet' || cmd == 'mrtuScriptSet' || cmd == 'clearFlash') {
+			for (var i=0;i<sns.length; i++){
+				var tmp1=sns[i].split('@');
+				if (enable_rtu_script_get.indexOf(tmp1[1]) === -1){
+					mui.alert($lang.UNSUPPORTED_DEVICE_TYPE,$lang.VAR_PROMPT);
+					return;
+				}
+			}
+		}
+		if(sns.length !=0){
+			for (var i=0;i<sns.length; i++){
+				var tmp1=sns[i].split('@');
+				sn.push(tmp1[0]);
+			}
+			p +='term_list='+sn;
+		}
+        p += '&start_time='+tmp_st[0]+' '+tmp_st[1]+':00';
+        var tmp_et = doc.getElementById('endtime').innerText.split(' ');
+        p += '&end_time='+tmp_et[0]+' '+tmp_et[1]+':00';
+        if (cmd == 'configGet' || cmd == 'termRestart' || cmd == "cfgFileUpload" || cmd == "clearFlash" || cmd =="rtuScriptGet"){
+            mui.confirm($lang.OPERATE_CONFIRM, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(){
+                if (arguments[0].index == 0){
+                    mui.ajax($lang.curl.replace('Index/replace','Task/'+cmd),{
+                        data: p,
+                        timeout: 5000,
+                        type: 'post',
+                        success:function(msg){
+                            if (typeof msg == 'string'){
+                                msg = JSON.parse(msg);
+                            }
+                            mui.alert(msg.info, $lang.VAR_PROMPT);
+                        }
+                    });
+                }
+            });
+        }else if (cmd == "cleanRunInfo"){
+			mui.confirm($lang.OPERATE_CONFIRM, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(){
+                if (arguments[0].index == 0){
+                    mui.ajax($lang.curl.replace('Index/replace','Term/'+cmd),{
+                        data: p,
+                        timeout: 5000,
+                        type: 'post',
+                        success:function(msg){
+                            if (typeof msg == 'string'){
+                                msg = JSON.parse(msg);
+                            }
+                            mui.alert(msg.info, $lang.VAR_PROMPT);
+                        }
+                    });
+                }
+            });
+		
+		
+		}else{
+            mui.openWindow({
+                id: cmd,
+                url: $lang.curl.replace('Index/replace','Mobile/'+cmd)+'?'+p
+            });
+        }
+    });
+}
+</script>

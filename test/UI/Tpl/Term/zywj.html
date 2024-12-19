@@ -1,0 +1,142 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/bootstrap_validator/bv.min.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Public/bootstrap_fileinput/css/fileinput.min.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs" id="tab_device_list">
+          <li class="active" data-title="{$Think.lang.VAR_PACKAGE_ADD}" data-del-info="{$Think.lang.VAR_CONFIRM_DEL_PACKAGE}" data-del-info-batch="{$Think.lang.VAR_CONFIRM_DEL_PACKAGE_BATCH}" data-filetype="1"><a href="#tab_1" data-toggle="tab">{$Think.lang.VAR_MENU_PACKAGE}&nbsp;<span class="num"></span></a></li>
+          <li data-title="{$Think.lang.VAR_CFG_ADD}" data-del-info="{$Think.lang.VAR_CFG_DEL_CONFIRM}" data-del-info-batch="{$Think.lang.VAR_CFG_DEL_CONFIRM_BATCH}" data-filetype="2"><a href="#tab_2" data-toggle="tab">{$Think.lang.VAR_MENU_CFG}&nbsp;<span class="num"></span></a></li>
+          <li data-title="{$Think.lang.VAR_ADD}" data-del-info="{$Think.lang.VAR_CP_FILES_DELETE_CONFIRM}" data-del-info-batch="{$Think.lang.VAR_CP_FILES_DELETE_CONFIRM_BATCH}" data-filetype="6"><a href="#tab_6" data-toggle="tab">{$Think.lang.VAR_CP_FILES}&nbsp;<span class="num"></span></a></li>
+          <li data-title="{$Think.lang.VAR_PACKAGE_ADD}" data-del-info="{$Think.lang.VAR_CONFIRM_DEL_PACKAGE}" data-del-info-batch="{$Think.lang.VAR_CONFIRM_DEL_PACKAGE_BATCH}" data-filetype="5"><a href="#tab_5" data-toggle="tab">{$Think.lang.AFFILIATE_UPGRADE_PACKAGE}&nbsp;<span class="num"></span></a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="tab_1">
+            <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+              <form class="form-inline" role="form" id="search_fm">
+                <div class="btns">
+                  <button type="button" class="btn btn-default rwcs" data-act="add">
+                    <i class="fa fa-plus"></i>&nbsp;{$Think.lang.VAR_ADD}
+                  </button>
+                  <button type="button" class="btn btn-default rwcs" data-act="del">
+                    <i class="fa fa-close"></i>&nbsp;{$Think.lang.VAR_DEL}
+                  </button>
+                  <button type="button" class="btn btn-default rwcs" data-act="download">
+                    <i class="fa fa-download"></i>&nbsp;{$Think.lang.VAR_CP_DOWNLOAD}
+                  </button>
+                  <button type="button" class="btn btn-default" data-act="refresh">
+                    <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                  </button>
+                </div>
+                <div class="input-group">
+                  <input type="text" name="searchString" class="form-control" placeholder="{$Think.lang.VAR_QUERY}" style="width: 130px" data-toggle="tooltip"  title="{$Think.lang.VAR_NAME}">
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-flat btn-search-border"><i class="fa fa-search"></i></button>
+                  </span>
+                </div>
+              </form>
+            </div>
+            <table id="list1"></table>
+            <div id="pager1" style="margin-top: 5px !important;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+<!--模态框-->
+<div class="modal fade" id="myLgModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_BTN_SURE}</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="modal_fm">
+                    <div class="form-group">
+                      <label class="col-md-2">{$Think.lang.VAR_UPGRADE_FILE}:<span class="required-field"></span></label>
+                      <div class="col-md-8">
+                        <input type="file" id="filedata" name="filedata">
+                      </div>
+                    </div>
+                    <div class="form-group" style="display: none;" id="auto_down">
+                      <label class="col-md-2">{$Think.lang.AUTO_DIS}:</label>
+                      <div class="col-md-2">
+                        <select class="form-control" name="auto_down">
+                          <option value="">{$Think.lang.VAR_DISABLE}</option>
+                          <option value="term">{$Think.lang.CONFIG_TERM}</option>
+                          <option value="all">{$Think.lang.VAR_ALL_ROUTER}</option>
+                        </select>
+                      </div>
+                      <div class="form-control-static text-muted">{$Think.lang.AUTO_DIS_TIPS}</div>
+                    </div>
+                    <div class="form-group" style="display: none;" id="auto_down_dev">
+                      <label class="col-md-2">{$Think.lang.VAR_DEVICE_LIST}:</label>
+                      <div class="col-md-8">
+                        <label style="margin-bottom: 10px; cursor: pointer; color: skyblue;" onclick="$.gf.select_term(0)">{$Think.lang.VAR_SELECT}&nbsp;<i class="fa fa-plus"></i></label>
+                        <table id="dev0"></table>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2">{$Think.lang.VAR_NOTE}:</label>
+                      <div class="col-md-8">
+                        <textarea class="form-control" name="info"></textarea>
+                        <input type="hidden" name="filetype" value="">
+                      </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success save_add_file">{$Think.lang.VAR_BTN_SURE}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--模态框，选择设备：上位机/下位机 -->
+<div class="modal fade" id="termModal" data-jqgrid-type="0">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+        <h4 class="modal-title">{$Think.lang.CONFIG_TERM}</h4>
+      </div>
+      <div class="modal-body">
+        <div class="btn-toolbar" role="toolbar" style="margin: 5px 0 20px; width: 100%">
+          <form class="form-inline" role="form" id="search_fm2">
+            <div class="btns">
+              <div class="btn-group input-group">
+                <input type="text" name="searchString" class="form-control" placeholder="{$Think.lang.VAR_QUERY}" style="width: 130px" data-toggle="tooltip"  title="<?PHP echo sprintf('%s，%s，ICCID',L('VAR_SN2'),L('VAR_SYSCFG_ALIAS'))?>">
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-flat btn-search-border"><i class="fa fa-search"></i></button>
+                </span>
+              </div>
+            </div>
+          </form>
+        </div>
+        <table id="list4"></table>
+        <div id="pager4" style="margin-top: 10px !important;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" onclick="javascript:$.gf.confirm_select_dev();">{$Think.lang.VAR_SELECT}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_BTN_CANCLE}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="Homepage/footer"/>
+<script src="../Public/bootstrap_validator/bv.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script src="../Public/bootstrap_validator/lang/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- jqgrid -->
+<script src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script src="__ROOT__/Tpl/Public/bootstrap_fileinput/js/fileinput.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script src="__ROOT__/Tpl/Public/bootstrap_fileinput/js/locales/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">$.gf.lang = '<?PHP echo $lang?>';</script>
+<script src="__ROOT__/Tpl/Term/zywj.js?rand={$Think.const.CACHE_VERSION}"></script>

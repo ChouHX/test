@@ -1,0 +1,916 @@
+<style type="text/css">
+  /*tab style*/
+  #tbl_res tr{
+    cursor: pointer;
+  }
+  #tbl_res input{
+    vertical-align: middle;
+  }
+  .tr_selected_cfg{
+    background: #aedae4;
+  }
+  .params-tab-content .tab-pane{
+    padding-top: 10px;
+  }
+  #fm_rwcs{
+    margin-top: 10px;
+  }
+
+  /*params input style*/
+  .ck-top-0{
+    top: 0;
+  }
+  .form-horizontal label.input-notes{
+    text-align: left;
+    color: gray;
+  }
+
+  /*loading*/
+  .my-loading{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,.6) url(../Public/images/loading.gif) no-repeat center;
+  }
+
+  /*task dest ul*/
+  .task-dest{
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+  }
+  .task-dest li{
+    float: left;
+    background-color: #ecf0f5;
+    margin: 0 20px 15px 0;
+    line-height: 30px;
+    padding: 0 5px;
+    border-radius: 3px;
+  }
+</style>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+  <h4 class="modal-title" id="rwcs_modal_h4"></h4>
+</div>
+<div class="modal-body">
+  <?PHP if ($_REQUEST['task_type'] == 'configSet'){ ?>
+  <div class="row">
+    <div class="col-md-12" style="position: relative">
+      <div class="my-loading"></div><!--loading div-->
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs" id="tab_params_list" style="position: relative;">
+          <?PHP if ($params_type == 'router' || $params_type == 'rtu') { ?>
+          <li class="active"><a href="#params_tab_security" data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_SECURITY}</a></li>
+          <li class="dropdown"><!-- 基本网络 -->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.BASIC_NETWORK} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#params_tab_wan" data-toggle="tab">{$Think.lang.WAN_NETWORK}</a></li>
+              <li><a href="#params_tab_3g"  data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_3G}</a></li>
+              <li><a href="#params_tab_lan" data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_LAN}</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><!-- WLAN设置 -->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.WLAN_SETTING} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#params_tab_wifi" data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_WIFI}</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><!-- 高级网络 -->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.ADVANCED_NETWORK} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#params_tab_port_forwarding"  data-toggle="tab">{$Think.lang.PORT_FORWARDING}</a></li>
+              <li><a href="#params_tab_port_redirecting" data-toggle="tab">{$Think.lang.PORT_REDIRECTING}</a></li>
+              <li><a href="#params_tab_portal"           data-toggle="tab">{$Think.lang.PORTAL}</a></li>
+              <li><a href="#params_tab_serial_app"       data-toggle="tab">{$Think.lang.SERIAL_APPLICATION}</a></li>
+              <li><a href="#params_tab_bandwidth_speed_limit" data-toggle="tab">{$Think.lang.BANDWIDTH_SPEED_LIMIT}</a></li>
+              <li><a href="#params_tab_gps"              data-toggle="tab">GPS</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><!-- 防火墙 -->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.FIREWALL} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#params_tab_url_filter"    data-toggle="tab">{$Think.lang.IP_URL_FILTER}</a></li>
+              <li><a href="#params_tab_domain_filter" data-toggle="tab">{$Think.lang.DOMAIN_FILTER}</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><!-- VPN隧道 -->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.VPN_MODE} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#params_tab_vpn_gre" data-toggle="tab">{$Think.lang.VPN_GRE}</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><!-- 系统配置 -->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.SYSTEM_CONFIG} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#params_tab_router_identified" data-toggle="tab">{$Think.lang.ROUTER_IDENTIFICATION}</a></li>
+              <li><a href="#params_tab_timezone"          data-toggle="tab">{$Think.lang.TIME_SETTING}</a></li>
+              <li><a href="#params_tab_scheduled_reboot"  data-toggle="tab">{$Think.lang.SCHEDULED_REBOOT}</a></li>
+              <li><a href="#params_tab_storage"           data-toggle="tab">{$Think.lang.STORAGE_MANAGE}</a></li>
+              <li><a href="#params_tab_m2m"               data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_PLATFORM}</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><!-- 其它设置 -->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.OTHER_SETTING} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <!-- <li><a href="#params_tab_vpn"       data-toggle="tab">VPN</a></li> -->
+              <li><a href="#params_tab_ipsec1"    data-toggle="tab">IPSEC 1</a></li>
+              <li><a href="#params_tab_ipsec2"    data-toggle="tab">IPSEC 2</a></li>
+              <li><a href="#params_tab_http_send" data-toggle="tab">Http send</a></li>
+            </ul>
+          </li>
+          <?PHP } elseif ($params_type == 'rt52') { ?>
+          <li class="active"><a href="#params_tab_security" data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_SECURITY}</a></li>
+          <li class="dropdown"><!-- 采集上报 -->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.COLLECTION_REPORT} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#params_tab_rtu_collection_settings" data-toggle="tab">{$Think.lang.ACQUISITION_FUNCTION_SETTINGS}</a></li>
+              <li><a href="#params_tab_rtu_modbus_cmd_list"     data-toggle="tab">{$Think.lang.MODBUS_COMMAND_LIST}</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><!-- 连接设置 -->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.CONNECTION_SETTINGS} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <!-- <li><a href="#params_tab_network_settings" data-toggle="tab">{$Think.lang.NETWORK_SETTINGS}</a></li> -->
+              <li><a href="#params_tab_3g"  data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_3G}</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><!-- 局域网络 -->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.VAR_TERM_PARAM_LAN} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#params_tab_lan" data-toggle="tab">{$Think.lang.LOCAL_AREA_NETWORK_SETTINGS}</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><!-- 无线网 -->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.VAR_WIFI} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#params_tab_wifi" data-toggle="tab">{$Think.lang.BASIC_PARAMETER_SETTING}</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><!-- 系统配置 -->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.SYSTEM_CONFIG} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#params_tab_scheduled_reboot"  data-toggle="tab">{$Think.lang.SCHEDULED_REBOOT}</a></li>
+              <li><a href="#params_tab_timezone"          data-toggle="tab">{$Think.lang.TIME_SETTING}</a></li>
+              <li><a href="#params_tab_m2m"               data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_PLATFORM}</a></li>
+              <li><a href="#params_tab_access_settings"   data-toggle="tab">{$Think.lang.ACCESS_SETTINGS}</a></li>
+            </ul>
+          </li>
+          <?PHP } elseif ($params_type == 'dtu') { ?>
+          <li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+          <li><a href="#params_tab_position_parameter" data-toggle="tab">{$Think.lang.POSITIONING_PARAMETER}</a></li>
+          <li><a href="#params_tab_serial_port_parameter" data-toggle="tab">{$Think.lang.SERIAL_PORT_PARAMETER}</a></li>
+          <li><a href="#params_tab_dtu_parameter" data-toggle="tab">{$Think.lang.DTU_PARAMETER}</a></li>
+          <li><a href="#params_tab_collection_control_parameter" data-toggle="tab">{$Think.lang.COLLECTION_CONTROL_PARAMETER}</a></li>
+          <li><a href="#params_tab_dialup_network_parameter" data-toggle="tab">{$Think.lang.DIALUP_NETWORK_PARAMETER}</a></li>
+          <li><a href="#params_tab_other_parameter" data-toggle="tab">{$Think.lang.OTHER_PARAMETER}</a></li>
+          <li><a href="#params_tab_load_balancing" data-toggle="tab">{$Think.lang.LOAD_BALANCING}</a></li>
+          <?PHP } elseif ($params_type == 'v20lr') { ?>
+          <li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+          <li><a href="#params_tab_lora" data-toggle="tab">LORA</a></li>
+          <li><a href="#params_tab_serial_port_parameter" data-toggle="tab">{$Think.lang.SERIAL_PORT_PARAMETER}</a></li>
+          <li><a href="#params_tab_collection_control_parameter" data-toggle="tab">{$Think.lang.COLLECTION_CONTROL_PARAMETER}</a></li>
+          <li><a href="#params_tab_dtu_settings" data-toggle="tab">{$Think.lang.DTU_SETTINGS}</a></li>
+          <li><a href="#params_tab_other_parameter" data-toggle="tab">{$Think.lang.OTHER_PARAMETER}</a></li>
+          <?PHP } elseif ($params_type == 'rt10') { ?>
+          <li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+          <li><a href="#params_tab_lora" data-toggle="tab">LORA</a></li>
+          <li><a href="#params_tab_serial_port_parameter" data-toggle="tab">{$Think.lang.SERIAL_PORT_PARAMETER}</a></li>
+          <li><a href="#params_tab_collection_control_parameter" data-toggle="tab">{$Think.lang.COLLECTION_CONTROL_PARAMETER}</a></li>
+          <li><a href="#params_tab_dialup_network_parameter" data-toggle="tab">{$Think.lang.DIALUP_NETWORK_PARAMETER}</a></li>
+          <li><a href="#params_tab_other_parameter" data-toggle="tab">{$Think.lang.OTHER_PARAMETER}</a></li>
+          <li><a href="#params_tab_load_balancing" data-toggle="tab">{$Think.lang.LOAD_BALANCING}</a></li>
+          <?PHP } elseif ($params_type == 'rt20') { ?>
+          <li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+          <li><a href="#params_tab_sim_card_1" data-toggle="tab">{$Think.lang.SIM_CARD} 1</a></li>
+          <li><a href="#params_tab_sim_card_2" data-toggle="tab">{$Think.lang.SIM_CARD} 2</a></li>
+          <li><a href="#params_tab_rain_bucket" data-toggle="tab">{$Think.lang.RAIN_BUCKET}</a></li>
+          <li><a href="#params_tab_osmometer" data-toggle="tab">{$Think.lang.OSMOMETER}</a></li>
+          <li><a href="#params_tab_inclinometer" data-toggle="tab">{$Think.lang.INCLINOMETER}</a></li>
+          <li><a href="#params_tab_position_parameter" data-toggle="tab">{$Think.lang.POSITIONING_PARAMETER}</a></li>
+          <li><a href="#params_tab_other_parameter" data-toggle="tab">{$Think.lang.OTHER_PARAMETER}</a></li>
+          <li><a href="#params_tab_data_center" data-toggle="tab">{$Think.lang.DATA_CENTER}</a></li>
+          <?PHP } elseif ($params_type == 'd21') { ?>
+          <li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+          <li><a href="#params_tab_dialup_network_parameter" data-toggle="tab">{$Think.lang.DIALUP_NETWORK_PARAMETER}</a></li>
+          <li><a href="#params_tab_serial_port_settings" data-toggle="tab">{$Think.lang.SERIAL_PORT_SETTINGS}</a></li>
+          <li><a href="#params_tab_data_center" data-toggle="tab">{$Think.lang.DATA_CENTER}</a></li>
+		      <li class="dropdown"><!-- IO控制 -->
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.IO_CONTROL} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#params_tab_di1" data-toggle="tab">DI1</a></li>
+              <li><a href="#params_tab_di2" data-toggle="tab">DI2</a></li>
+              <li><a href="#params_tab_do1" data-toggle="tab">DO1</a></li>
+              <li><a href="#params_tab_do2" data-toggle="tab">DO2</a></li>
+            </ul>
+          </li>
+		      <li><a href="#params_tab_sms_config" data-toggle="tab">{$Think.lang.SMS_CONFIG}</a></li>
+          <li><a href="#params_tab_serial_port_command" data-toggle="tab">{$Think.lang.SERIAL_PORT_COMMAND}</a></li>
+          <li><a href="#params_tab_operating_mode" data-toggle="tab">{$Think.lang.OPERATING_MODE}</a></li>
+          <li><a href="#params_tab_remote_manage" data-toggle="tab">{$Think.lang.REMOTE_MANAGEMENT}</a></li>
+		      <?PHP } elseif ($params_type == 'd20') { ?>
+          <li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+          <li><a href="#params_tab_dialup_network_parameter" data-toggle="tab">{$Think.lang.DIALUP_NETWORK_PARAMETER}</a></li>
+          <li><a href="#params_tab_channel_1_setting" data-toggle="tab">{$Think.lang.CHANNEL_1_SETTING}</a></li>
+          <li><a href="#params_tab_channel_2_setting" data-toggle="tab">{$Think.lang.CHANNEL_2_SETTING}</a></li>
+          <li><a href="#params_tab_protocol" data-toggle="tab">{$Think.lang.VAR_PROTOCOL}</a></li>
+          <li><a href="#params_tab_io_control" data-toggle="tab">{$Think.lang.IO_CONTROL}</a></li>
+          <li><a href="#params_tab_operating_mode" data-toggle="tab">{$Think.lang.OPERATING_MODE}</a></li>
+          <li><a href="#params_tab_remote_manage" data-toggle="tab">{$Think.lang.REMOTE_MANAGEMENT}</a></li>
+          <?PHP } elseif ($params_type == 'd10') { ?>
+          <li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+          <li><a href="#params_tab_serial_port_settings" data-toggle="tab">{$Think.lang.SERIAL_PORT_SETTINGS}</a></li>
+          <li><a href="#params_tab_dialup_network_parameter" data-toggle="tab">{$Think.lang.DIALUP_NETWORK_PARAMETER}</a></li>
+          <li><a href="#params_tab_data_center" data-toggle="tab">{$Think.lang.DATA_CENTER}</a></li>
+          <li><a href="#params_tab_protocol" data-toggle="tab">{$Think.lang.VAR_PROTOCOL}</a></li>
+          <li><a href="#params_tab_operating_mode" data-toggle="tab">{$Think.lang.OPERATING_MODE}</a></li>
+          <li><a href="#params_tab_remote_manage" data-toggle="tab">{$Think.lang.REMOTE_MANAGEMENT}</a></li>
+          <?PHP } ?>
+          <li class="pull-right" style="position:absolute;right:-20px;"><a href="javascript:;" class="text-muted" id="btn_reload_params" title="{$Think.lang.VAR_REFRESH}"><i class="fa fa-refresh"></i></a></li>
+        </ul>
+        <div class="tab-content params-tab-content">
+        </div>
+      </div>
+    </div>
+  </div>
+  <?PHP } ?>
+
+  <?PHP if ($_REQUEST['task_type'] == 'catchPackage'){ ?>
+  <form class="form-horizontal" role="form" id="fm0">
+    <div class="form-group">
+      <label for="starttime" class="col-lg-2 control-label">{$Think.lang.VAR_CP_START}</label>
+      <div class="col-lg-3">
+        <input type="text" class="form-control" name="cp_start_dt" id="cp_start_dt" value="">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="endtime" class="col-lg-2 control-label">{$Think.lang.VAR_CP_END}</label>
+      <div class="col-lg-3">
+        <input type="text" class="form-control" name="cp_end_dt" id="cp_end_dt" value="">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="endtime" class="col-lg-2 control-label">{$Think.lang.AUTO_CAP_CAP_LEVEL_TITLE}</label>
+      <div class="col-lg-10">
+        <?PHP $cpl = L('VAR_CP_LEVEL') ?>
+        <label class="radio-inline"><input type="radio" name="level" value="1" checked><?PHP echo $cpl['1'] ?></label>
+        <label class="radio-inline"><input type="radio" name="level" value="2"><?PHP echo $cpl['2'] ?></label>
+        <label class="radio-inline"><input type="radio" name="level" value="3"><?PHP echo $cpl['3'] ?></label>
+      </div>
+    </div>
+  </form>
+  <?PHP } ?>
+
+  <?PHP if ($_REQUEST['task_type'] == 'takePhoto'){ ?>
+  <div class="row" style="margin-top: 15px;">
+    <div class="col-md-12">
+      <div class="box box-solid">
+        <div class="box-body">
+          <form class="form-horizontal" role="form" id="fm0">
+            <div class="form-group">
+              <label for="starttime" class="col-lg-2 control-label">{$Think.lang.CAMERA_SN}</label>
+              <div class="col-lg-3">
+                <select class="form-control" name="tp_camera_sn">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="starttime" class="col-lg-2 control-label">{$Think.lang.CAMERA_SHOTS_NUMBER}</label>
+              <div class="col-lg-3">
+                <input type="number" class="form-control" name="tp_shots_number" required="required" min="1" value="1" />
+              </div>
+              <label class="col-lg-7 control-label input-notes">{$Think.lang.CAMERA_SHOTS_NUMBER_DESC}</label>
+            </div>
+            <div class="form-group">
+              <label for="endtime" class="col-lg-2 control-label">{$Think.lang.CAMERA_SHOTS_INTERVAL}</label>
+              <div class="col-lg-3">
+                <input type="number" class="form-control" name="tp_interval" required="required" min="0" value="0" />
+              </div>
+              <label class="col-lg-7 control-label input-notes">{$Think.lang.CAMERA_SHOTS_INTERVAL_DESC}</label>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <?PHP } ?>
+
+  <!--指令下发-->
+  <?PHP if ($_REQUEST['task_type'] == 'rtuDataSend') { ?>
+  <form class="form-horizontal" role="form" id="fm0" style="padding: 15px">
+    <div class="form-group">
+      <label class="col-md-2">{$Think.lang.VALUE_TYPE}:</label>
+      <div class="col-md-8">
+        <select class="form-control" name="data_type">
+          <option value="hex" selected>{$Think.lang.DATA_TYPE_BYTES}</option>
+          <option value="str">{$Think.lang.DATA_TYPE_STRING}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2">{$Think.lang.VAR_SENSOR}:<span class="required-field"></span></label>
+      <div class="col-md-8">
+        <select class="form-control" name="rtds_id"><?PHP echo get_sensor_options()?></select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2">{$Think.lang.SELECT_COMMON_CMD}:</label>
+      <div class="col-md-8">
+        <select class="form-control" name="common_cmd"><?PHP echo get_common_cmd()?></select>
+      </div>
+      <div class="col-md-1">
+        <button class="btn btn-default btn-xs delete-common-cmd" style="margin-top: 7px; display: none;" type="button" title="{$Think.lang.DELETE_COMMON_CMD}"><i class="fa fa fa-close"></i></button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2">{$Think.lang.VAR_DATA}:<span class="required-field"></span></label>
+      <div class="col-md-8">
+        <textarea class="form-control" name="data_content"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2">{$Think.lang.SAVEAS_COMMON_CMD}:</label>
+      <div class="col-md-1">
+        <label class="checkbox-inline">
+          <input type="checkbox" name="saveas_common" style="top: 0" />
+        </label>
+      </div>
+      <div class="col-md-7">
+        <input type="text" class="form-control" name="cmd_name" placeholder="{$Think.lang.CMD_NAME}" disabled="disabled" />
+      </div>
+    </div>
+  </form>
+  <script type="text/javascript">
+  (function($){
+  $(function(){
+    $('#fm0').bootstrapValidator({
+        feedbackIcons: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+          rtds_id: {
+            validators: {
+              notEmpty: {
+                message: $lang.FIELD_REQUIRED
+              }
+            }
+          },
+          data_content: {
+            validators: {
+              notEmpty: {
+                message: $lang.FIELD_REQUIRED
+              },
+              stringLength:{
+                max: 256,
+                message: $lang.MAX_LENGTH_256,
+              }
+            }
+          },
+          cmd_name: {
+            validators: {
+              notEmpty: {
+                message: $lang.FIELD_REQUIRED
+              }
+            }
+          }
+        }
+    });
+
+    $('select[name=common_cmd]').change(function(){
+      var v = $(this).val(), del_button = $('button.delete-common-cmd');
+      $('textarea[name=data_content]').val(v);
+      var bootstrapValidator = $("#fm0").data('bootstrapValidator');
+      bootstrapValidator.updateStatus('data_content', 'NOT_VALIDATED').validateField('data_content');
+      v ? del_button.show() : del_button.hide();
+      var dt = $(this).find('option:selected').attr('data-type');
+      if (dt != ''){
+        $('select[name=data_type]').val(dt);
+      }
+    });
+
+    $('select[name=data_type]').on('change', function(){
+      var v = $(this).val();
+      $('textarea[name=data_content]').val('');
+      $("#fm0").data('bootstrapValidator').updateStatus('data_content', 'NOT_VALIDATED').validateField('data_content');
+    });
+
+    $('input[name=saveas_common]').change(function(){
+      var o = $('input[name=cmd_name]'), chk = $(this).is(':checked');
+      $('#fm0').bootstrapValidator('enableFieldValidators', 'cmd_name', chk);
+      chk ? o.removeAttr('disabled') : o.attr('disabled',true);
+    });
+
+    $('button.delete-common-cmd').click(function(){
+      $.confirm($lang.OPERATE_CONFIRM, function(){
+        ajax(tpurl('Rtu','delteCommonCmd'), {name:$('select[name=common_cmd] option:selected').text()}, function(msg){
+          $.notice(msg);
+          if (msg.status == 0){
+            $('select[name=common_cmd] option:selected').detach();
+            $('button.delete-common-cmd').hide();
+            $('textarea[name=data_content]').val('');
+            $("#fm0").data('bootstrapValidator').updateStatus('data_content', 'NOT_VALIDATED').validateField('data_content');
+          }
+        });
+      });
+    });
+  });
+  })(jQuery);
+  </script>
+  <?PHP } ?>
+
+  <!--数据透传-->
+  <?PHP if ($_REQUEST['task_type'] == 'dataTrans') { ?>
+  <div class="row" style="margin-top: 15px;">
+    <div class="col-md-12">
+      <div class="box box-solid">
+        <div class="box-body">
+          <table id="tbl_dt"></table>
+          <div id="pager_dt" style="margin-top: 30px !important;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 15px;">
+    <div class="col-md-12">
+      <div class="box box-solid">
+        <div class="box-header with-border">
+          <h3 class="box-title">{$Think.lang.DATA_TRANS_DIR_0}</h3>
+        </div>
+        <div class="box-body">
+          <form class="form-horizontal" role="form" id="fm_dt">
+            <div class="form-group">
+              <label class="col-md-2">{$Think.lang.VALUE_TYPE}:</label>
+              <div class="col-md-3">
+                  <select class="form-control" name="data_type">
+                      <option value="0">{$Think.lang.DATA_TYPE_STRING}</option>
+                      <option value="1">{$Think.lang.DATA_TYPE_BYTES}</option>
+                  </select>
+              </div>
+              <div class="col-md-3">
+                  <label class="checkbox-inline">
+                    <input type="checkbox" name="send_enter" style="top: 0">
+                  </label>
+                  <span style="position: relative; top: 8px">{$Think.lang.SEND_ENTER}</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2">{$Think.lang.GPS_PORT}:<span class="required-field"></label>
+              <div class="col-md-3">
+                  <select class="form-control" name="interface_type">
+                      <option value="0">{$Think.lang.INTERFACE_TYPE_0}</option>
+                      <option value="1">{$Think.lang.INTERFACE_TYPE_1}</option>
+                      <option value="2">{$Think.lang.INTERFACE_TYPE_2}</option>
+                  </select>
+              </div>
+              <div class="col-md-3">
+                  <select class="form-control" name="interface_num">
+                      <option value="0">{$Think.lang.INTERFACE_TYPE_0} (COM1)</option>
+                      <option value="1">{$Think.lang.INTERFACE_TYPE_0} (COM2)</option>
+                  </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2">{$Think.lang.VAR_DATA}:<span class="required-field"></span></label>
+              <div class="col-md-8">
+                  <input type="text" class="form-control" name="value" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info btn-dt-refresh">{$Think.lang.VAR_REFRESH}</button>
+    <button type="button" class="btn btn-success btn-dt-save">{$Think.lang.VAR_SEND}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+  </div>
+  <script type="text/javascript">
+  (function($){
+  $(function(){
+    $('#fm_dt input[name=value]').focus();
+    $('#fm_dt select[name=interface_type]').on('change',function(){
+      var v = $(this).val(), obj = $('#fm_dt select[name=interface_num]'), j = 2, text1 = $lang.INTERFACE_TYPE_0, text2 = 'COM';
+      if (v == '1'){
+          j = 4;
+          text1 = $lang.INTERFACE_TYPE_1;
+          text2 = 'LAN';
+      } else if (v == '2'){
+          j = 2;
+          text1 = $lang.INTERFACE_TYPE_2;
+          text2 = 'USB';
+      }
+      obj.empty();
+      for (var i=0; i<j; i++){
+        obj.append($("<option>").val(i).text(text1+' ('+text2+(i+1)+')'));
+      }
+    });
+
+    $('.btn-dt-refresh').click(function(){
+      $('#tbl_dt').trigger('reloadGrid');
+    });
+
+    $('.btn-dt-save').click(function(){
+      $('#fm_dt input[type=text]').css('border-color','#d2d6de');
+      var p = $.serializeObject('#fm_dt'), info = '';
+      if (p.value == ''){
+        info = $lang.ENTER_DOWN_DATA;
+      } else if (p.data_type == '0' && p.value.length > 1000){
+        info = $lang.MAX_LENGTH_256.replace('256','1000');
+      } else if (p.data_type == '1'){
+        var reg = /[0-9a-fA-F]{2,}/;
+        if (!reg.test(p.value) || p.value.length%2 != 0){
+          info = $lang.BYTE_STREAM_FORMAT_INCORRECT;
+        } else if (p.value.length > 2000){
+          info = $lang.MAX_LENGTH_256.replace('256','1000');
+        }
+      }
+      if (info != ''){
+        $.notice(1, info);
+        $('#fm_dt input[name=value]').css('border-color','red');
+        return;
+      }
+      p.sn = $.gf.tp.term_list;
+      ajax(tpurl('Term','dataTrans'), p, function(msg){
+        $.notice(msg);
+        if (msg.status == 0){
+          $('#tbl_dt').trigger('reloadGrid');
+        }
+      });
+    });
+
+    $('#tbl_dt').jqGrid({
+        url: tpurl('Term','loadRecvData'),
+        datatype: 'json', //请求数据返回的类型。可选json,xml,txt
+        mtype: 'post', //向后台请求数据的ajax的类型。可选post,get
+        colNames: ['id', $lang.DATA_TRANS_DIR, $lang.VALUE_TYPE, $lang.VAR_DATA, $lang.VAR_DATA+'('+$lang.DATA_TYPE_STRING+')', $lang.GPS_PORT, $lang.VAR_DEVICE_STATUS, $lang.TIME],
+        colModel:[
+            {name:'id',           index:'id',           jsonmap:'id',             width:50,   align:'center', hidden:true,  search:false, key:true},
+            {name:'from_type',    index:'from_type',    jsonmap:'from_type',      width:50,   align:'center', hidden:false, search:false, formatter:function(v){
+              return '<span style="width:100%; display:inline-block; background:'+(v=='0' ? '#ffedc2' : '#cbd4dd')+'">'+(v=='0'?$lang.DATA_TRANS_DIR_0:$lang.DATA_TRANS_DIR_1)+'</span>';
+            }},
+            {name:'data_type',    index:'data_type',    jsonmap:'data_type',      width:50,   align:'center', hidden:false, search:false},
+            {name:'value',        index:'value',        jsonmap:'value',          width:100,  align:'center', hidden:false, search:false},
+            {name:'value2',       index:'value',        jsonmap:'value2',         width:100,  align:'center', hidden:false, search:false},
+            {name:'data_port',    index:'data_port',    jsonmap:'data_port',      width:50,   align:'center', hidden:false, search:false},
+            {name:'status',       index:'status',       jsonmap:'status',         width:100,  align:'center', hidden:false, search:false},
+            {name:'time',         index:'time',         jsonmap:'time',           width:100,  align:'center', hidden:false, search:false, sortable:false}
+        ],
+        pager: '#pager_dt',
+        rowNum: 10,
+        rowList: [10, 20, 30, 40, 50, 100],
+        sortname: 'id',
+        sortorder: 'DESC',
+        viewrecords: true,
+        width: $('#rwcsModal .modal-dialog').width()-50,
+        autoScroll: true,
+        height: 'auto',
+        multiselect: false,
+        multiselectWidth: 30,
+        page: 1, //起始页码
+        pagerpos: 'center', //分页栏位置
+        pgbuttons: true, //是否显示翻页按钮
+        pginput: true, //是否显示翻页输入框
+        postData: {
+          searchType:'term_transparent_data',
+          sns: $.gf.tp.term_list
+        },
+        rownumbers: true,
+        rownumWidth: 30,
+        jsonReader: {repeatitems: false}
+    });
+    //5秒自动刷新数据透传
+    if (typeof $.gf.dt_timer == 'undefined'){
+      $.gf.dt_timer = setInterval(function(){
+        $('#tbl_dt').trigger('reloadGrid');
+      }, 5000);
+    }
+  });
+  })(jQuery);
+  </script>
+  <?PHP } ?>
+
+  <!--设置RTU采集脚本-->
+  <?PHP if ($_REQUEST['task_type'] == 'rtuScriptSet'){ ?>
+  <form class="form-horizontal" role="form" id="fm0">
+    <div class="form-group">
+      <div class="col-lg-12">
+        <textarea class="form-control" name="rtu_script" style="height: 150px" placeholder="<?PHP echo L('TIPS_EDIT_SCRIPTS_HERE')?>"><?PHP echo $rtu_script; ?></textarea></span>
+      </div>
+    </div>
+  </form>
+  <?PHP } ?>
+
+  <!--显示文件列表(升级，参数下发，下发广告)-->
+  <?PHP if (isset($show_files[$_REQUEST['task_type']])) {?>
+  <table id="tbl_res" data-alert_info="<?PHP echo $alert_info;?>" data-add_file_info="<?PHP echo $add_file_info;?>"></table>
+  <div id="pager_res" style="margin-top: 30px !important;"></div>
+  <?PHP } ?>
+
+  <!--升级-->
+  <?PHP if ($_REQUEST['task_type'] == 'termUpgrade'){ ?>
+  <div class="row" style="margin-top: 15px;">
+    <div class="col-md-12">
+      <div class="box box-solid">
+        <div class="box-header with-border">
+          <h3 class="box-title">{$Think.lang.ADDITIONAL_PARAMETERS}</h3>
+        </div>
+        <div class="box-body">
+          <form class="form-horizontal" role="form" id="fm_rwcs">
+            <div class="form-group">
+              <label class="col-lg-2 control-label">{$Think.lang.AUXILIARY_DEVICE_UPGRADE}：</label>
+              <div class="col-lg-3">
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="upgrade_sub" class="ck-top-0">
+                </label>
+              </div>
+              <label class="col-lg-7 control-label input-notes">{$Think.lang.AUXILIARY_DEVICE_UPGRADE_INFO}</label>
+            </div>
+            <div class="form-group" style="display: none">
+              <label class="col-lg-2 control-label">{$Think.lang.AUXILIARY_DEVICE_SN}：</label>
+              <div class="col-lg-3">
+                <select class="form-control" name="rtu_pos">
+                  <option value="0" selected="selected">{$Think.lang.LOG_LEVEL_3}</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                </select>
+              </div>
+              <label class="col-lg-7 control-label input-notes">{$Think.lang.AUXILIARY_DEVICE_SN_INFO}</label>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <?PHP } ?>
+
+<?PHP if ($_REQUEST['task_type'] != 'dataTrans') { ?>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-success btn-task-save">{$Think.lang.SAVE_TEMPLATE}</button>
+  <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<?PHP } ?>
+
+<script type="text/javascript">
+  (function($){
+    $.gf.tp = JSON.parse('<?PHP echo $_REQUEST["tp"]?>');
+    $.gf.daterangepicker_opt = {
+      "singleDatePicker": true,
+      "timePicker": true,
+      "timePicker24Hour": true,
+      'drops': $.inArray($.gf.tp.task_type,['termRestart','configGet','cfgFileUpload','rtuScriptGet'])===-1 ? 'up':'down',
+      "locale": {
+        "format": "YYYY-MM-DD HH:mm:ss",
+        "daysOfWeek": $lang.VAR_WEEK_ARR,
+        "monthNames": $lang.VAR_MONTH.replace('[','').replace(']','').replace(/'/g,'').split(','),
+        "applyLabel": $lang.VAR_BTN_SURE,
+        "cancelLabel": $lang.VAR_BTN_CANCLE
+      }
+    };
+
+    $.gf.submit_task = function(){
+      var params = $.gf.tp;
+      //Sub firmware
+      if ($('#fm_rwcs input[name=upgrade_sub]').is(':checked')) {
+        params.type = 'rtu';
+        params.rtu_pos = $('#fm_rwcs select[name=rtu_pos]').val();
+      }
+
+      // Files
+      var tbl = $('#tbl_res');
+      if (tbl.length != 0){
+        var fileids = $('#tbl_res').jqGrid('getDataIDs');
+        if (fileids.length == 0){
+          $.confirm(tbl.attr('data-add_file_info'), function(){
+            location.href = $.gf.tp.task_type == 'adSend' ? tpurl('Portal','portal') : tpurl('Term','zywj');
+          });
+          return;
+        }
+        var fileid = $('#tbl_res').jqGrid('getGridParam','selrow');
+        if (!fileid){
+          $.notice(1, tbl.attr('data-alert_info'));
+          return;
+        }
+        var filerow = $('#tbl_res').jqGrid('getRowData',fileid);
+        $.extend(params, {
+          filename: filerow.name,
+          filesize: filerow.filesize_o,
+          fileid: filerow.id,
+          md5_num: filerow.md5_num
+        });
+      }
+
+      // Edit params
+      var tab = $('#tab_params_list');
+      if (tab.length != 0){
+        var config_set_params = $.gf.tpo.getParams();
+        if (!config_set_params){
+          return;
+        }
+        $.extend(params, config_set_params);
+      }
+
+      // packet_cap
+      if ($.gf.tp.task_type == 'catchPackage'){
+        var p2 = $.serializeObject('#fm0');
+        $.extend(params, {
+          bt: new Date(p2.cp_start_dt.replace(/-/g, '/')).getTime() / 1000,
+          et: new Date(p2.cp_end_dt.replace(/-/g, '/')).getTime() / 1000,
+          level: p2.level
+        });
+      }
+
+      // rtu_script_set
+      if ($.gf.tp.task_type == 'rtuScriptSet'){
+        var p2 = $.serializeObject('#fm0');
+        if (p2.rtu_script.trim() == '') {
+          $.notice(1, $lang.SCRIPT_CONTENT_REQUIRED);
+          return;
+        }
+        /*if (p2.rtu_script.length > 1024){
+          $.notice(1,$lang.MAX_LENGTH_256.replace('256','1024'));
+          return;
+        }*/
+        $.extend(params, {
+          rtu_script: p2.rtu_script
+        });
+      }
+
+      if ($.gf.tp.task_type == 'takePhoto') {
+        var p2 = $.serializeObject('#fm0');
+        if (p2.tp_shots_number == '' || p2.tp_interval == '' || isNaN(p2.tp_shots_number) || isNaN(p2.tp_interval)
+          || parseInt(p2.tp_shots_number) < 1 || parseInt(p2.tp_interval) < 0) {
+          $.notice(1, $lang.ENTER_VALID_NUMBER);
+          return;
+        }
+        $.extend(params, {
+          camera_sn: p2.tp_camera_sn,
+          shots_number: p2.tp_shots_number,
+          interval: p2.tp_interval
+        });
+      }
+
+      if ($.gf.tp.task_type == 'rtuDataSend') {
+        var obj = $("#fm0").data('bootstrapValidator');
+        obj.validate();
+        if (!obj.isValid()){
+            return;
+        }
+        var p2 = $.serializeObject('#fm0');
+        //check hex
+        if ($('select[name=data_type]').val() == 'hex'){
+          if (!/^[0-9a-fA-F]{2,}$/.test(p2.data_content) || p2.data_content.length %2 != 0){
+            $('textarea[name=data_content]').focus();
+            $.notice(1,$lang.BYTE_STREAM_FORMAT_INCORRECT);
+            return;
+          }
+        }
+        $.extend(params, {
+          rtds_id: p2.rtds_id,
+          data_type: p2.data_type,
+          data_content: p2.data_content,
+          saveas_common: p2.saveas_common,
+          cmd_name: p2.cmd_name
+        });
+      }
+
+      var do_work = function() {
+        ajax(tpurl('Task',$.gf.tp.task_type), params, function(msg){
+          msg.data ? $.notice(1, msg.info) : $.notice(msg);
+          if (msg.status == 0) {
+            $('#rwcsModal').modal('hide');
+            /*layer.tips('任务已创建，等待执行！<br>请点击此按钮查看任务执行状况！', $('#btn_rwxq').get(0), {
+              tips: [3, '#000'],
+              time: 6000,
+              shade:  [0.5, '#393D49'],
+              shadeClose: true
+            });*/
+            $.gf.getStaticsInfo();
+          }
+        });
+      }
+
+      if ($.gf.tp.act == 'group' || $.gf.tp.act == 'all') {
+        $.confirm($lang.TASK_TARGET+'：' + ($.gf.tp.act == 'group' ? $('#change_gid span').html() : $lang.VAR_ALL_ROUTER)+'<br>' +
+          $lang.VAR_CMD_NAME+'：'+$.gf.tp.task_name+'<br>' +
+          '<span style="color:red">'+$lang.BATCH_OPERATION_CONFIRM+'</span>', function(){
+          do_work();
+        });
+      } else {
+        do_work();
+      }
+    };
+
+    $(document).ready(function(){
+      $('#rwcs_modal_h4').html($.gf.tp.task_name);
+      $('#rwcsModal .btn-task-save').click(function(){
+        /*if ($.gf.fp.task_confirm != 'undefined' && $.gf.fp.task_confirm){
+            $.confirm($.gf.fp.task_confirm, function(){
+                $.gf.submit_task();
+            });
+          }else{*/
+            $.gf.submit_task();
+        // }
+      });
+
+      //Change tab
+      $('#tab_params_list a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var p = $(this).parent().parent();
+        var phtml = p.hasClass('dropdown-menu') ? ('&nbsp;&gt;&nbsp;'+p.prev().html().replace(' <span class="caret"></span>','')) : '';
+        $('#rwcs_modal_h4').html($lang.VAR_EDIT_PARAM+'<span style="font-size:13px; color:#0dc4ef;">'+phtml+'&nbsp;&gt;&nbsp;'+$(this).html()+'</span>');
+      });
+
+      //Rtu pos
+      $('input[name=upgrade_sub]').on('change', function(){
+        var ck = $(this).is(':checked'), o = $(this).parent().parent().parent().next();
+        ck ? o.show() : o.hide();
+        $('#tbl_res').setGridParam({
+          postData:{
+            filetype: ck ? 5 : 1
+          }
+        }).trigger('reloadGrid');
+      });
+
+      $.gf.daterangepicker_opt.drops = 'down';
+      $('#cp_start_dt').val(moment().format('YYYY-MM-DD HH:mm:00')).daterangepicker($.gf.daterangepicker_opt);
+      $('#cp_end_dt').val(moment().add(5, 'minutes').format('YYYY-MM-DD HH:mm:00')).daterangepicker($.gf.daterangepicker_opt);
+
+      <?PHP if (isset($show_files[$_REQUEST['task_type']])){ ?>
+        $('#tbl_res').jqGrid({
+            url: $.gf.tp.task_type == 'adSend' ? tpurl('Portal', 'portal') : tpurl('Syscfg','loadFiles'),
+            datatype: 'json',
+            mtype: 'post',
+            colNames: $.gf.tp.task_type == 'adSend'
+              ? ['id', $lang.VAR_AD_NAME, $lang.FILE_NUM, $lang.VAR_CREATOR, $lang.VAR_CMD_CREATETIME, $lang.VAR_CFG_INFO]
+              : ['id', 'filesize_o', 'md5_num', $lang.VAR_PACKAGE_NAME, $lang.VAR_PACKAGE_SIZE, $lang.VAR_CREATOR, $lang.VAR_CMD_CREATETIME, $lang.VAR_CFG_INFO],
+            colModel: $.gf.tp.task_type == 'adSend' ? [
+              {name:'id',           index:'id',           jsonmap:'id',          width:50,   align:'center', hidden:true,  search:false, key:true},
+              {name:'name',         index:'name',         jsonmap:'name',        width:100,  align:'center', hidden:false, search:false},
+              {name:'num',          index:'num',          jsonmap:'num',         width:50,   align:'center', hidden:false, search:false},
+              {name:'creator',      index:'creator',      jsonmap:'creator',     width:50,   align:'center', hidden:false, search:false},
+              {name:'create_time',  index:'create_time',  jsonmap:'create_time', width:100,  align:'center', hidden:false, search:false},
+              {name:'info',         index:'info',         jsonmap:'info',        width:100,  align:'center', hidden:false, search:false, sortable:false}
+            ] : [
+              {name:'id',           index:'id',           jsonmap:'id',          width:50,   align:'center', hidden:true,  search:false, key:true},
+              {name:'filesize_o',   index:'filesize_o',   jsonmap:'filesize_o',  width:50,   align:'center', hidden:true,  search:false},
+              {name:'md5_num',      index:'md5_num',      jsonmap:'md5_num',     width:50,   align:'center', hidden:true,  search:false},
+              {name:'name',         index:'name',         jsonmap:'name',        width:100,  align:'center', hidden:false, search:false},
+              {name:'filesize',     index:'filesize',     jsonmap:'filesize',    width:50,   align:'center', hidden:false, search:false},
+              {name:'creator',      index:'creator',      jsonmap:'creator',     width:50,   align:'center', hidden:false, search:false},
+              {name:'create_time',  index:'create_time',  jsonmap:'create_time', width:100,  align:'center', hidden:false, search:false},
+              {name:'info',         index:'info',         jsonmap:'info',        width:100,  align:'center', hidden:false, search:false, sortable:false}
+            ],
+            pager: '#pager_res',
+            rowNum: 10,
+            rowList: [10, 20, 30, 40, 50, 100],
+            sortname: 'name',
+            sortorder: 'asc',
+            viewrecords: true,
+            width: $('#rwcsModal .modal-dialog').width()-50,
+            autoScroll: true,
+            height: 'auto',
+            multiselect: false,
+            multiselectWidth: 30,
+            page: 1,
+            pagerpos: 'center',
+            pgbuttons: true,
+            pginput: true,
+            postData: {
+              searchType: $.gf.tp.task_type == 'adSend' ? 'ad':'file_list',
+              filetype:{$res_filetype}
+            },
+            rownumbers: true,
+            rownumWidth: 30,
+            jsonReader: {repeatitems: false}
+        });
+      <?PHP } ?>
+
+      if ($.gf.tp.task_type == 'configSet'){
+        window.setTimeout(function(){
+          $.getScript($.gf.params_def_src.replace('%s',$.gf.tp.params_type), function(){
+              $.gf.tpo = new TermParams($.gf.tp.params_type);
+              $.gf.tpo.load();
+              $('#btn_reload_params').click(function(){
+                  $.gf.tpo.load();
+              });
+          });
+        }, 100);
+      }
+    });
+  })(jQuery);
+</script>

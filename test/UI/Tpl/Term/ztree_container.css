@@ -1,0 +1,82 @@
+#tree_tg_content{
+    display: none;
+    position: absolute;
+    background: #fff;
+    z-index: 999;
+    border: 1px solid #d2d6de;
+    border-top: none;
+    /*width: 580px;*/
+    height: 230px;
+    overflow: auto;
+}
+
+#tree_tg{
+    margin-top: 0;
+    /*width: 160px;*/
+}
+
+.modal-body>ul.ztree{
+    max-height: 400px;
+    overflow: auto;
+}
+
+#ul_tg{
+    padding: 0;
+    margin: 10px 0 0 0;
+    max-height: 90px;
+    overflow: hidden;
+}
+#ul_tg:after{
+    display: table;
+    content: " ";
+    clear: both;
+}
+#ul_tg li{
+    list-style: none;
+    float: left;
+    /*
+    width: 115px;
+    overflow-x: hidden;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    background: #00c0ef;
+    */
+    margin: 0 10px 10px 0;
+}
+
+/*设备分组搜索框样式*/
+.ztree_search{
+    width:90px;
+    height:22px;
+    position:absolute;
+/*    left:50%;*/
+/*    margin-left:-100px;*/
+/*    margin-top:10px;*/
+/*    margin: 5px 0 0 5px;*/
+    top: 1px;
+    right: 24px;
+    display: none;
+    padding: 0 0 0 5px;
+/*    border-radius:5px;*/
+}
+
+.btn-my-search{
+    position: absolute;
+    right: 1px;
+    top: 1px;
+}
+
+/*设备分组收缩栏样式*/
+.ztree_close{
+    width:560px;
+    line-height:15px;
+    background:#fdf9f9;
+    position:fixed;
+    margin-left:-1px;
+    margin-top:300px;
+    border:1px solid #d2d6de;
+    border-top:none;
+    text-align:center;
+    cursor:pointer;
+}

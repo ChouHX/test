@@ -1,0 +1,95 @@
+<include file="Mobile/mheader" />
+    <div id="tabbar-with-map" class="mui-control-content mui-active">
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+                <?PHP echo $_SESSION[C('SESSION_NAME')]['name']?>
+            </li>
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.VAR_EDIT_PASS}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.VAR_USER_NEW_PWD}</label>
+                            <input type="password" name="password" id="pwd" class="mui-input-clear" autocomplete="false">
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.VAR_USER_REPWD}</label>
+                            <input type="password" name="password2" id="pwd2" class="mui-input-clear" autocomplete="false">
+                        </div>
+                        <div class="mui-button-row">
+                            <button class="mui-btn mui-btn-primary save-edit-pwd" type="button">{$Think.lang.VAR_BTN_SURE}</button>&nbsp;&nbsp;
+                            <button class="mui-btn mui-btn-danger cancel-edit-pwd" type="button">{$Think.lang.VAR_BTN_CANCLE}</button>
+                        </div>
+                    </form>
+                </div>
+            </li>
+            <li class="mui-table-view-cell syscfg"><a class="mui-navigate-right">{$Think.lang.VAR_MENU_SYSCFG}</a></li>
+        </ul>
+        <ul class="mui-table-view" style="margin-top: 25px;">
+            <li class="mui-table-view-cell" id="logout">
+                <a style="text-align: center;color: #FF3B30;">{$Think.lang.VAR_LOGOUT}</a>
+            </li>
+        </ul>
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <h1 class="mui-title">{$Think.lang.SYSTEM_SETTING}</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script>
+function initpage($, doc){
+    $(doc.body).on('tap', '#logout', function(e){
+        $.confirm($lang.VAR_CONFIRM_LOGOUT, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(p){
+            if (p.index == 0){
+                $.openWindow({id:'mlogin', url:$lang.curl.replace('Index/replace', 'Mobile/mlogout')});
+            }
+        });
+    });
+
+    $(doc.body).on('tap', '.save-edit-pwd', function(){
+        var info = '', e = null, pwd = doc.getElementById('pwd').value, pwd2 = doc.getElementById('pwd2').value;
+        if (/^[a-zA-Z0-9]{5,32}$/g.test(pwd)){
+            if (pwd != pwd2){
+                info = $lang.PWD_NOT_SAME;
+                e = doc.getElementById('pwd2');
+            }
+        }else{
+            info = $lang.VAR_PASSWORD_FORMAT;
+            e = doc.getElementById('pwd');
+        }
+        if (info != ''){
+            e.focus();
+            $.alert(info, $lang.VAR_PROMPT, '', function(){
+                e.focus();
+            });
+            return;
+        }
+        var savebtn = mui('.save-edit-pwd');
+        $(savebtn).button('loading');
+        $.ajax($lang.curl.replace('Index/replace','Mobile/editPass'),{
+            data:{password: pwd,},
+            timeout: 5000,
+            type: 'post',
+            success:function(msg){
+                $(savebtn).button('reset');
+                if (typeof msg == 'string'){
+                    msg = JSON.parse(msg);
+                }
+                $.alert(msg.info, $lang.VAR_PROMPT);
+            },
+            error:function(){$(savebtn).button('reset')},
+            timeout:function(){$(savebtn).button('reset')}
+        });
+    });
+
+    $(doc.body).on('tap', '.cancel-edit-pwd', function(e){
+        location.reload(true);
+    });
+
+    $(doc.body).on('tap', '.syscfg', function(){
+        $.openWindow({
+            url: "{:U('Mobile/msyscfg')}",
+            id: 'mobile_syscfg'
+        });
+    });
+}
+</script>

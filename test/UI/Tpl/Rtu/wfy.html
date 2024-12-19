@@ -1,0 +1,129 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.NETWORK_ANALYZER}</h3>
+            </div>
+            <div class="box-body jqgrid_c">
+              <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                <form class="form-inline" role="form" id="search_fm">
+                  <div class="btns">
+                    <button type="button" class="btn btn-default rwcs" data-act="edit">
+                      <i class="fa fa-pencil"></i>&nbsp;{$Think.lang.VAR_EDIT}
+                    </button>
+                    <button type="button" class="btn btn-default" data-act="refresh">
+                      <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                    </button>
+                  </div>
+                  <div class="input-group">
+                    <input type="text" name="searchString" class="form-control" placeholder="{$Think.lang.VAR_QUERY}" style="width: 130px" data-toggle="tooltip"  title="ip, {$Think.lang.VAR_NAME}, {$Think.lang.VAR_SYSCFG_ALIAS}">
+                    <span class="input-group-btn">
+                      <button type="submit" class="btn btn-flat btn-search-border"><i class="fa fa-search"></i></button>
+                    </span>
+                  </div>
+                </form>
+              </div>
+              <table id="list2"></table>
+              <div id="pager2" style="margin-top: 5px !important;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+<!--模态框，充电桩列表 -->
+<div class="modal fade" id="gridFileList" data-init="0" data-vna-id="">
+  <div class="modal-dialog modal-lg" style="width: 1000px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <table id="list3"></table>
+        <div id="pager3" style="margin-top: 30px !important;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-info" onclick="javascript:$('#list3').trigger('reloadGrid');">{$Think.lang.VAR_REFRESH}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--模态框，d1/d2/d3详情页面 -->
+<div class="modal fade" id="gridData">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+        <h4 class="modal-title">{$Think.lang.DATA_DETAIL}</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="endtime" class="col-lg-2 control-label">{$Think.lang.VAR_DEVICE_URL_REPORT_TIME}</label>
+            <div class="col-lg-8">
+              <input class="form-control" readonly="readonly" name="report_time" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="endtime" class="col-lg-2 control-label"></label>
+            <div class="col-lg-8">
+              <textarea class="form-control" readonly="readonly" rows="15"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--模态框，编辑描述信息 -->
+<div class="modal fade" id="gridEdit">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+        <h4 class="modal-title">{$Think.lang.NETWORK_ANALYZER}</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" role="form" id="fm_edit_info">
+          <div class="form-group">
+            <label for="endtime" class="col-lg-2 control-label">{$Think.lang.VAR_NAME}</label>
+            <div class="col-lg-8">
+              <input type="hidden" name="id" value="" />
+              <input class="form-control" name="name" value="" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="endtime" class="col-lg-2 control-label">{$Think.lang.VAR_SYSCFG_ALIAS}</label>
+            <div class="col-lg-8">
+              <input class="form-control" name="info" value="" />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success">{$Think.lang.SAVE_TEMPLATE}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_BTN_CANCLE}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="Homepage/footer"/>
+<!--jqgrid-->
+<script type="text/javascript" src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">$.gf.lang = '<?PHP echo $lang?>';</script>
+<script type="text/javascript" src="__ROOT__/Tpl/Rtu/wfy.js?rand={$Think.const.CACHE_VERSION}&r=20230425-1"></script>

@@ -1,0 +1,124 @@
+<style type="text/css">
+#gmc_container{
+    background-color: #e4e9f0;
+    margin: 0;
+    padding: 0;
+    height: 201px;
+    margin-left: 15px;
+}
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title" id="h4_add_edit">{$Think.lang.VAR_EDIT} - {$Think.lang.VAR_ALARM_RULE}</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="modal_fm">
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_SENSOR}:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <select class="form-control" name="addr">%s</select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.OPERATE_SIMBOL}:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <select class="form-control" name="simbol">
+                    <option value="lt">&lt;</option>
+                    <option value="le">&le;</option>
+                    <option value="gt">&gt;</option>
+                    <option value="ge" selected>&ge;</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_SYSCFG_VALUE}:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <input class="form-control" name="val" />
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success submit_rule_edit">{$Think.lang.SAVE_TEMPLATE}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    var data_v = "{$_REQUEST['data_v']}".split('|XXX|'), tr_index = "{$_REQUEST['tr_index']}";
+    $('#modal_fm select[name=addr]').val(data_v[0]);
+    $('#modal_fm select[name=simbol]').val(data_v[1]);
+    $('#modal_fm input[name=val]').val(data_v[2]);
+
+    $('.submit_rule_edit').on('click', function(){
+        var obj = $("#modal_fm").data('bootstrapValidator');
+        obj.validate();
+        if (!obj.isValid()){
+            return;
+        }
+        var p = $.serializeObject('#modal_fm'), v = [p.addr, p.simbol, p.val].join('|XXX|'), tbl = $('table.tbl-img-enable-alarm');
+        if (tbl.find("tr[data-v='"+v+"']").size() != 0){
+            $.notice(1, $lang.RULE_EXISTS);
+            return;
+        }
+        var tds = '<td class="td1">'+$('#modal_fm select[name=addr] option:selected').text()+'</td>\
+                 <td class="td2">&'+p.simbol+';</td>\
+                 <td class="td3">'+p.val+'</td>\
+                 <td class="td4"><i class="fa fa-pencil" onclick="$.gf.edit_rule(this)"></i>&nbsp;<i onclick="$.gf.delete_rule(this)" class="fa fa-close" style="color:#e60013"></i></td>';
+        tbl.find('tr:eq('+tr_index+')').attr('data-v', v).html(tds);
+        $('#alarmRuleModal').modal('hide');
+        $.gf.save_rule();
+    });
+
+    $('#modal_fm').bootstrapValidator({
+       feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            addr: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            },
+            simbol: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            },
+            val: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    },
+                    regexp: {
+                        regexp: /^[+|-]?\d*\.?\d*$/,
+                        message: $lang.NUMBER_VALIDATE
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 7,
+                        message: $lang.LENGTH_1_TO_7
+                    }
+                }
+            }
+        }
+    });
+
+
+    $('#show_addon_fields').on('click',function(){
+        $('#addon_fields').show();
+        $(this).hide().next().show();
+    });
+    $('#hide_addon_fields').on('click',function(){
+        $('#addon_fields').hide();
+        $(this).hide().prev().show();
+    });
+});
+})(jQuery);
+</script>

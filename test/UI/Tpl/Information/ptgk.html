@@ -1,0 +1,177 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <div class="row" style="margin-top: 10px;">
+        <div class="col-lg-3 col-xs-6">
+          <div class="small-box bg-aqua">
+            <div class="inner">
+              <h3 id="info_box_online">0/0</h3>
+              <p>{$Think.lang.NUMBER_OF_TERMS_ONLINE}&nbsp;/&nbsp;{$Think.lang.VAR_TOTAL}</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a href="{:U('Term/jklb')}" class="small-box-footer">{$Think.lang.VAR_INFO}&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <h3 id="info_box_task">0</h3>
+              <p>{$Think.lang.TODAY_TASK}</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-settings"></i>
+            </div>
+            <a href="{:U('Taskmgr/rwlb')}" class="small-box-footer">{$Think.lang.VAR_INFO}&nbsp;<i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <div class="small-box bg-green">
+            <div class="inner">
+              <h3 id="info_box_flux">0</h3>
+              <p>{$Think.lang.TODAY_FLUX}</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="javascript:;" class="small-box-footer info-box-refresh">{$Think.lang.VAR_REFRESH}&nbsp;<i class="fa fa-refresh"></i></a>
+            <div class="my-loading"></div><!--loading div-->
+          </div>
+        </div>
+        <div class="col-lg-3 col-xs-6">
+          <div class="small-box bg-blue">
+            <div class="inner">
+              <h3 id="info_box_month_flux">0</h3>
+              <p>{$Think.lang.FLUX_CURRENT_MONTH}</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-stats-bars"></i>
+            </div>
+            <a href="javascript:;" class="small-box-footer info-box-refresh">{$Think.lang.VAR_REFRESH}&nbsp;<i class="fa fa-refresh"></i></a>
+            <div class="my-loading"></div><!--loading div-->
+          </div>
+        </div>
+      </div>
+      <?PHP if (C('SHOW_CDZ')) { ?>
+      <div class="row" style="margin-top: 10px;">
+        <div class="col-lg-6">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.CHARGING_STATION_MODEL}</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="refresh-chart"><i class="fa fa-refresh"></i></button>
+              </div>
+            </div>
+            <div class="box-body" id="chart_station_model" style="height: 260px;" data-url="ptgkStatisticalInfo">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.CHARGING_PILES_STATE}</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="refresh-chart"><i class="fa fa-refresh"></i></button>
+              </div>
+            </div>
+            <div class="box-body" id="chart_charge_state" style="height: 260px;" data-url="ptgkStatisticalInfo">
+            </div>
+          </div>
+        </div>
+      </div>
+      <?PHP } ?>
+      <div class="row" style="margin-top: 10px;">
+        <div class="col-lg-6">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.ONLINE_TREND}</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="refresh-chart"><i class="fa fa-refresh"></i></button>
+              </div>
+            </div>
+            <div class="box-body" id="chart_online" style="height: 260px;" data-url="loadDashboardData">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.FLUX_TREND} <span id="chart_flux_unit" style="color:#0dc4ef"></span></h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="refresh-chart"><i class="fa fa-refresh"></i></button>
+              </div>
+            </div>
+            <div class="box-body" id="chart_flux" style="height: 260px;" data-url="loadDashboardData">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 10px;">
+        <div class="col-lg-6">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.NEW_DAILY_ROUTER_NUM}</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="refresh-chart"><i class="fa fa-refresh"></i></button>
+              </div>
+            </div>
+            <div class="box-body" id="chart_new" style="height: 260px;" data-url="loadDashboardData">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.VAR_SWV}</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="refresh-chart"><i class="fa fa-refresh"></i></button>
+              </div>
+            </div>
+            <div class="box-body" id="chart_swv" style="height: 260px;" data-url="ptgkStatisticalInfo">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 10px;">
+        <div class="col-lg-6">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.NET_MODE}</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="refresh-chart"><i class="fa fa-refresh"></i></button>
+              </div>
+            </div>
+            <div class="box-body" id="chart_netmode" style="height: 260px;" data-url="ptgkStatisticalInfo">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.TASK_STATISTICS}</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="refresh-chart"><i class="fa fa-refresh"></i></button>
+              </div>
+            </div>
+            <div class="box-body" id="chart_task" style="height: 260px;" data-url="ptgkStatisticalInfo">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+<include file="Homepage/footer"/>
+<script type="text/javascript" src="../Public/highcharts/highcharts.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/highcharts/highcharts-3d.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/highcharts/no-data-to-display.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="__ROOT__/Tpl/Information/ptgk.js?rand={$Think.const.CACHE_VERSION}"></script>

@@ -1,0 +1,31 @@
+<include file="Mobile/mheader" />
+    <div class="mui-card">
+        <ul class="mui-table-view">
+		<?php foreach($rets as $k=>$row){?>
+			<li class="mui-table-view-cell">
+				<span style="display:inline-block;margin-top:5px;margin-right:10px;"><?php echo $row['name'];?>:</span><?php echo $row['value']==""?"":$row['value'].$row['unit'];?>
+			</li>
+		<?php }?>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.PROJECT_NAME}:</span>{$rs['prjname']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.DEVICE_NAME}:</span>{$rs['gateway_sn']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.DETAIL_ADDR}:</span>{$rs['address']}
+            </li>
+        </ul>
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <a class="mui-icon mui-icon-back mui-pull-left"></a>
+        <h1 class="mui-title">{$Think.lang.VAR_TIPS_DETAIL_INFO}</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script>
+function initpage($, doc){
+    $(doc.body).on('tap', '#webheader .mui-icon-back', function(e){
+        history.go(-1);
+    });
+}
+</script>

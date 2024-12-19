@@ -1,0 +1,230 @@
+<style type="text/css">
+#gmc_container{
+    background-color: #e4e9f0;
+    margin: 0;
+    padding: 0;
+    height: 201px;
+    /*margin-left: 15px;*/
+    border: 1px dashed #D2D6DE;
+}
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title" id="h4_add_edit">%s</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="modal_fm">
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_SN2}:</label>
+            <div class="col-md-8">
+                <input type="hidden" name="sn" value="%s">
+                <input type="text" class="form-control" name="sn-hidden" value="%s" disabled />
+            </div>
+        </div>
+        <!--<div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_SN1}:</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="ud_sn" value="%s" />
+            </div>
+        </div>-->
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.TERM_MODEL}:</label>
+            <div class="col-md-8">
+                <select class="form-control" name="term_model">
+                    <option value=""></option>
+                    <?PHP foreach (C('TERM_MODEL') as $k => $v){
+                        echo sprintf('<option value="%s">%s</option>',$k,$v);
+                    }?>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_TG}:</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="gid" readonly="readonly" style="background: #fff; cursor: pointer" />
+                <div id="tree_tg_content" style="height:300px;">
+                    <input type="text" class="form-control ztree_search" placeholder="{$Think.lang.GROUP_NAME}" />
+                    <button type="button" class="btn btn-xs btn-default btn-my-search"><i class="fa fa-search"></i></button>
+                    <div class="ztree_close" onclick="$('#modal_fm input[name=gid]').click();" title="{$Think.lang.VAR_COLLAPSE}"><i class="fa fa-angle-double-up"></i></div>
+                    <ul id="tree_tg" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_SIM_NUMBER}:</label>
+            <div class="col-md-8"><input type="text" class="form-control" name="sim" value="%s" /></div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_SYSCFG_ALIAS}:</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="alias" value="%s" />
+                <input type="hidden" name="lat" value="0" />
+                <input type="hidden" name="lng" value="0" />
+                <input type="hidden" name="add_gps" value="0" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.GPS_SETUP}:</label>
+            <div class="col-md-8">
+                <div id="gmc_container"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.POS_QUERY}:</label>
+            <div class="col-md-8">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="addr_content" placeholder="{$Think.lang.POS_QUERY_PLACEHOLDER}" />
+                    <span class="input-group-addon" style="cursor: pointer;" id="parse_addr"><i class="fa fa-search"></i></span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success submit_term_edit">{$Think.lang.VAR_UPDATE}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    var myLatLng = {
+        lat: {$Think.config.GPS_DEFAULT_LAT},
+        lng: {$Think.config.GPS_DEFAULT_LNG}
+    };
+    $.gf.setFormGps = function(lng, lat){
+        $('#modal_fm input[name=lng]').val(lng);
+        $('#modal_fm input[name=lat]').val(lat);
+    }
+    window.map_init = function(){
+        $.getScript($.gf.lang == 'zh-cn' ? $.gf.gaode_ui:$.gf.empty_js, function(){
+            map_create('gmc_container', 8, myLatLng.lng, myLatLng.lat);
+            $.gf.marker = map_add_marker(myLatLng.lng, myLatLng.lat, '', $lang.DRAG_GET_LNGLAT, true);
+            map_add_event($.gf.marker, 'dragend', function(e){
+                var ret = map_get_pos_by_event(e);
+                $.gf.setFormGps(ret.lng, ret.lat);
+                $('#modal_fm input[name=add_gps]').val(1);
+            });
+            map_add_event($.gf.map, 'click', function(e) {
+                var ret = map_get_pos_by_event(e);
+                map_set_marker_pos($.gf.marker, ret.lng, ret.lat);
+                ret = $.gf.marker.getPosition();
+                map_set_center(ret.lng, ret.lat);
+                $.gf.setFormGps(ret.lng, ret.lat);
+                $('#modal_fm input[name=add_gps]').val(1);
+            });
+            ajax(tpurl('Term','getLnglatByIp'),{sn:$('#modal_fm input[name=sn]').val()},function(msg){
+                if (msg.status == 0){
+                    if (msg.data.lng == 0 && msg.data.lat == 0){
+                        msg.data.lng = myLatLng.lng;
+                        msg.data.lat = myLatLng.lat;
+                    }
+                    $.gf.setFormGps(msg.data.lng, msg.data.lat);
+                    map_set_marker_pos($.gf.marker, msg.data.lng, msg.data.lat);
+                    map_set_center(msg.data.lng, msg.data.lat);
+                }
+            });
+        });
+    };
+    mapjs_load();
+
+    // 地址解析成坐标
+    $('#parse_addr').on('click', function(){
+        var v = $('#addr_content').val().trim();
+        if (v == '') return;
+        if ($.gf.lang != 'zh-cn') {
+            var settings = {
+              "url": "https://maps.googleapis.com/maps/api/geocode/json?address=" + v + "&key=AIzaSyCmL6jvCbEVVBzxV8zphqk0gyjYiop2puU",
+              "method": "GET",
+              "timeout": 0,
+            };
+            $.ajax(settings).done(function (response) {
+                var coord = response.results[0].geometry.location;
+                map_set_marker_pos($.gf.marker, coord['lng'], coord['lat']);
+                map_set_center(coord['lng'], coord['lat']);
+                map_set_zoom(15);
+                $.gf.setFormGps(coord['lng'], coord['lat']);
+                $('#modal_fm input[name=add_gps]').val(1);
+            });
+        } else {
+            ajax(tpurl('Term', 'geocode'), {address:v, type:0}, function(msg){
+                var coord = msg.data.split(',');
+                map_set_marker_pos($.gf.marker, coord[0], coord[1]);
+                map_set_center(coord[0], coord[1]);
+                map_set_zoom(15);
+                $.gf.setFormGps(coord[0], coord[1]);
+                $('#modal_fm input[name=add_gps]').val(1);
+            });          
+        }
+    });
+    $('#addr_content').on('keydown', function(e){
+        if (e.keyCode == 13) {
+            $('#parse_addr').click();
+            return false;
+        }
+    });
+
+    $('.submit_term_edit').on('click', function(){
+        var p = $.serializeObject('#modal_fm');
+        p.gid = $('#modal_fm input[name=gid]').attr('data-gid');
+        ajax(tpurl('Term','termEdit'), p, function(msg){
+            $.notice(msg);
+            if (msg.status == 0){
+                $("#list2").trigger('reloadGrid');
+                $('#myLgModal').modal('hide');
+            }
+        });
+    });
+
+    $('#modal_fm select[name=term_model]').val('%s');
+
+    $.gf.tree_click = function(node){
+        var o = $('#modal_fm input[name=gid]');
+        o.attr('data-gid', node.id);
+        o.val(node.oldname || node.name);
+        $('#tree_tg_content').hide();
+    };
+
+    var tree_setting = {
+        view: {
+            dblClickExpand: false
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: function(){
+                $.gf.tree_click(arguments[2]);
+            }
+        }
+    };
+    var tree_nodes = %s;
+    $.gf.ztree = $.fn.zTree.init($("#tree_tg"), tree_setting, tree_nodes);
+    var node = $.gf.ztree.getNodeByParam('id', '%s');
+    $.gf.ztree.selectNode(node); // 选择节点
+    $.gf.tree_click(node);
+    $('#modal_fm input[name=gid]').click(function(){
+        var o = $('#tree_tg_content');
+        if (o.is(':hidden')){
+            $('#tree_tg_content').css('width', $('#modal_fm input[name=gid]').parent().width()); //设置ztree宽度
+            o.show();
+        }else{
+            o.fadeOut();
+        }
+    });
+    fuzzySearch('tree_tg','.ztree_search',null,true); //初始化模糊搜索方法
+    $('.btn-my-search').click(function(){
+        var i = $(this).find('i');
+        if (i.hasClass('fa-search')) {
+            $('.ztree_search').fadeIn(500);
+            i.removeClass('fa-search').addClass('fa-close');
+        } else {
+            $('.ztree_search').val('').fadeOut(500);
+            $('.ztree_search').trigger('input');
+            i.removeClass('fa-close').addClass('fa-search');
+        }
+    });
+});
+})(jQuery);
+</script>

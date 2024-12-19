@@ -1,0 +1,372 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Term/ztree_container.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/bootstrap_validator/bv.min.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs" id="tab_device_list">
+          <li class="active"><a href="#tab_1" data-toggle="tab" data-idx="0">{$Think.lang.GENERAL_SETTINGS}</a></li>
+          <li><a href="#tab_2" data-toggle="tab" data-idx="1">{$Think.lang.VAR_ALARM_SEND_RECORD}</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="tab_1">
+            <form class="form-horizontal" role="form" id="fm1">
+              <div class="form-group">
+                <label class="col-lg-2 control-label">{$Think.lang.RECEIVE_EMAIL_ALARM}：</label>
+                <div class="col-lg-10">
+                  <label class="checkbox-inline">
+                    <input type="checkbox" name="alarm_enable_email" id="spid_alarm_enable_email" />&nbsp;
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-lg-2 control-label">{$Think.lang.VAR_DEVICE_EMAIL}：</label>
+                <div class="col-lg-4">
+                  <input type="text" class="form-control" name="alarm_email" id="spid_alarm_email" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-lg-2 control-label">{$Think.lang.RECEIVE_WX_ALARM}：</label>
+                <div class="col-lg-10">
+                  <label class="checkbox-inline">
+                    <input type="checkbox" name="alarm_enable_wx" id="spid_alarm_enable_wx" />&nbsp;
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-lg-2 control-label">{$Think.lang.ALARM_RECV_WECHATS_DESC}：</label>
+                <div class="col-lg-4">
+                  <input type="text" class="form-control" name="alarm_wx" id="spid_alarm_wx" />
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="tab-pane" id="tab_2" style="padding-top: 5px">
+            <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+              <form class="form-inline" role="form" id="search_fm">
+                <div class="input-group" style="float: left; margin-right: 10px">
+                  <div class="input-group-addon" style="background: #f4f4f4">
+                    <i class="fa fa-tasks"></i>
+                  </div>
+                  <select id="select1" name="alarm_type" class="form-control">
+                    <option value="-1" selected="selected">{$Think.lang.RTU_WARN_TYPE}：{$Think.lang.LOG_LEVEL_3}</option>
+                    <?PHP $atd = L('ALARM_TYPE_DEFINE');
+                    foreach ($atd as $key => $v) { ?>
+                    <option value="{$key}">{$v}</option>
+                    <?PHP } ?>
+                  </select>
+                </div>
+                <div class="input-group" style="float: left; margin-right: 10px">
+                  <div class="input-group-addon" style="background: #f4f4f4">
+                    <i class="fa fa-bolt"></i>
+                  </div>
+                  <select id="select2" name="handle_status" class="form-control">
+                    <option value="-1" selected="selected">{$Think.lang.HANDLE_STATUS}：{$Think.lang.LOG_LEVEL_3}</option>
+                    <option value="0">{$Think.lang.UNTREATED}</option>
+                    <option value="1">{$Think.lang.PROCESSED}</option>
+                  </select>
+                </div>
+                <div class="btns">
+                  <button type="button" class="btn btn-default rwcs" data-act="del">
+                    <i class="fa fa-close"></i>&nbsp;{$Think.lang.VAR_DEL}
+                  </button>
+                  <button type="button" class="btn btn-default" data-act="refresh" onclick="javascript:$('#list3').trigger('reloadGrid');">
+                    <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                  </button>
+                </div>
+                <?PHP if ($_SESSION[C('SESSION_NAME')]['id'] == 1) { ?>
+                <div class="input-group">
+                  <input type="text" name="searchString" class="form-control" placeholder="{$Think.lang.ALARM_RECEIVER}" style="width: 130px" />
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-flat btn-search-border"><i class="fa fa-search"></i></button>
+                  </span>
+                </div>
+                <?PHP }?>
+              </form>
+            </div>
+            <table id="list3"></table>
+            <div id="pager3" style="margin-top: 15px !important;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <!-- 设置告警分组 -->
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.EQUIPMENT_ALARM_GROUPING}</h3>
+            </div>
+            <div class="box-body">
+              <form class="form-horizontal" role="form" id="fm2">
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$Think.lang.VAR_TG}：</label>
+                  <div class="col-lg-4">
+                    <input type="text" class="form-control ztree_search" placeholder="{$Think.lang.GROUP_NAME}" style="top: 2px; right: 57px;" />
+                    <button type="button" class="btn btn-xs btn-default btn-my-search" style="top: 2px; right: 34px;"><i class="fa fa-search"></i></button>
+                    <ul id="termGroupTree1" class="ztree" style="border: 1px solid #d2d6de; overflow-y: scroll; max-height: 300px; min-height: 26px;"></ul>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info select_all">{$Think.lang.VAR_SELECT_ALL}</button>
+                <button type="button" class="btn btn-warning unselect_all">{$Think.lang.VAR_UN_SELECT_ALL}</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 设置离线告警配置 -->
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.DEVICE_OFFLINE_ALARM}</h3>
+            </div>
+            <div class="box-body">
+              <form class="form-horizontal" role="form" id="fm2">
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$Think.lang.ALARM_INTERVAL}：</label>
+                  <div class="col-lg-1"></div>
+                  <div class="col-lg-3">
+                    <input type="text" class="form-control" name="alarm_interval_offline" id="spid_alarm_interval_offline" value="60" />
+                  </div>
+                  <label class="col-lg-5 control-label input-notes"><?PHP $vta=L('VAR_TIME_ARR'); echo $vta[2];?></label>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$Think.lang.BY_NUMBER}：</label>
+                  <div class="col-lg-1 text-right">
+                    <label class="checkbox-inline">
+                      <input type="checkbox" name="alarm_term_offline_num" id="spid_alarm_term_offline_num" />&nbsp;
+                    </label>
+                  </div>
+                  <div class="col-lg-3">
+                    <input type="text" class="form-control" name="alarm_term_offline_num_threshold" id="spid_alarm_term_offline_num_threshold" value="1" />
+                  </div>
+                  <label class="col-lg-5 control-label input-notes">{$Think.lang.BY_NUMBER_DESC}</label>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$Think.lang.BY_PERCENT}：</label>
+                  <div class="col-lg-1 text-right">
+                    <label class="checkbox-inline">
+                      <input type="checkbox" name="alarm_term_offline_percent" id="spid_alarm_term_offline_percent" />&nbsp;
+                    </label>
+                  </div>
+                  <div class="col-lg-3">
+                    <input type="text" class="form-control" name="alarm_term_offline_percent_threshold" id="spid_alarm_term_offline_percent_threshold" value="10" />
+                  </div>
+                  <label class="col-lg-5 control-label input-notes">{$Think.lang.BY_PERCENT_DESC}</label>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$Think.lang.BY_OFFLINE_TIME}：</label>
+                  <div class="col-lg-1 text-right">
+                    <label class="checkbox-inline">
+                      <input type="checkbox" name="alarm_term_offline_time" id="spid_alarm_term_offline_time" />&nbsp;
+                    </label>
+                  </div>
+                  <div class="col-lg-3">
+                    <input type="text" class="form-control" name="alarm_term_offline_time_threshold" id="spid_alarm_term_offline_time_threshold" value="30" />
+                  </div>
+                  <label class="col-lg-5 control-label input-notes">{$Think.lang.BY_OFFLINE_TIME_DESC}</label>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- VPN告警配置 -->
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title"><?PHP echo $atd[3];?></h3>
+            </div>
+            <div class="box-body">
+              <form class="form-horizontal" role="form" id="fm3">
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$Think.lang.ALARM_INTERVAL}：</label>
+                  <div class="col-lg-1"></div>
+                  <div class="col-lg-3">
+                    <input type="text" class="form-control" name="alarm_interval_vpn" id="spid_alarm_interval_vpn" value="60" />
+                  </div>
+                  <label class="col-lg-5 control-label input-notes"><?PHP $vta=L('VAR_TIME_ARR'); echo $vta[2];?></label>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$Think.lang.BY_OFFLINE_TIME}：</label>
+                  <div class="col-lg-1 text-right">
+                    <label class="checkbox-inline">
+                      <input type="checkbox" name="alarm_vpn_offline_time" id="spid_alarm_vpn_offline_time" />&nbsp;
+                    </label>
+                  </div>
+                  <div class="col-lg-3">
+                    <input type="text" class="form-control" name="alarm_vpn_offline_time_threshold" id="spid_alarm_vpn_offline_time_threshold" value="5" />
+                  </div>
+                  <label class="col-lg-5 control-label input-notes">{$Think.lang.BY_OFFLINE_TIME_DESC}</label>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- 信号强度告警配置 -->
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.SIGNAL_ALARM}</h3>
+            </div>
+            <div class="box-body">
+              <form class="form-horizontal" role="form" id="fm4">
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$Think.lang.ALARM_INTERVAL}：</label>
+                  <div class="col-lg-1"></div>
+                  <div class="col-lg-3">
+                    <input type="text" class="form-control" name="alarm_interval_signal" id="spid_alarm_interval_signal" value="60" />
+                  </div>
+                  <label class="col-lg-5 control-label input-notes"><?PHP echo $vta[2];?></label>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$Think.lang.BY_VALUE}：</label>
+                  <div class="col-lg-1 text-right">
+                    <label class="checkbox-inline">
+                      <input type="checkbox" name="alarm_term_signal" id="spid_alarm_term_signal" />&nbsp;
+                    </label>
+                  </div>
+                  <div class="col-lg-3">
+                    <input type="text" class="form-control" name="alarm_term_signal_threshold" id="spid_alarm_term_signal_threshold" value="5" />
+                  </div>
+                  <label class="col-lg-5 control-label input-notes">{$Think.lang.SIGNAL_ALARM_DESC}</label>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- 流量告警配置 -->
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.FLUX_ALARM}</h3>
+            </div>
+            <div class="box-body">
+              <form class="form-horizontal" role="form" id="fm5">
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$Think.lang.ALARM_INTERVAL}：</label>
+                  <div class="col-lg-1"></div>
+                  <div class="col-lg-3">
+                    <input type="text" class="form-control" name="alarm_interval_flux" id="spid_alarm_interval_flux" value="1440" />
+                  </div>
+                  <label class="col-lg-5 control-label input-notes"><?PHP echo $vta[2];?></label>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label"><?PHP $aett=L('ALARM_EVENT_TYPE_TEXT'); echo $aett[0];?>：</label>
+                  <div class="col-lg-1 text-right">
+                    <label class="checkbox-inline">
+                      <input type="checkbox" name="alarm_term_flux_month" id="spid_alarm_term_flux_month" />&nbsp;
+                    </label>
+                  </div>
+                  <div class="col-lg-3">
+                    <input type="text" class="form-control" name="alarm_term_flux_month_threshold" id="spid_alarm_term_flux_month_threshold" value="500" />
+                  </div>
+                  <label class="col-lg-5 control-label input-notes">{$Think.lang.MONTH_FLUX_ALARM_DESC}</label>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$aett[1]}：</label>
+                  <div class="col-lg-1 text-right">
+                    <label class="checkbox-inline">
+                      <input type="checkbox" name="alarm_term_flux_day" id="spid_alarm_term_flux_day" />&nbsp;
+                    </label>
+                  </div>
+                  <div class="col-lg-3">
+                    <input type="text" class="form-control" name="alarm_term_flux_day_threshold" id="spid_alarm_term_flux_day_threshold" value="10" />
+                  </div>
+                  <label class="col-lg-5 control-label input-notes">{$Think.lang.DAY_FLUX_ALARM_DESC}</label>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$aett[2]}：</label>
+                  <div class="col-lg-1 text-right">
+                    <label class="checkbox-inline">
+                      <input type="checkbox" name="alarm_term_flux_pool" id="spid_alarm_term_flux_pool" />&nbsp;
+                    </label>
+                  </div>
+                  <div class="col-lg-3">
+                    <input type="text" class="form-control" name="alarm_term_flux_pool_threshold" id="spid_alarm_term_flux_pool_threshold" value="1024" />
+                  </div>
+                  <label class="col-lg-5 control-label input-notes">{$Think.lang.FLUX_POOL_ALARM_DESC}</label>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- 电子围栏告警配置 -->
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.OUT_FENCE_WARNING}</h3>
+            </div>
+            <div class="box-body">
+              <form class="form-horizontal" role="form" id="fm6">
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$Think.lang.ALARM_INTERVAL}：</label>
+                  <div class="col-lg-1"></div>
+                  <div class="col-lg-3">
+                    <input type="text" class="form-control" name="alarm_interval_fence" id="spid_alarm_interval_fence" value="60" />
+                  </div>
+                  <label class="col-lg-5 control-label input-notes"><?PHP echo $vta[2];?></label>
+                </div>
+                <div class="form-group">
+                  <label class="col-lg-2 control-label">{$Think.lang.IS_ENABLE}：</label>
+                  <div class="col-lg-1 text-right">
+                    <label class="checkbox-inline">
+                      <input type="checkbox" name="alarm_fence" id="spid_alarm_fence" />&nbsp;
+                    </label>
+                  </div>
+                  <label class="col-lg-5 control-label input-notes">{$Think.lang.OUT_FENCE_WARNING_DESC}</label>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <button class="btn btn-default btn-sm reload-params"><i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}</button>&nbsp;&nbsp;
+          <button class="btn btn-default btn-sm save-params"><i class="fa fa-pencil"></i>&nbsp;{$Think.lang.VAR_UPDATE}</button>
+        </div>
+      </div>
+    </section>
+  </div>
+<!--模态框 email detail-->
+<div class="modal fade" id="myLgModal3">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_BTN_SURE}</span></button>
+                <h4 class="modal-title">{$Think.lang.ALARM_INFO}</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="Homepage/footer"/>
+<script type="text/javascript" src="../Public/bootstrap_validator/bv.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/bootstrap_validator/lang/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- ztree -->
+<link rel="stylesheet" type="text/css" href="../Public/ztree/css/zTreeStyle/zTreeStyle.css?rand={$Think.const.CACHE_VERSION}">
+<script type="text/javascript" src="../Public/ztree/js/jquery.ztree.all.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/ztree/js/jquery.ztree.exhide.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/ztree/js/fuzzysearch.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- jqgrid -->
+<script type="text/javascript" src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="__ROOT__/Tpl/Syscfg/gjcl.js?rand={$Think.const.CACHE_VERSION}&r=20230418-1"></script>

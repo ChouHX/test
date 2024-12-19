@@ -1,0 +1,87 @@
+<include file="Mobile/mheader" />
+	<link rel="stylesheet" type="text/css" href="../Public/mui/css/mui.picker.min.css"/>
+    <div class="mui-card">
+       <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_CP_START}:</span><button id="starttime" type="button" class="btn timebtn mui-btn"><?PHP echo date('Y-m-d H:i')?></button>
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_CP_END}:</span><button id="endtime" type="button" class="btn timebtn mui-btn"><?PHP echo date('Y-m-d H:i',strtotime('+5 minutes'))?></button>
+            </li>
+			 <li class="mui-table-view-cell">
+				 <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.AUTO_CAP_CAP_LEVEL_TITLE}:</span>
+					<label class="radio-inline"><input type="radio" name="level" value="1" checked>&nbsp;默认&nbsp;</label>
+					<label class="radio-inline"><input type="radio" name="level" value="2">&nbsp;详细&nbsp;</label>
+					<label class="radio-inline"><input type="radio" name="level" value="3">&nbsp;全部&nbsp;</label>
+            </li>
+			<li class="mui-table-view-cell">
+				<div class="mui-button-row">
+					<button class="mui-btn mui-btn-primary save" type="button">{$Think.lang.VAR_BTN_SURE}</button>&nbsp;&nbsp;
+					<button class="mui-btn mui-btn-danger cancel" type="button">{$Think.lang.VAR_BTN_CANCLE}</button>
+				</div>
+			<li>
+		</ul>	
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <a class="mui-icon mui-icon-back mui-pull-left"></a>
+        <h1 class="mui-title">{$Think.lang.VAR_CATCH_PACKAGE}</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script src="../Public/mui/js/mui.picker.min.js"></script>
+<script>
+function initpage($, doc){
+	var btns = $('.timebtn'), endtime = doc.getElementById('endtime');
+    btns.each(function(i, btn) {
+        btn.addEventListener('tap', function() {
+            var e = this, optionsJson = e.getAttribute('data-options') || '{}';
+            var options = JSON.parse(optionsJson), picker = new $.DtPicker(options);
+            picker.show(function(rs){
+				console.log(rs);
+                e.innerText = rs.text;
+                picker.dispose();
+            });
+        });
+    });
+	
+    $(doc.body).on('tap', '#webheader .mui-icon-back', function(e){
+        history.go(-1);
+    });
+
+    $(doc.body).on('tap', '.save', function(){
+        var e = this.parentNode, p = location.href.split('?'),level='';
+		var tmp_st = doc.getElementById('starttime').innerText.split(' '),tmp_et = doc.getElementById('endtime').innerText.split(' ');
+        p = p[1];
+		var bt = tmp_st[0]+' '+tmp_st[1]+':00',et = tmp_et[0]+' '+tmp_et[1]+':00';
+		bt = new Date(bt).getTime()/1000;
+		et = new Date(et).getTime()/1000;
+		p += '&bt='+bt;
+		p += '&et='+et;
+		var cks = doc.getElementsByName('level'),str=[];
+        for (var i=0,len=cks.length; i<len; i++){
+            if(cks[i].checked){
+				level=cks[i].value;
+			}
+        }
+        p += '&level='+level;
+        mui.confirm($lang.OPERATE_CONFIRM, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(){
+            if (arguments[0].index == 0){
+                mui.ajax($lang.curl.replace('Index/replace', 'Task/catchPackage'),{
+                    data: p,
+                    timeout: 5000,
+                    type: 'post',
+                    success:function(msg){
+                        if (typeof msg == 'string'){
+                            msg = JSON.parse(msg);
+                        }
+                        mui.alert(msg.info, $lang.VAR_PROMPT);
+                    }
+                });
+            }
+        });
+    });
+	
+	$(doc.body).on('tap', '.cancel', function(e){
+         history.go(-1);
+    });
+}
+</script>

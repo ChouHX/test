@@ -1,0 +1,299 @@
+<style type="text/css">
+#tbl_alert_rules th, #tbl_alert_rules td{
+    text-align: center;
+}
+#tbl_alert_rules i{
+    cursor: pointer;
+}
+#tbl_alert_rules i.fa-pencil{
+    color: #1890FF;
+}
+#tbl_alert_rules i.fa-close{
+    color: #F00;
+}
+#tbl_alert_rules .bit_op{
+    font-weight: 700;
+    float: left;
+    color: #1890FF;
+}
+#tbl_alert_rules .tr_rule_type_0, #tbl_alert_rules .tr_rule_type_1{
+    display: none;
+}
+#tbl_alert_rules .ib{
+    display: inline-block;
+}
+#tbl_alert_rules .wd60p{
+    width: 60px;
+}
+#tbl_alert_rules .wd85p{
+    width: 85px;
+}
+#tbl_alert_rules .wd120p{
+    width: 120px;
+}
+#modal_fm .rule-mask{
+    position: absolute;
+    left: 15px;
+    top: 0;
+    background: #000;
+    opacity: 0.3;
+    display: none;
+}
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title">{$Think.lang.VAR_EDIT} - {$Think.lang.VAR_ALARM_RULE}</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="modal_fm">
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_NAME}:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <input type="hidden" name="id" value="" />
+                <input type="text" class="form-control" name="name" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.RTU_WARN_TYPE}:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <select class="form-control" name="rule_type">
+                    <option value="0">%s</option>
+                    <option value="1">%s</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.TRIGGERING_CONDITIONS}:<span class="required-field"></span></label>
+            <div class="col-md-8" style="position: relative">
+                <div class="rule-mask"></div>
+                <table id="tbl_alert_rules" class="table table-bordered table-hover table-condensed">
+                    <tr style="background: #F5F5F5">
+                        <th colspan="2" class="text-center">{$Think.lang.VAR_ADD}&nbsp;<i class="fa fa-plus" onclick="$.gf.add_rule()"></i></th>
+                    </tr>
+                    <tr class="tr_rule_type_0">
+                        <td colspan="2">
+                            <select name="bit_op" class="form-control ib wd85p">
+                                <option value="&">And</option>
+                                <option value="|">Or</option>
+                            </select>
+                            <select name="sensor" class="form-control ib wd120p">%s</select>
+                            <select name="op" class="form-control ib wd60p">
+                                <option value=">=">&ge;</option>
+                                <option value="<=">&le;</option>
+                                <option value=">">&gt;</option>
+                                <option value="<">&lt;</option>
+                                <option value="=">=</option>
+                            </select>
+                            <input type="text" class="form-control ib wd60p" name="value" placeholder="{$Think.lang.VAR_THRESHOLD}" />
+                            <button type="button" class="btn btn-default btn-middle save-rule"><i class="fa fa-save"></i></button>
+                        </td>
+                    </tr>
+                    <tr class="tr_rule_type_1">
+                        <td colspan="2">
+                            <div class="input-group" style="display: inline-table; vertical-align: middle; margin-top: -4px">
+                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                <input type="text" class="form-control ib wd85p" name="minutes" placeholder="{$Think.lang.CONTINUED_TIME}">
+                                <span class="input-group-addon">{$Think.lang.VAR_MINUTE}</span>
+                            </div>，&nbsp;
+                            <select name="sensor" class="form-control ib wd120p">%s</select>
+                            <select name="op" class="form-control ib wd60p">
+                                <option value=">=">&ge;</option>
+                                <option value="<=">&le;</option>
+                                <option value=">">&gt;</option>
+                                <option value="<">&lt;</option>
+                                <option value="=">=</option>
+                            </select>
+                            <input type="text" class="form-control ib wd60p" name="value" placeholder="{$Think.lang.VAR_THRESHOLD}" />
+                            <button type="button" class="btn btn-default btn-middle save-rule"><i class="fa fa-save"></i></button>
+                        </td>
+                    </tr>
+              </table>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success submit_rule_edit">{$Think.lang.SAVE_TEMPLATE}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$.gf.add_rule = function(){
+    var t = $('#modal_fm select[name=rule_type]').val(), tr_size = $('#tbl_alert_rules tr').size(), bit_op = $('#modal_fm select[name=bit_op]');
+    if (t == '1' && tr_size > 3){
+        return;
+    }
+    if (t == '0'){
+        //第一行隐藏bit_op
+        tr_size == 3 ? bit_op.hide() : bit_op.show();
+    }
+    $('#tbl_alert_rules .tr_rule_type_'+t).show();
+    $('.rule-mask').css({width:$('#tbl_alert_rules').width(), height:$('#tbl_alert_rules').height()-$('tr.tr_rule_type_0').height()}).show();
+    $.gf.current_rule_act = 'add';
+}
+
+$.gf.edit_rule = function(e){
+    var params = $(e).parent().parent().attr('data-params').split('--');
+    var t = $('#modal_fm select[name=rule_type]').val(), tr_size = $('#tbl_alert_rules tr').size(), bit_op = $('#modal_fm select[name=bit_op]');
+    !params[0] ? bit_op.hide() : bit_op.show();
+    var tr = $('#tbl_alert_rules .tr_rule_type_'+t);
+    tr.show();
+    tr.find('select[name=bit_op]').val(params[0]);
+    tr.find('select[name=sensor]').val(params[1]);
+    tr.find('select[name=op]').val(params[2]);
+    tr.find('input[name=value]').val(params[3]);
+    tr.find('input[name=minutes]').val(params[4]);
+    $('.rule-mask').css({width:$('#tbl_alert_rules').width(), height:$('#tbl_alert_rules').height()-$('tr.tr_rule_type_0').height()}).show();
+    $.gf.current_rule_act = 'edit';
+    $.gf.current_rule_edit_index = $(e).parent().parent().index();
+}
+
+$.gf.delete_rule = function(e){
+    $(e).parent().parent().detach();
+    var tr = $('#tbl_alert_rules tr.condition:eq(0)');
+    if (tr.size() > 0){
+        var params = tr.attr('data-params').split('--');
+        //移除首行位操作符
+        if (params[0]){
+            params[0] = '';
+            tr.attr('data-params', params.join('--'));
+            tr.find('span.bit_op').detach();
+        }
+    }
+}
+
+//Get rule tr
+$.gf.get_rule_tr = function(bit_op, sid, sname, sunit, op, v, minutes){
+    var params = [bit_op, sid, op, v, minutes].join('--');
+    var str = '<tr class="condition" data-params="'+params+'">\
+                    <td class="wd90">'+(bit_op ? ('<span class="bit_op">'+trans_bit_op(bit_op)+'</span>') : '') + (minutes ? $lang.CONTINUED_SOME_MINUTES.replace('{_minutes_}',minutes) : '') + sname + ' ' + op + ' ' + v + ' (' + sunit + ')</td>\
+                    <td class="wd10">\
+                        <i class="fa fa-pencil" onclick="$.gf.edit_rule(this)"></i>&nbsp;&nbsp;<i class="fa fa-close" onclick="$.gf.delete_rule(this)"></i>\
+                    </td>\
+                </tr>';
+    return str;
+}
+
+$(document).ready(function(){
+    //赋初始值
+    var id = "{$_REQUEST['id']}";
+    $('#modal_fm input[name=id]').val(id);
+    var rule_list = localStorage.getItem('rtugj_rule_list');
+    if (!rule_list){
+        alert('Local storage was accidentally cleared, please refresh the page and try again!');
+        return;
+    }
+    rule_list = JSON.parse(rule_list);
+    var rule = rule_list[id];
+    if (!rule){
+        alert('The alarm rule corresponding to this id may have been deleted. Please refresh the page and try again!');
+        return;
+    }
+    $('#modal_fm input[name=name]').val(rule.name);
+    $('#modal_fm select[name=rule_type]').val(rule.rule_type);
+    for (var i=0,row=null,str=''; i<rule.rule_detail.length; i++){
+        row = rule.rule_detail[i];
+        str = $.gf.get_rule_tr(row.bit_op, row.slave_id_addr, row.name, row.unit, row.op, row.value, row.duration);
+        $('#tbl_alert_rules .tr_rule_type_0').before(str);
+    }
+
+    $('.submit_rule_edit').on('click', function(){
+        var obj = $("#modal_fm").data('bootstrapValidator');
+        obj.validate();
+        if (!obj.isValid()){
+            return;
+        }
+        if ($('#tbl_alert_rules tr.condition').size() == 0){
+            $.notice(1, $lang.TOOLTIP_SET_TRIGGERING_CONDITIONS);
+            return;
+        }
+        var params = [];
+        $('#tbl_alert_rules tr.condition').each(function(){
+            params.push($(this).attr('data-params'));
+        });
+        ajax(tpurl('Rtu','rtuRuleOp'), {
+            id: $("#modal_fm input[name=id]").val(),
+            act: 'edit',
+            name: $("#modal_fm input[name=name]").val(),
+            rule_type: $("#modal_fm select[name=rule_type]").val(),
+            params: params.join(';'),
+
+        }, function(msg){
+            $.notice(msg);
+            if (msg.status == 0){
+                $("#list2").trigger('reloadGrid');
+                $('#myLgModal').modal('hide');
+            }
+        });
+    });
+
+    //Change rule type
+    $('#modal_fm select[name=rule_type]').on('change', function(){
+        $('#tbl_alert_rules tr[class^=tr_rule_type_]').hide();
+        $('#tbl_alert_rules tr:gt(0)').each(function(i, tr){
+            if (!$(tr).hasClass('tr_rule_type_0') && !$(tr).hasClass('tr_rule_type_1')){
+                $(tr).detach();
+            }
+        });
+        $('.rule-mask').hide();
+    });
+
+    //Save rule
+    $('#tbl_alert_rules button.save-rule').on('click', function(){
+        var td = $(this).parent(), v = td.find('input[name=value]').val().trim();
+        if (v == '' || isNaN(v)){
+            $.notice(1, $lang.ENTER_VALID_NUMBER);
+            return;
+        }
+        var t = $('#modal_fm select[name=rule_type]').val(), tr_size = $('#tbl_alert_rules tr').size(), bit_op = '', minutes = '';
+        if (t == '1'){
+            minutes = td.find('input[name=minutes]').val().trim();
+            if (minutes == '' || isNaN(minutes) || minutes <= 0){
+                $.notice(1, $lang.ENTER_VALID_NUMBER);
+                return;
+            }
+        }else if (tr_size > 3){
+            bit_op = td.find('select[name=bit_op]').val();
+        }
+        var sid = td.find('select[name=sensor]').val(),
+            sname = td.find('select[name=sensor] option:selected').text(),
+            sunit = td.find('select[name=sensor] option:selected').attr('data-unit'),
+            op = td.find('select[name=op]').val(),
+            str = $.gf.get_rule_tr(bit_op, sid, sname, sunit, op, v, minutes);
+        if ($.gf.current_rule_act == 'add'){
+            $('#tbl_alert_rules .tr_rule_type_0').before(str);
+        }else{
+            $('#tbl_alert_rules tr:eq('+$.gf.current_rule_edit_index+')').replaceWith(str);
+        }
+        td.find('input[name=minutes]').val('');
+        td.find('input[name=value]').val('');
+        td.parent().hide();
+        $('.rule-mask').hide();
+    });
+
+    $('#modal_fm').bootstrapValidator({
+       feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            },
+            rule_type: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            }
+        }
+    });
+});
+})(jQuery);
+</script>

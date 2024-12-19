@@ -1,0 +1,217 @@
+.card-container{
+  width: 100%;
+  display: inline-block;
+  margin-top: 5px;
+  min-height:150px;
+  padding: 0;
+}
+.card-container .card{
+  margin-bottom: 1em;
+  position: relative;
+  transition: all 500ms ease;
+  list-style: none;
+}
+.card .thumbnail{
+  /*min-height: 200px;*/
+  min-height: 190px;
+  overflow: hidden;
+  padding: 1em 128px 1em 1em;
+}
+.card-container .thumbnail:hover{
+  background: #B4DDF5;
+}
+.card h3 {
+    font-size: 1.2em;
+    line-height: 110%;
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+.card p, .card dd {
+    color: #51626F;
+}
+.card aside {
+    font-size: 12px;
+    width: 90%;
+    position: absolute;
+    left: 2.5em;
+    bottom: 2.5em;
+}
+.card aside dl {
+    margin-bottom: 0;
+}
+.card dt {
+    color: #125687;
+    float: left;
+    padding-right: 1em;
+}
+.card p, .card dd {
+    color: #51626F;
+}
+.card .map-container {
+    position: absolute;
+    top: 1.5em;
+    right: 2.5em;
+}
+.card .map {
+    width: 100px;
+    height: 100px;
+    float: left;
+    color: #D4D8D9;
+    display: block;
+    background: none repeat scroll 0 0 #F2F4F5;
+    border: 1px solid #DEE0E0;
+    border-radius: 0.38462em 0.38462em 0.38462em 0.38462em;
+    position: relative;
+}
+
+.card .has-warning{
+  color: red;
+  /*position: absolute;
+  display: inline-block;
+  right: 20px;
+  bottom: 30px;*/
+}
+
+.p-data-num{
+  margin-bottom: 2.1em;
+}
+
+/*自定义传感量类型min-max，红色显示*/
+.sensor-custom-color{
+  color: red;
+}
+
+/*分页样式*/
+#list1_paging{
+  position: relative;
+  text-align: left;
+  background: #fff;
+  border: 1px solid #cfcfcf;
+  -webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+#list1_paging .dropdown{
+  display: inline-block;
+}
+.pager>i, .pager>a {
+    color: #a39e9e;
+    display: inline-block;
+    position: relative;
+    padding: 5px;
+    min-width: 25px;
+    text-align: center;
+    margin-left: -5px;
+}
+.pager_btn_enable {
+    color: black !important;
+    cursor: pointer;
+}
+
+/***********wgjd.html***********/
+.loras{
+  list-style: none;
+  padding-left: 10px;
+}
+.loras .well{
+  background-color: #fff;
+}
+.loras .row-fluid{
+  overflow: hidden;
+}
+.loras .current .title{
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+  color: #08c;
+}
+.loras .current .time{
+  color: #999;
+  margin: 0 0 10px;
+}
+.loras .sensors{
+  list-style: none;
+}
+.loras .sensors li{
+  float: left;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+.loras .sensors li.no-data{
+  background-color: #f1eded;
+}
+.loras .sensor a{
+  display: block;
+  width: 130px;
+  height: 170px;
+  /*background-color: pink;*/
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 9px 4px;
+}
+.loras .sensor a:hover{
+  border-color: #08c;
+  /*background: #B4DDF5;*/
+}
+.loras li.no-data a{
+  cursor: text;
+}
+.loras .sensor h4{
+  font-size: 14px;
+  font-weight: 700;
+  /*height: 20px;*/
+  overflow: hidden;
+  margin-top: 0;
+  margin-left: 0.5em;
+  color: #08c;
+}
+.loras .sensor dl{
+  margin-bottom: 0;
+  margin-left: 0.5em;
+}
+.loras .sensor dt{
+  text-align: left;
+  float: none;
+  width: auto;
+  font-size: 12px;
+  line-height: 1.5em;
+  margin-right: 1em;
+  color: #51626F;
+  clear: left;
+}
+.loras .sensor dd{
+  font-size: 12px;
+  line-height: 1.5em;
+  color: #3a87ad;
+  /*margin-left: 10px;*/
+  margin-bottom: 5px;
+}
+.loras .has-warning{
+  background: #f9bcbc;
+}
+
+/***********wgjd.html 地图样式***********/
+.project-info dt {
+  text-align: right;
+  width: 128px;
+  margin-right: 1em;
+  color: #51626F;
+  clear: left;
+  float: left;
+  line-height: 30px;
+  font-weight: 700;
+}
+.project-info dd {
+  color: #8E959C;
+  line-height: 30px;
+  margin-left: 10px;
+}
+.project-detail h2{
+  margin: 0;
+}
+.project-detail header{
+  margin: 0px 0 20px 0;
+}
+#map_container{
+  border-radius: 5px;
+}

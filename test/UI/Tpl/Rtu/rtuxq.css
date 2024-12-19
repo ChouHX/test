@@ -1,0 +1,39 @@
+/*RTU详情页面样式*/
+
+.sensor-data{
+  height: 150px;
+  margin-bottom: 30px;
+  border: 1px dashed #dad3d3;
+}
+.sensor-data .current{
+  width: 15%;
+  height: 100%;
+  float: left;
+  background-color: #f5f5f5;
+  /*border-right: 1px solid #fff;*/
+}
+.sensor-data .history, .sensor-data .history-list{
+  width: 83%;
+  height: 100%;
+  float: left;
+  /*background-color: #f5f5f5;*/
+  padding: 3px 0 3px 2px;
+}
+.sensor-data p{
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  margin-top: 15px;
+}
+.sensor-data .current-title{
+  font-weight: 700;
+  color: #666;
+  font-size: 15px;
+}
+.sensor-data .current-value{
+    color: #00c0ef;
+    font-size: 30px;
+}
+.sensor-data .current-report-time{
+  color: #666;
+}

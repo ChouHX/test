@@ -1,0 +1,123 @@
+/*地图页面样式*/
+
+html,body {
+  height: 100%;
+}
+#gmc_container {
+  width: 100%;
+  /*min-height: 587px;*/
+  border-top: 1px dotted #d8d7da;
+}
+
+/*搜索框样式*/
+#search_container{
+  position: absolute;
+  width: 200px;
+  height: 30px;
+  top: 60px;
+  left: 50%;
+  margin-left: -100px;
+  z-index: 999;
+}
+#search_container input{
+  margin: 0px auto;
+  padding: 0;
+  padding: 0 27px 0 5px;
+  border: none;
+  width: 200px;
+  height: 30px;
+  display: block;
+  background: rgba(0,0,0,.2);
+  outline: none;
+  color: #fff;
+}
+#search_container span{
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  top: 50%;
+  margin-top: -7px;
+  right: 7px;
+  color: gray;
+  cursor: pointer;
+}
+#search_container span:hover{
+  color: #fff;
+}
+
+/*添加标注点提示框*/
+#tooltip_container{
+  position: absolute;
+  width: 100%;
+  line-height: 50px;
+  text-align: center;
+  left: 0;
+  bottom: 0;
+  z-index: 999;
+  background: rgba(0,0,0,.5);
+  color: #fff;
+  display: none;
+}
+#tooltip_container button{
+  margin-left: 10px;
+}
+
+/*轨迹回放提示框*/
+#replay_container{
+  position: absolute;
+  width: 100%;
+  height: 57px;
+  text-align: center;
+  left: 0;
+  bottom: 0;
+  z-index: 999;
+  background: rgba(0,0,0,.5);
+  color: #fff;
+  display: none;
+}
+#replay_container .progress-xs{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+#replay_container .time-range{
+  display: inline-block;
+  line-height: 34px;
+  vertical-align: middle;
+  margin-bottom: 25px;
+  padding: 0;
+}
+#replay_container .date{
+  width: 150px;
+  margin: 8px;
+  display: inline-table;
+}
+#replay_container .timepicker{
+  width: 180px;
+  margin: 15px 8px 8px 0;
+  display: inline-table;
+}
+#replay_container .dropdown-menu{
+  top: initial;
+  bottom: 100%;
+  margin: 0 0 2px;
+}
+#replay_container .dropdown-menu::before{
+  display: none;
+}
+#replay_container .dropdown-menu::after{
+  display: none;
+}
+#replay_container .slider{
+  display: inline-block;
+  margin-bottom: 20px;
+}
+#replay_container .slider-horizontal{
+  width: 150px;
+  margin: 0 10px 20px;
+}
+#replay_container button{
+  margin-left: 10px;
+  margin-bottom: 20px;
+}

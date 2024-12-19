@@ -1,0 +1,234 @@
+/*模态对话框-边框样式*/
+.modal .modal-dialog {
+  border: 8px solid #666 !important;
+  border-color: rgba(0,0,0,.25) !important;
+}
+.modal-header:hover{
+  cursor:move;
+}
+
+/*modal label样式*/
+#modal_fm label{
+  text-align: right;
+  padding-top: 6px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/*modal弹出框底部按钮居中*/
+.modal-footer{
+  text-align: center !important;
+}
+
+/*box header样式*/
+.box-header-bg{
+  background: #EFF3F4;
+}
+.box-border{
+  border: 1px solid #CBD6D9;
+}
+
+/*h1--logo*/
+#h1-logo{
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+}
+#h1-logo .logo{
+  text-align: left;
+  padding: 0 0 0 15px;
+}
+#h1-logo .logo i{
+  margin-right: 10px;
+}
+#h1-logo .logo b{
+  font-size: 14px;
+}
+#h1-logo .logo-mini{
+  margin: 0;
+}
+
+/*必填字段，红色星号显示*/
+span.required-field{
+  color: red;
+}
+span.required-field:after{
+  content: ' *';
+}
+
+/*sn链接样式，点击进入详情*/
+.td_link {
+  color: #4caf50;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.td_link-gray {
+  color: gray;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/*远程通道*/
+.td_link_vc, .td_link_vpn_num{
+  color: #4caf50;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/*toolbar 按钮菜单栏样式*/
+.btn-toolbar .btns {
+  float: left;
+  margin-right: 10px;
+}
+.btn-toolbar .btns .btn-group, .btn-toolbar .btns button.rwcs{
+  margin-right: 10px;
+}
+@media (max-width: 1280px){
+  .btn-toolbar .btns .btn-group{
+    margin-top: 10px;
+  }
+}
+.btn-toolbar .btns button a{
+  text-decoration: none;
+  color: #000;
+}
+
+/*Tabs 标签页样式*/
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+  border-top-color: #0dc4ef;
+}
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover{
+  background-color: #0dc4ef;
+}
+.nav-tabs-custom>.nav-tabs>li.active{
+  border-top-color: #0dc4ef;
+}
+.nav-tabs-custom>.nav-tabs>li.active>a, .nav-tabs-custom>.nav-tabs>li.active:hover>a{
+  color: #0dc4ef;
+}
+
+/*标签页内容样式*/
+.tab-content .tab-pane{
+  padding-top: 10px;
+}
+.tab-content .tab-pane label{
+  font-weight: 400;
+}
+.tab-content .tab-pane .fw700{
+  font-weight: 700;
+}
+
+/*修改设备参数页，checkbox样式*/
+.ck-top-0{
+  top: 0;
+}
+
+/*ICON鼠标手型样式*/
+.icon_link {
+  cursor: pointer;
+}
+
+/*Form表单，备注的样式*/
+.form-horizontal label.input-notes, .form-horizontal p.form-control-static{
+  text-align: left;
+  color: gray;
+  font-weight: 400;
+}
+
+/*列配置ul，li样式*/
+#modal_fm_grid_columns ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+#modal_fm_grid_columns li.li_column{
+  float: left;
+  /*margin-right: 20px;*/
+  width: 25%;
+  margin-bottom: 15px;
+}
+#modal_fm_grid_columns li input{
+  vertical-align: top;
+  margin-right: 3px;
+}
+#modal_fm_grid_columns li span{
+  cursor: pointer;
+}
+
+/*my-loading 加载层样式*/
+.my-loading{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,.6) url(../../Public/images/loading.gif) no-repeat center;
+  display: none;
+}
+
+/*表格参数样式*/
+.tbl-params{
+  width: 95%;
+  margin: 5px auto 15px;
+}
+.tbl-params th{
+  text-align: center;
+}
+
+/*任务状态颜色样式*/
+span.warn0 {background:#7bf57b;}/*成功*/
+span.warn1 {background:#f7a7a7;}/*失败*/
+span.gray {background:#b9b3b3;}/*过期*/
+
+/*设备详情页，下载进度条样式*/
+.progress span.progress-val{
+  display: inline-block;
+  width: 50px;
+  height: 20px;
+  line-height: 20px;
+  position: absolute;
+  right: 50%;
+  margin-right: -25px;
+  color: #000;
+  font-weight: 700;
+}
+
+/*高德地图logo隐藏*/
+/*.amap-logo{
+  display: none !important;
+}*/
+.amap-copyright{
+  display: none !important;
+}
+
+/*位操作符bit_op样式*/
+span.bit_op{
+  font-weight:700;
+  float:left;
+  color:#1890FF;
+}
+
+/*fieldset, legend样式*/
+.fieldset-custom{
+  display: block;
+  padding: 10px 10px;
+  margin: 0 2px 15px;
+  border: 1px solid silver;
+  border-radius: 5px;
+}
+.legend-custom{
+  border: 0;
+  width: auto;
+  margin-left: 15px;
+  font-size: 14px;
+  color: #0dc4ef;
+}
+
+/*搜索框样式*/
+.btn-search-border{
+  border: 1px solid #d2d6de;
+}

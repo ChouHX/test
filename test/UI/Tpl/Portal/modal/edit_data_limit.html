@@ -1,0 +1,46 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title">{$Think.lang.ENABLE_SINGLE_DEVICE_DATA_LIMIT}</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="modal_fm">
+        <div class="form-group">
+            <label class="col-md-3">{$Think.lang.DEVICE_DAILY_FLUX_LIMIT}:</label>
+            <div class="col-md-5">
+                <input type="hidden" name="mac_addr" value="%s" />
+                <input type="text" class="form-control" name="day_flux_limit" value="%s" />
+            </div>
+            <label class="col-lg-4 control-label input-notes" style="text-align: left; padding-top: 0">{$Think.lang.DEVICE_DATA_LIMIT_UNIT_DESC}</label>
+        </div>
+        <div class="form-group" style="display: none;">
+            <label class="col-md-3">{$Think.lang.DEVICE_MONTHLY_FLUX_LIMIT}:</label>
+            <div class="col-md-5"><input type="text" class="form-control" name="month_flux_limit" value="%s" /></div>
+            <label class="col-lg-4 control-label input-notes" style="text-align: left; padding-top: 0">{$Think.lang.DEVICE_DATA_LIMIT_UNIT_DESC}</label>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success submit_data_limit_edit">{$Think.lang.VAR_UPDATE}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    $('.submit_data_limit_edit').on('click', function(){
+        var p = $.serializeObject('#modal_fm');
+        if (isNaN(p.day_flux_limit) || isNaN(p.month_flux_limit)) {
+            $.notice(1, $lang.ENTER_VALID_NUMBER);
+            return;
+        }
+        ajax(tpurl('Portal', 'editDataLimit'), p, function(msg){
+            $.notice(msg);
+            if (msg.status == 0){
+                $('#list1').trigger('reloadGrid');
+                $('#list2').trigger('reloadGrid');
+                $('#myLgModal').modal('hide');
+            }
+        });
+    });
+});
+})(jQuery);
+</script>

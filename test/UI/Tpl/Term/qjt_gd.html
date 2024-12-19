@@ -1,0 +1,54 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Term/qjt.css?rand={$Think.const.CACHE_VERSION}">
+<!-- slider，用来改变播放速度 -->
+<link rel="stylesheet" type="text/css" href="../Public/bower_components/bootstrap-slider/slider.css?rand={$Think.const.CACHE_VERSION}">
+    <div class="content-wrapper" style="position: relative;">
+        <div id="search_container" style="display: none;">
+          <input type="text" name="search" placeholder="{$Think.lang.VAR_QUERY}：{$Think.lang.VAR_SN2}" style="border-radius:3px" />
+          <span class="fa fa-search"></span>
+        </div>
+        <div id="tooltip_container">
+          <span>{$Think.lang.SET_GPS_TOOLTIP}</span>
+          <button class="btn btn-default btn-xs btn-save-gps"><i class="fa fa-save"></i>&nbsp;{$Think.lang.SAVE_TEMPLATE}</button>
+          <button class="btn btn-default btn-xs btn-close"><i class="fa fa-close"></i>&nbsp;{$Think.lang.VAR_CLOSE}</button>
+        </div>
+        <div id="replay_container">
+          <div class="progress progress-xs">
+            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+          </div>
+          <div class="time-range">{$Think.lang.VAR_TIME_RANGE}：</div>
+          <div class="input-group date">
+            <input type="text" class="form-control" value="<?PHP echo date('Y-m-d')?>"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          </div>
+          <div class="input-group bootstrap-timepicker timepicker">
+            <input type="text" class="form-control" id="time1">
+            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+          </div>
+          <div class="input-group bootstrap-timepicker timepicker">
+            <input type="text" class="form-control" id="time2">
+            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+          </div>
+          <input type="text" class="slider" data-slider-min="100" data-slider-max="1000"
+              data-slider-step="100" data-slider-value="500" data-slider-orientation="horizontal"
+               data-slider-selection="before" data-slider-tooltip="show" data-slider-id="blue">
+          <button class="btn btn-default btn-xs btn-replay"><i class="fa fa-play-circle"></i>&nbsp;{$Think.lang.VAR_TRACK_PLAY}</button>
+          <button class="btn btn-default btn-xs btn-close"><i class="fa fa-close"></i>&nbsp;{$Think.lang.VAR_CLOSE}</button>
+        </div>
+        <section class="content padding-top-0" id="gmc_container" style="padding:0;">
+          <div id="container" class="map" tabindex="0" style="width: 100%; height: 100%;">
+            <img src="../Public/images/map_bg.jpg?rand={$Think.const.CACHE_VERSION}" />
+          </div>
+        </section>
+        <div class="overlay" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: rgba(255,255,255,0.6); z-index: 999;">
+          <!-- <i class="fa fa-refresh fa-spin" style="position: absolute; top: 50%; left: 50%; margin-left: -15px; margin-top: -15px; color: #000; font-size: 30px;"></i> -->
+          <!-- <img src="../Public/images/loading.gif"  style="position: absolute; top: 50%; left: 50%; margin-left: -50px; margin-top: -10px;" /> -->
+          <img src="../Public/images/loading2.gif" style="position: absolute; top: 50%; left: 50%; margin-left: -16px; margin-top: -16px;" />
+        </div>
+    </div>
+<include file="Homepage/footer"/>
+<!-- gaode -->
+<script src="https://webapi.amap.com/maps?v=2.0&key=90607d16ce8cb75c99ad2e025adf31f2&plugin=AMap.MarkerCluster"></script>
+<!-- <script type="text/javascript" src="https://www.weikuangku.top:5443/gps_data.js?rand={$Think.const.CACHE_VERSION}"></script> -->
+<script type="text/javascript" src="http://phpon.top/m2m3.0/gps_data.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="__ROOT__/Tpl/Term/qjt_gd.js?rand={$Think.const.CACHE_VERSION}"></script>

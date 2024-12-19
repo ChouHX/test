@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title><?PHP echo L('VAR_SYSTEM_TITLE') ?></title>
+  <link rel="icon" href="__ROOT__/favicon.ico" type="image/x-icon">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="../Public/bower_components/bootstrap/css/bootstrap.min.css?rand={$Think.const.CACHE_VERSION}" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../Public/bower_components/font-awesome/css/font-awesome.min.css?rand={$Think.const.CACHE_VERSION}" />
+
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="../Public/bower_components/Ionicons/css/ionicons.min.css?rand={$Think.const.CACHE_VERSION}" />
+
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../Public/css/AdminLTE.min.css?rand={$Think.const.CACHE_VERSION}" />
+
+  <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
+  <link rel="stylesheet" href="../Public/css/_all-skins.css?rand={$Think.const.CACHE_VERSION}" />
+
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <link rel="stylesheet" type="text/css" href="../Public/bootstrap_validator/bv.min.css?rand={$Think.const.CACHE_VERSION}">
+  <link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+  <link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Rtu/dashboardEdit.css?rand={$Think.const.CACHE_VERSION}" />
+
+  <script type="text/javascript" src="__ROOT__/Runtime/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+</head>
+
+
+<body>
+<section class="header">
+    <a href="{:U('Rtu/dashboardManage')}" class="back">&nbsp;&lt;&nbsp;&nbsp;{$Think.lang.VAR_BTN_BACK}</a>
+    <div class="tab">{$Think.lang.VAR_EDIT}</div>
+</section>
+<section class="menu">
+    <!--
+    <div class="item item-disabled">
+        <i class="fa fa-arrow-circle-up index_top"></i>
+        <span class="title">{$Think.lang.SET_TOP}</span>
+    </div>
+    <div class="item item-disabled">
+        <i class="fa fa-arrow-circle-down index_bottom"></i>
+        <span class="title">{$Think.lang.SET_BOTTOM}</span>
+    </div>
+    <div class="item item-disabled">
+        <i class="fa fa-chevron-up index_up"></i>
+        <span class="title">{$Think.lang.MOVE_UP}</span>
+    </div>
+    <div class="item item-disabled">
+        <i class="fa fa-chevron-down index_down"></i>
+        <span class="title">{$Think.lang.MOVE_DOWN}</span>
+    </div>
+    <div class="split item-disabled"></div>
+    -->
+    <div class="item item-disabled" onclick="$.gf.align(this,'top')">
+        <i class="glyphicon glyphicon-object-align-top align_top"></i>
+        <span class="title">{$Think.lang.ALIGN_TOP}</span>
+    </div>
+    <div class="item item-disabled" onclick="$.gf.align(this,'bottom')">
+        <i class="glyphicon glyphicon-object-align-bottom align_bottom"></i>
+        <span class="title">{$Think.lang.ALIGN_BOTTOM}</span>
+    </div>
+    <div class="item item-disabled" onclick="$.gf.align(this,'left')">
+        <i class="glyphicon glyphicon-object-align-left align_left"></i>
+        <span class="title">{$Think.lang.ALIGN_LEFT}</span>
+    </div>
+    <div class="item item-disabled" onclick="$.gf.align(this,'right')">
+        <i class="glyphicon glyphicon-object-align-right align_right"></i>
+        <span class="title">{$Think.lang.ALIGN_RIGHT}</span>
+    </div>
+    <div class="split item-disabled"></div>
+    <div class="item item-disabled">
+        <i class="fa fa-copy i_copy"></i>
+        <span class="title">{$Think.lang.VAR_COPY}</span>
+    </div>
+    <div class="item item-disabled">
+        <i class="fa fa-trash i_delete"></i>
+        <span class="title">{$Think.lang.VAR_DEL}</span>
+    </div>
+    <div class="split"></div>
+    <div class="item">
+        <i class="fa fa-outdent"></i>
+        <span class="title">{$Think.lang.LEFT_SIDE}</span>
+    </div>
+    <div class="item">
+        <i class="fa fa-indent"></i>
+        <span class="title">{$Think.lang.RIGHT_SIDE}</span>
+    </div>
+    <div class="item">
+        <i class="fa fa-cloud"></i>
+        <span class="title">{$Think.lang.VAR_RESOURCE}</span>
+    </div>
+    <div class="split"></div>
+    <!--
+    <div class="item">
+        <i class="fa fa-tv"></i>
+        <span class="title">{$Think.lang.VAR_AD_PREVIEW}</span>
+    </div>
+    -->
+    <div class="item">
+        <i class="fa fa-save"></i>
+        <span class="title">{$Think.lang.SAVE_TEMPLATE}</span>
+    </div>
+    <div class="split"></div>
+</section>
+<section class="main">
+    <div class="left">
+      <section class="left-tab">
+        <p class="left-tab-item left-tab-item-selected" data-id="text"><i class="fa fa-font" title="{$Think.lang.VAR_TEXT}"></i></p>
+        <p class="left-tab-item" data-id="dashboard"><i class="fa fa-dashboard" title="{$Think.lang.VAR_DASHBOARD}"></i></p>
+        <p class="left-tab-item" data-id="chart"><i class="fa fa-bar-chart" title="{$Think.lang.VAR_CHART}"></i></p>
+        <p class="left-tab-item" data-id="switch"><i class="fa fa-toggle-on" title="{$Think.lang.VAR_SWITCH}"></i></p>
+      </section>
+      <section class="left-content">
+        <div class="left-content-list" id="left-content-list-text">
+          <div class="left-content-list-container">
+            <div class="left-content-list-item" draggable="true" data-type="static_text" data-enable-bd="0">
+              <div class="thumbnail" style="background-image: url(../Public/images/canvas_editor/static_text.png)"></div>
+              <p class="name">{$Think.lang.TITLE_TEXT}</p>
+            </div>
+            <div class="left-content-list-item" draggable="true" data-type="number_text" data-enable-bd="1">
+              <div class="thumbnail" style="background-image: url(../Public/images/canvas_editor/number_text.png)"></div>
+              <p class="name">{$Think.lang.DATA_TEXT}</p>
+            </div>
+            <div class="left-content-list-item" draggable="true" data-type="ml_text" data-enable-bd="0">
+              <div class="thumbnail" style="background-image: url(../Public/images/canvas_editor/ml_text.png)"></div>
+              <p class="name">{$Think.lang.MULTI_LINE_TEXT}</p>
+            </div>
+          </div>
+        </div>
+        <div class="left-content-list" id="left-content-list-dashboard" style="display: none">
+          <div class="left-content-list-container">
+            <div class="left-content-list-item" draggable="true" data-type="gauge1" data-enable-bd="1">
+              <div class="thumbnail" style="background-image: url(../Public/images/canvas_editor/gauge1.png)"></div>
+              <p class="name">{$Think.lang.VAR_DASHBOARD} 1</p>
+            </div>
+            <div class="left-content-list-item" draggable="true" data-type="gauge2" data-enable-bd="1">
+              <div class="thumbnail" style="background-image: url(../Public/images/canvas_editor/gauge2.png)"></div>
+              <p class="name">{$Think.lang.VAR_DASHBOARD} 2</p>
+            </div>
+          </div>
+        </div>
+        <div class="left-content-list" id="left-content-list-chart" style="display: none">
+          <div class="left-content-list-container">
+            <div class="left-content-list-item" draggable="true" data-type="line1" data-enable-bd="1">
+              <div class="thumbnail" style="background-image: url(../Public/images/canvas_editor/line1.png)"></div>
+              <p class="name">Line</p>
+            </div>
+            <div class="left-content-list-item" draggable="true" data-type="line2" data-enable-bd="1">
+              <div class="thumbnail" style="background-image: url(../Public/images/canvas_editor/line2.png)"></div>
+              <p class="name">Area line</p>
+            </div>
+            <div class="left-content-list-item" draggable="true" data-type="column" data-enable-bd="1">
+              <div class="thumbnail" style="background-image: url(../Public/images/canvas_editor/bar.png)"></div>
+              <p class="name">{$Think.lang.HISTOGRAM}</p>
+            </div>
+            <!--<div class="left-content-list-item" draggable="true" data-type="pie" data-enable-bd="1">
+              <div class="thumbnail" style="background-image: url(../Public/images/canvas_editor/pie.png)"></div>
+              <p class="name">{$Think.lang.PIE_CHART}</p>
+            </div>-->
+          </div>
+        </div>
+        <div class="left-content-list" id="left-content-list-switch" style="display: none">
+          <div class="left-content-list-container">
+            <div class="left-content-list-item" draggable="true" data-type="button" data-enable-bd="1">
+              <div class="thumbnail" style="background-image: url(../Public/images/canvas_editor/switch0.png)"></div>
+              <p class="name">{$Think.lang.VAR_SWITCH}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="middle">
+        <canvas id="canvas" width="1366px" height="768px"></canvas>
+    </div>
+    <div class="right">
+      <div class="right-bars">
+        <div class="right-bars-tabs">
+          <div class="bar-tab tab-selected">{$Think.lang.STYLE_SETTING}</div>
+          <div class="bar-tab">{$Think.lang.DATA_BINDING}</div>
+        </div>
+        <div class="right-bar-wrap full-container">
+          <div class="style-bar full-container">
+            <div class="tablist">
+              <div class="list-item" id="list_item_body">
+                <div class="list-item-title active">
+                  <div class="list-item-title-button">{$Think.lang.VAR_CANVAS}<i class="fa fa-angle-right" style="display: none"></i><i class="fa fa-angle-down"></i></div>
+                </div>
+                <div class="list-item-content">
+                  <div class="list-item-content-form">
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.VAR_WIDTH}(px)</span>
+                      <span class="item-input">
+                        <span class="decrease"><i class="fa fa-minus"></i></span>
+                        <span class="increase"><i class="fa fa-plus"></i></span>
+                        <input type="text" id="attr_ctx_width" autocomplete="off" value="1366" />
+                      </span>
+                    </div>
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.VAR_HEIGHT}(px)</span>
+                      <span class="item-input">
+                        <span class="decrease"><i class="fa fa-minus"></i></span>
+                        <span class="increase"><i class="fa fa-plus"></i></span>
+                        <input type="text" id="attr_ctx_height" autocomplete="off" value="768" />
+                      </span>
+                    </div>
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.BACKGROUND_COLOR}</span>
+                      <div id="attr_ctx_backgroundColor" class="input-group colorpicker-component">
+                        <input type="text" class="form-control" value="#FFFFFF"/>
+                        <span class="input-group-addon"><i></i></span>
+                      </div>
+                    </div>
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.BG_IMG}</span>
+                      <span class="item-input">
+                        <input type="button" value="{$Think.lang.VAR_SELECT}"    class="btn btn-xs btn-info"    style="width: 48%; text-align: center; padding: 0" onclick="$.gf.upload_res('bg')" />
+                        <input type="button" value="{$Think.lang.VAR_BTN_RESET}" class="btn btn-xs btn-default" style="width: 48%; text-align: center; padding: 0" onclick="$.gf.reset_bg()" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="list-item" style="display: none;" id="list_item_attr">
+                <div class="list-item-title active">
+                  <div class="list-item-title-button">{$Think.lang.VAR_ATTRIBUTE}<i class="fa fa-angle-right" style="display: none"></i><i class="fa fa-angle-down"></i></div>
+                </div>
+                <div class="list-item-content">
+                  <div class="list-item-content-form">
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.VAR_TEXT}</span>
+                      <span class="item-input">
+                        <input type="text" id="attr_node_text" autocomplete="off" style="padding: 0 5px; text-align: left" />
+                      </span>
+                    </div>
+                    <div class="form-line" style="margin-bottom: 20px">
+                      <span class="item-label">{$Think.lang.MULTILINE_TEXT}</span>
+                      <span class="item-input">
+                        <textarea id="attr_node_mltext" autocomplete="off" style="vertical-align: middle; width: 130px" /></textarea>
+                      </span>
+                    </div>
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.X_COORDINATE}(px)</span>
+                      <span class="item-input">
+                        <span class="decrease"><i class="fa fa-minus"></i></span>
+                        <span class="increase"><i class="fa fa-plus"></i></span>
+                        <input type="text" id="attr_node_left" autocomplete="off" value="0" />
+                      </span>
+                    </div>
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.Y_COORDINATE}(px)</span>
+                      <span class="item-input">
+                        <span class="decrease"><i class="fa fa-minus"></i></span>
+                        <span class="increase"><i class="fa fa-plus"></i></span>
+                        <input type="text" id="attr_node_top" autocomplete="off" value="0" />
+                      </span>
+                    </div>
+                    <!-- scaledWidth / scaledHeight -->
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.VAR_WIDTH}(px)</span>
+                      <span class="item-input">
+                        <span class="decrease"><i class="fa fa-minus"></i></span>
+                        <span class="increase"><i class="fa fa-plus"></i></span>
+                        <input type="text" id="attr_node_scaledWidth" autocomplete="off" value="0" />
+                      </span>
+                    </div>
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.VAR_HEIGHT}(px)</span>
+                      <span class="item-input">
+                        <span class="decrease"><i class="fa fa-minus"></i></span>
+                        <span class="increase"><i class="fa fa-plus"></i></span>
+                        <input type="text" id="attr_node_scaledHeight" autocomplete="off" value="0" />
+                      </span>
+                    </div>
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.VAR_ROTATE}(°)</span>
+                      <span class="item-input">
+                        <span class="decrease"><i class="fa fa-minus"></i></span>
+                        <span class="increase"><i class="fa fa-plus"></i></span>
+                        <input type="text" id="attr_node_angle" autocomplete="off" value="0" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="list-item" style="display: none;" id="list_item_style">
+                <div class="list-item-title active">
+                  <div class="list-item-title-button">{$Think.lang.VAR_STYLE}<i class="fa fa-angle-right" style="display: none"></i><i class="fa fa-angle-down"></i></div>
+                </div>
+                <div class="list-item-content">
+                  <div class="list-item-content-form">
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.BACKGROUND_COLOR}</span>
+                      <div id="attr_node_backgroundColor" class="input-group colorpicker-component">
+                        <input type="text" class="form-control" value="#FFFFFF"/>
+                        <span class="input-group-addon"><i></i></span>
+                      </div>
+                    </div>
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.TEXT_COLOR}</span>
+                      <div id="attr_node_fill" class="input-group colorpicker-component">
+                        <input type="text" class="form-control" value="#000000"/>
+                        <span class="input-group-addon"><i></i></span>
+                      </div>
+                    </div>
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.BORDER_COLOR}</span>
+                      <div id="attr_node_stroke" class="input-group colorpicker-component">
+                        <input type="text" class="form-control" value="#000000"/>
+                        <span class="input-group-addon"><i></i></span>
+                      </div>
+                    </div>
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.BORDER_WIDTH}</span>
+                      <span class="item-input">
+                        <span class="decrease"><i class="fa fa-minus"></i></span>
+                        <span class="increase"><i class="fa fa-plus"></i></span>
+                        <input type="text" id="attr_node_strokeWidth" autocomplete="off" value="0" />
+                      </span>
+                    </div>
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.BORDER_STYLE}</span>
+                      <select class="form-control selecter" id="attr_node_strokeDashArray">
+                        <option value="solid">{$Think.lang.SOLID_LINE}</option>
+                        <option value="dotted">{$Think.lang.DOTTED_LINE}</option>
+                        <option value="dashed">{$Think.lang.DASHED_LINE}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bind-bar full-container" style="display: none">
+            <div class="tablist">
+              <div class="list-item" style="display: none;" id="list_item_data">
+                <div class="list-item-content">
+                  <div class="list-item-content-form">
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.VAR_SENSOR}</span>
+                      <span>
+                        <select class="form-control selecter" id="attr_node_sid">
+                        </select>
+                      </span>
+                    </div>
+                    <div class="form-line">
+                      <span class="item-label">{$Think.lang.DATA_NUM}</span>
+                      <span class="item-input">
+                        <span class="decrease"><i class="fa fa-minus"></i></span>
+                        <span class="increase"><i class="fa fa-plus"></i></span>
+                        <input type="text" id="attr_node_datanum" autocomplete="off" value="10" data-min="1" data-max="50" />
+                      </span>
+                    </div>
+                    <!--<div class="form-line">
+                      <span class="item-label">{$Think.lang.ENABLE_RTU_WARN}</span>
+                      <span>
+                        <input type="checkbox" id="attr_node_status_alarm" style="vertical-align: middle; margin: 0" />
+                      </span>
+                    </div>-->
+                    <div class="form-line">
+                      <div>
+                        <table class="table table-bordered table-hover table-condensed tbl-img-enable-alarm" id="attr_node_alarmRules">
+                          <tr style="background: #f5f5f5">
+                            <td colspan="4">{$Think.lang.VAR_ALARM_RULE}：<i class="fa fa-plus" onclick="$.gf.add_rule()"></i></td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+
+<!--模态框,上传文件-->
+<div class="modal fade" id="myLgModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_BTN_SURE}</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="fm_res">
+                    <div class="form-group">
+                      <label class="col-md-2" style="text-align: right;">{$Think.lang.VAR_UPGRADE_FILE}:</label>
+                      <div class="col-md-8">
+                        <input type="file" id="filedata" name="filedata">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-md-2" style="text-align: right;">{$Think.lang.PICTURE_LIST}:</label>
+                      <div class="col-md-8">
+                        <ul class="res-imgs">
+                        </ul>
+                      </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger"  onclick="$.gf.res_img_op('delete')" style="margin-right: 30px">{$Think.lang.VAR_DEL}</button>
+                <button type="button" class="btn btn-success" onclick="$.gf.res_img_op('select')">{$Think.lang.VAR_SELECT}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--模态框-告警规则-->
+<div class="modal fade" id="alarmRuleModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
+<script src="../Public/js/jquery.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<script type="text/javascript" src="../Public/bootstrap_validator/bv.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/bootstrap_validator/lang/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<!-- Bootstrap 3.3.7 -->
+<script src="../Public/bower_components/bootstrap/js/bootstrap.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<!-- color picker -->
+<link rel="stylesheet" href="../Public/colorpicker/bootstrap-colorpicker.min.css?rand={$Think.const.CACHE_VERSION}" />
+<script src="../Public/colorpicker/bootstrap-colorpicker.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<!-- notify -->
+<script src="../Public/layer/layer.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<!-- echarts -->
+<script type="text/javascript" src="../Public/echarts/echarts.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/echarts/options.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<!-- fabricjs -->
+<script src="../Public/fabricjs/fabric.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script src="../Public/fabricjs/fbc.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<!--jquery ui-->
+<script src="../Public/bower_components/jquery-ui/jquery-ui.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<!--fileinput-->
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Public/bootstrap_fileinput/css/fileinput.min.css?rand={$Think.const.CACHE_VERSION}">
+<script type="text/javascript" src="__ROOT__/Tpl/Public/bootstrap_fileinput/js/fileinput.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="__ROOT__/Tpl/Public/bootstrap_fileinput/js/locales/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<script src="../Public/js/function.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">
+  $.img_path = "../Public/images/canvas_editor/";
+  $.tmp_path = "__ROOT__/tmp/";
+  $.dashboard_id = "{$dashboard_id}";
+  $.lang = '<?PHP echo $lang?>';
+  $.sensors = {$sensors};
+</script>
+<script src="__ROOT__/Tpl/Rtu/dashboardEdit.js?rand={$Think.const.CACHE_VERSION}"></script>

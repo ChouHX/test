@@ -1,0 +1,92 @@
+<include file="Mobile/mheader" />
+    <div class="mui-card">
+        <ul id="ul_1" class="mui-table-view">
+        </ul>
+        <div class="mui-content-padded" style="text-align:center;">
+            <ul id="ul_2" class="mui-pagination">
+                <li class="mui-previous mui-disabled"><a href="#">&laquo;</a></li>
+                <li class="mui-active"><a id="btn0" href="#">1</a></li>
+                <li class="mui-next mui-disabled"><a href="#">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <a class="mui-icon mui-icon-back mui-pull-left"></a>
+        <h1 class="mui-title">{$Think.lang.VAR_CFG_SELECT_FILE}</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script>
+function loadTerm(loginBtn){
+    mui(loginBtn).button('loading');
+    mui.ajax($lang.curl.replace('Index/replace','Mdata/loadCfgData'),{
+        data:{
+            page: currentpage
+        },
+        timeout: 10000,
+        type: 'get',
+        success:function(msg){
+            if (typeof msg == 'string'){
+                msg = JSON.parse(msg);
+            }
+            mui(loginBtn).button('reset');
+            if (typeof msg.data == 'undefined') return;
+            msg = msg.data;
+            for (var i=0,len=msg.rows.length,str=''; i<len; i++){
+                str += 
+                '<li class="mui-table-view-cell mui-left">\
+                    <div class="mui-slider-right mui-disabled" data-id="'+msg.rows[i].id+'" data-filename="'+msg.rows[i].filename+'" data-filesize="'+msg.rows[i].filesize_o+'">\
+                        <a class="mui-btn mui-btn-yellow0 download-cfg-ftp">FTP {$Think.lang.VAR_ISSUED}</a>\
+                    </div>\
+                    <div class="mui-slider-handle">\
+                        <div class="mui-table-cell">\
+                            <p>\
+                                '+$lang.VAR_CFG_FILENAME+': '+msg.rows[i].original_filename+'<br>\
+                                '+$lang.VAR_CFG_FILESIZE+': '+msg.rows[i].filesize+'<br>\
+                                '+$lang.VAR_CFG_CTIME+'：'+msg.rows[i].create_time+'<br>\
+                                '+$lang.VAR_NOTE+'：'+msg.rows[i].info+
+                            '</p>\
+                        </div>\
+                    </div>\
+                </li>';
+            }
+            document.getElementById('ul_1').innerHTML = str;
+            document.getElementById('ul_2').innerHTML = msg.pstr;
+            maxpage = msg.maxpage;
+        },
+        error:function(){mui(loginBtn).button('reset')},
+        timeout:function(){mui(loginBtn).button('reset')}
+    });
+}
+
+function initpage($, doc){
+    //---------------分页开始-------------
+    loadTerm(doc.getElementById('btn0'));
+    //---------------分页结束-------------
+
+    $(doc.body).on('tap', '#webheader .mui-icon-back', function(e){
+        history.go(-1);
+    });
+
+    $(doc.body).on('tap', '.download-cfg-ftp', function(){
+        var e = this.parentNode, p = location.href.split('?');
+        p = p[1] + '&fileid='+e.getAttribute('data-id');
+        p += '&filename='+e.getAttribute('data-filename');
+        p += '&filesize='+e.getAttribute('data-filesize');
+        mui.confirm($lang.OPERATE_CONFIRM, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(){
+            if (arguments[0].index == 0){
+                mui.ajax($lang.curl.replace('Index/replace', 'Task/downCfg'),{
+                    data: p,
+                    timeout: 5000,
+                    type: 'post',
+                    success:function(msg){
+                        if (typeof msg == 'string'){
+                            msg = JSON.parse(msg);
+                        }
+                        mui.alert(msg.info, $lang.VAR_PROMPT);
+                    }
+                });
+            }
+        });
+    });
+}
+</script>

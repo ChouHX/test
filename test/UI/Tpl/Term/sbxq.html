@@ -1,0 +1,637 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/daterangepicker/daterangepicker.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Term/sbxq.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <!-- 信息分类 -->
+      <div class="nav-tabs-custom">
+        <ul class="nav nav-pills" id="tab_info_types">
+          <li class="active"><a href="#params_tab_1" data-toggle="tab" data-show-div="tab1">{$Think.lang.BASIC_INFO}</a></li>
+          <li><a href="#params_tab_2" data-toggle="tab" data-show-div="tab2">{$Think.lang.RUNTIME_INFO}</a></li>
+          <li><a href="#params_tab_3" data-toggle="tab" data-show-div="tab3">{$Think.lang.VAR_MENU_TASK_LIST}</a></li>
+          <li><a href="#params_tab_4" data-toggle="tab" data-show-div="tab4" data-init="0">{$Think.lang.VAR_DEVICE_STATEMENT}</a></li>
+          <li><a href="#params_tab_5" data-toggle="tab" data-show-div="tab5">{$Think.lang.VAR_MENU_RESOURCE_FILE}</a></li>
+          <!--<li style="float: right; background: #f7f7f7;" id="back_page">
+            <a href="javascript:;"><i class="fa fa-reply">&nbsp;</i>{$Think.lang.VAR_BTN_BACK}</a>
+          </li>-->
+          <li style="float: right; background: #f7f7f7;" id="refresh_page">
+            <a href="javascript:;"><i class="fa fa-refresh">&nbsp;</i>{$Think.lang.VAR_REFRESH}</a>
+          </li>
+        </ul>
+      </div>
+
+      <!--设备基本信息-->
+      <div class="row info-tab info-tab1">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <!--<div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.VAR_TIPS_DETAIL_INFO}</h3>
+            </div>-->
+            <div class="box-body jqgrid_c">
+              <table class="table table-bordered table-hover tbl-params">
+                <tr>
+                  <th width="13%">{$Think.lang.VAR_TG}：</th>
+                  <td width="20%" id="td_gname">{$row['gname']}</td>
+                  <th width="13%">{$Think.lang.VAR_SN2}：</th>
+                  <td width="20%" id="td_sn">{$row['sn']}</td>
+                  <th width="13%">{$Think.lang.VAR_SN1}：</th>
+                  <td width="20%" id="td_ud_sn">{$row['ud_sn']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.GATEWAY_SN}：</th>
+                  <td id="td_gateway_sn">{$row['gateway_sn']}</td>
+                  <th>{$Think.lang.VAR_VSN}：</th>
+                  <td id="td_vsn">{$row['vsn']}</td>
+                  <th>{$Think.lang.DEVICE_MODEL}：</th>
+                  <td id="td_term_model_text">{$row['term_model_text']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.VAR_SYSCFG_ALIAS}：</th>
+                  <td id="td_alias">{$row['alias']}</td>
+                  <th>{$Think.lang.VAR_SWV}：</th>
+                  <td id="td_sw_version">{$row['sw_version']}</td>
+                  <th>{$Think.lang.PROTOCOL_VERSION}：</th>
+                  <td id="td_protocol">{$row['protocol']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.VAR_CMD_CREATETIME}：</th>
+                  <td id="td_create_time">{$row['create_time']}</td>
+                  <th>SSID：</th>
+                  <td id="td_wifi_ssid">{$row['wifi_ssid']}</td>
+                  <th>{$Think.lang.GUIJI_CODE}：</th>
+                  <td id="td_host_sn">{$row['host_sn']}</td>
+                </tr>
+              </table>
+              <table class="table table-bordered table-hover tbl-params" style="margin-top: 30px">
+                <tr><th colspan="6" class="text-center" style="color: #0dc4ef">{$Think.lang.CHANNEL_1}</th></tr>
+                <tr>
+                  <th width="13%">SIM：</th>
+                  <td width="20%" id="td_sim">{$row['sim']}</td>
+                  <th width="13%">IMSI：</th>
+                  <td width="20%" id="td_imsi">{$row['imsi']}</td>
+                  <th width="13%">ICCID：</th>
+                  <td width="20%" id="td_iccid">{$row['iccid']}</td>
+                </tr>
+                <tr>
+                  <th>IMEI：</th>
+                  <td id="td_imei">{$row['imei']}</td>
+                  <th>{$Think.lang.TERM_MODULE_VENDOR}：</th>
+                  <td id="td_module_vendor">{$row['module_vendor']}</td>
+                  <th>{$Think.lang.TERM_MODULE_TYPE}：</th>
+                  <td id="td_module_type">{$row['module_type']}</td>
+                </tr>
+              </table>
+              <table class="table table-bordered table-hover tbl-params" style="margin-top: 30px">
+                <tr><th colspan="6" class="text-center" style="color: #0dc4ef">{$Think.lang.CHANNEL_2}</th></tr>
+                <tr>
+                  <th width="13%">SIM：</th>
+                  <td width="20%" id="td_sim2">{$row['sim2']}</td>
+                  <th width="13%">IMSI：</th>
+                  <td width="20%" id="td_imsi2">{$row['imsi2']}</td>
+                  <th width="13%">ICCID：</th>
+                  <td width="20%" id="td_iccid2">{$row['iccid2']}</td>
+                </tr>
+                <tr>
+                  <th>IMEI：</th>
+                  <td id="td_imei2">{$row['imei2']}</td>
+                  <th>{$Think.lang.TERM_MODULE_VENDOR}：</th>
+                  <td id="td_module_vendor2">{$row['module_vendor2']}</td>
+                  <th>{$Think.lang.TERM_MODULE_TYPE}：</th>
+                  <td id="td_module_type2">{$row['module_type2']}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--设备运行信息-->
+      <div class="row info-tab info-tab2" style="display: none;">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <!--<div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.VAR_TIPS_DETAIL_INFO}</h3>
+            </div>-->
+            <div class="box-body">
+              <table class="table table-bordered table-hover tbl-params info-tab info-tab2" style="display: none;">
+                <tr>
+                  <th width="13%">{$Think.lang.VAR_TERM_STATUS}：</th>
+                  <td width="20%" id="td_status">{$row['status']}</td>
+                  <th width="13%">{$Think.lang.NET_MODE}：</th>
+                  <td width="20%" id="td_net_mode">{$row['net_mode']}</td>
+                  <th width="13%">{$Think.lang.VAR_TERM_SIGNAL}：</th>
+                  <td width="20%" id="td_term_signal">{$row['term_signal']}</td>
+                </tr>
+                <tr>
+                  <th width="13%">RSSI：</th>
+                  <td width="20%" id="td_rssi">{$row['rssi']}</td>
+                  <th width="13%">RSRP：</th>
+                  <td width="20%" id="td_rsrp">{$row['rsrp']}</td>
+                  <th width="13%">RSRQ：</th>
+                  <td width="20%" id="td_rsrq">{$row['rsrq']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.VAR_IP}：</th>
+                  <td id="td_ip">{$row['ip']}</td>
+                  <th>{$Think.lang.VAR_PORT}：</th>
+                  <td id="td_port">{$row['port']}</td>
+                  <th>{$Think.lang.SIM_POS}：</th>
+                  <td id="td_sim_pos">{$Think.lang.CARD} {$row['sim_pos']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.VAR_TERM_FLUX}：</th>
+                  <td id="td_flux">{$row['flux']}</td>
+                  <th>{$Think.lang.TODAY_FLUX}：</th>
+                  <td id="td_day_flux">{$row['day_flux']}</td>
+                  <th><?PHP $onelink = C('SHOW_ONELINK_MONTH_FLUX'); echo L($onelink ? 'ONELINK_MONTH_FLUX' : 'FLUX_CURRENT_MONTH'); ?>：</th>
+                  <td id="td_month_flux">{$row['month_flux']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.ONLINE_DURATION}：</th>
+                  <td id="td_online_duration">{$row['online_duration']}</td>
+                  <th>{$Think.lang.VAR_LOGOUT_RECORD}：</th>
+                  <td id="td_offline_duration">{$row['offline_duration']}</td>
+                  <th>&nbsp;</th>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.VAR_FIRST_LOGIN}：</th>
+                  <td id="td_first_login">{$row['first_login']}</td>
+                  <th>{$Think.lang.VAR_DEVICE_LOGIN_TIME}：</th>
+                  <td id="td_login_time">{$row['login_time']}</td>
+                  <th>{$Think.lang.VAR_LAST_LOGIN}：</th>
+                  <td id="td_last_time">{$row['last_time']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.CPU_USAGE}：</th>
+                  <td id="td_cpu_usage">{$row['cpu_usage']}</td>
+                  <th>{$Think.lang.MEMORY_USAGE}：</th>
+                  <td id="td_mem_usage">{$row['mem_usage']}</td>
+                  <th>{$Think.lang.STORAGE_USAGE}：</th>
+                  <td id="td_storage_usage">{$row['storage_usage']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.VPN_NUM}：</th>
+                  <td id="td_vpn_num">{$row['vpn_num']}</td>
+                  <th>{$Think.lang.CURRENT_LINK}：</th>
+                  <td id="td_current_link_text">{$row['current_link_text']}</td>
+                  <th>&nbsp;</th>
+                  <td>&nbsp;</td>
+                </tr>
+              </table>
+              <table class="table table-bordered table-hover tbl-params info-tab info-tab2" style="display: none; margin-top: 30px">
+                <tr><th colspan="6" class="text-center" style="color: #0dc4ef">{$Think.lang.CHANNEL_1}</th></tr>
+                <tr>
+                  <th width="13%">{$Think.lang.NET_MODE}：</th>
+                  <td width="20%" id="td_net_mode_sim1">{$row['net_mode_sim1']}</td>
+                  <th width="13%">{$Think.lang.VAR_TERM_SIGNAL}：</th>
+                  <td width="20%" id="td_term_signal_sim1">{$row['term_signal_sim1']}</td>
+                  <th width="13%">{$Think.lang.VAR_IP}：</th>
+                  <td width="20%" id="td_ip_sim1">{$row['ip_sim1']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.VAR_PORT}：</th>
+                  <td id="td_port_sim1">{$row['port_sim1']}</td>
+                  <th>{$Think.lang.VAR_TERM_FLUX}：</th>
+                  <td id="td_flux_sim1">{$row['flux_sim1']}</td>
+                  <th>{$Think.lang.VAR_LAST_LOGIN}：</th>
+                  <td id="td_last_time_sim1">{$row['last_time_sim1']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.VAR_OPERATOR}</th>
+                  <td id="td_operator_sim1">{$row['operator_sim1']}</td>
+                  <th>&nbsp;</th>
+                  <td>&nbsp;</td>
+                  <th>&nbsp;</th>
+                  <td>&nbsp;</td>
+                </tr>
+              </table>
+              <table class="table table-bordered table-hover tbl-params info-tab info-tab2" style="display: none; margin-top: 30px">
+                <tr><th colspan="6" class="text-center" style="color: #0dc4ef">{$Think.lang.CHANNEL_2}</th></tr>
+                <tr>
+                  <th width="13%">{$Think.lang.NET_MODE}：</th>
+                  <td width="20%" id="td_net_mode_sim2">{$row['net_mode_sim2']}</td>
+                  <th width="13%">{$Think.lang.VAR_TERM_SIGNAL}：</th>
+                  <td width="20%" id="td_term_signal_sim2">{$row['term_signal_sim2']}</td>
+                  <th width="13%">{$Think.lang.VAR_IP}：</th>
+                  <td width="20%" id="td_ip_sim2">{$row['ip_sim2']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.VAR_PORT}：</th>
+                  <td id="td_port_sim2">{$row['port_sim2']}</td>
+                  <th>{$Think.lang.VAR_TERM_FLUX}：</th>
+                  <td id="td_flux_sim2">{$row['flux_sim2']}</td>
+                  <th>{$Think.lang.VAR_LAST_LOGIN}：</th>
+                  <td id="td_last_time_sim2">{$row['last_time_sim2']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.VAR_OPERATOR}</th>
+                  <td id="td_operator_sim2">{$row['operator_sim2']}</td>
+                  <th>&nbsp;</th>
+                  <td>&nbsp;</td>
+                  <th>&nbsp;</th>
+                  <td>&nbsp;</td>
+                </tr>
+              </table>
+              <?PHP if ($lang == 'zh-cn') { ?>
+              <table class="table table-bordered table-hover tbl-params info-tab info-tab2" style="display: none; margin-top: 30px">
+                <tr><th colspan="6" class="text-center" style="color: #0dc4ef">{$Think.lang.POSITIONING_PARAMETER}</th></tr>
+                <tr>
+                  <th width="13%">{$Think.lang.VAR_BASE_ADDRESS}：</th>
+                  <td width="20%" id="td_lac_cellid">{$row['lac_cellid']}</td>
+                  <th width="13%">{$Think.lang.VAR_WIFI_MAC}：</th>
+                  <td width="20%" id="td_ap_mac">{$row['ap_mac']}</td>
+                  <th width="13%">{$Think.lang.VAR_POSITION}：</th>
+                  <td width="20%" id="td_addr">{$row['addr']}</td>
+                </tr>
+              </table>
+              <?PHP } ?>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 地图 -->
+      <div class="row info-tab info-tab1" style="margin-top: 15px;">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.DLWZ}&nbsp;/&nbsp;{$Think.lang.ELECTRIC_FENCE}</h3>
+              <div class="pull-right box-tools"></div>
+            </div>
+            <div class="box-body">
+              <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                <form class="form-inline" role="form">
+                  <div class="btns">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default btn-fence-question" onclick="javascript:$('#infoModal').modal();">
+                        <i class="fa fa-question-circle"></i>&nbsp;{$Think.lang.ELECTRIC_FENCE}
+                      </button>
+                    </div>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default btn-fence-record" onclick="javascript:$('#recordModal').modal();">
+                        <i class="fa fa-history"></i>&nbsp;{$Think.lang.ENTRY_EXIT_FENCE_RECORDS}
+                      </button>
+                    </div>
+                    <?PHP if (!C('READ_ONLY_VERSION')) { ?>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-plus"></i>&nbsp;{$Think.lang.ADD_FENCE}</button>
+                      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="javascript:;" onclick="javascript:$.gf.gm.d_type = 0;">{$Think.lang.CIRCLE_FENCE}</a></li>
+                        <li><a href="javascript:;" onclick="javascript:$.gf.gm.d_type = 1;">{$Think.lang.RECT_FENCE}</a></li>
+                        <li><a href="javascript:;" onclick="javascript:$.gf.gm.d_type = 2;">{$Think.lang.POLYGON_FENCE}</a></li>
+                      </ul>
+                    </div>
+                    <?PHP } ?>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default btn-fence-refresh" onclick="javascript:$('#refresh_page').click();">
+                        <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                      </button>
+                    </div>
+                    <div class="checkbox" style="margin-top:5px; display:none;">
+                      <label><input type="checkbox" id="enable_setgps" />&nbsp;{$Think.lang.GPS_SETUP}</label>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div id="map_container" style="margin: 1px; width:100%; height: 400px; border: 1px solid RGB(236, 240, 245);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--普通任务-->
+      <div class="row info-tab info-tab3" style="margin-top: 15px; display: none;">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.VAR_MENU_TASK_ONCE}</h3>
+              <div class="pull-right box-tools"></div>
+            </div>
+            <div class="box-body">
+              <div class="nav-tabs-custom">
+                <ul class="nav nav-pills" id="tab_task_status">
+                  <li class="active"><a href="#tab_ts_-1" data-toggle="tab" data-tsid="">{$Think.lang.ALL_STATUS}</a></li>
+                  <?PHP foreach ($tsa as $k=>$v){
+                    if ($k != '1' && $k != '5' && $k != '8') {
+                    echo '<li><a href="#tab_ts_'.$k.'" data-toggle="tab" data-tsid="'.($k == 0 ? '0,8' : $k).'">'.$v.'</a></li>';
+                    }
+                  }?>
+                  <!-- <li class="pull-right"><button type="button" class="btn btn-sm btn-refresh" data-grid-id="#list3" title="{$Think.lang.VAR_REFRESH}"><i class="fa fa-refresh"></i></button></li> -->
+                </ul>
+              </div>
+              <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                <form class="form-inline" role="form">
+                  <div class="btns">
+                    <button type="button" class="btn btn-default rwcs btn-del-task">
+                      <i class="fa fa-close"></i>&nbsp;{$Think.lang.VAR_DEL}
+                    </button>
+                    <button type="button" class="btn btn-default rwcs btn-refresh"  data-grid-id="#list3" title="{$Think.lang.VAR_REFRESH}">
+                      <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <table id="list3"></table>
+              <div id="pager3" style="margin-top: 30px !important;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--周期任务-->
+      <div class="row info-tab info-tab3" style="margin-top: 15px; display: none;">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.VAR_MENU_TASK_TIMED}</h3>
+              <div class="pull-right box-tools"></div>
+            </div>
+            <div class="box-body">
+              <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                <form class="form-inline" role="form">
+                  <div class="btns">
+                    <button type="button" class="btn btn-default rwcs btn-del-timed-task">
+                      <i class="fa fa-close"></i>&nbsp;{$Think.lang.VAR_DEL}
+                    </button>
+                    <button type="button" class="btn btn-default rwcs btn-refresh"  data-grid-id="#list33" title="{$Think.lang.VAR_REFRESH}">
+                      <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <table id="list33"></table>
+              <div id="pager33" style="margin-top: 30px !important;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--统计报表-->
+      <div class="row info-tab info-tab4" style="margin-top: 15px; display: none;">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.VAR_MENU_OVERVIEW}</h3>
+            </div>
+            <div class="box-body">
+              <div class="btn-toolbar" role="toolbar" style="margin: 0 5px 30px; width: 100%">
+                  <button class="btn btn-time-range btn-info btn-today">{$Think.lang.VAR_TODAY}</button>
+                  <button class="btn btn-time-range btn-default btn-this-month">{$Think.lang.THIS_MONTH}</button>
+                  <div class="input-group" style="width: 300px;">
+                    <span class="input-group-addon" style="background-color:#fff !important;"> <i class="fa fa-calendar"></i> </span>
+                    <input type="text" id="start_dt" class="form-control" style="width: 182px" readonly>
+                  </div>
+                  <div class="input-group date" style="float:right; display: <?PHP echo C('OEM_VERSION') == 'rx-m2m' ? 'inline-table' : 'none'; ?>; width: 300px;">
+                    <div class="input-group-addon">
+                      <i class="fa fa-wifi"></i>
+                    </div>
+                    <select class="form-control" style="width:200px;" id="slt_sims" onchange="javascript:$('#refresh_page').click();">
+                      <option value="0">Count all SIM cards</option>
+                      <option value="1">SIM 1</option>
+                      <option value="2">SIM 2</option>
+                    </select>
+                  </div>
+                  <!-- <button class="btn btn-info" style="float: right; margin-right: 15px;"><i class="fa fa-file-excel-o"></i> {$Think.lang.VAR_DEVICE_EXPORT_EXCEL}</button> -->
+              </div>
+              <div class="row" style="margin-top: 15px; padding: 0 10px;">
+                <div class="col-md-4">
+                  <div class="box box-border">
+                    <div class="box-header with-border box-header-bg">{$Think.lang.VAR_FLUX_DETAIL} (<span id="chart_flux_unit" style="color:#0dc4ef">MB</span>)</div>
+                    <div class="box-body" id="chart_flux" style="height: 260px;" data-url=""></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="box box-border">
+                    <div class="box-header with-border box-header-bg">{$Think.lang.VAR_SIGNAL_DETAIL} (0~31)</div>
+                    <div class="box-body" id="chart_signal" style="height: 260px;" data-url=""></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="box box-border">
+                    <div class="box-header with-border box-header-bg">{$Think.lang.VAR_ONLINE_RATES} (%)</div>
+                    <div class="box-body" id="chart_online" style="height: 260px;" data-url=""></div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="margin-top: 15px; padding: 0 10px;">
+                <div class="col-md-4">
+                  <div class="box box-border">
+                    <div class="box-header with-border box-header-bg">{$Think.lang.NETWORK_DISTRIBUTION}</div>
+                    <div class="box-body" id="chart_netmode" style="height: 260px;" data-url=""></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="box box-border">
+                    <div class="box-header with-border box-header-bg">{$Think.lang.CPU_USAGE} (%)</div>
+                    <div class="box-body" id="chart_CPU" style="height: 260px;" data-url=""></div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="box box-border">
+                    <div class="box-header with-border box-header-bg">{$Think.lang.MEMORY_USAGE} (%)</div>
+                    <div class="box-body" id="chart_MEM" style="height: 260px;" data-url=""></div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="margin-top: 15px; padding: 0 10px;">
+                <div class="col-md-4">
+                  <div class="box box-border">
+                    <div class="box-header with-border box-header-bg">{$Think.lang.STORAGE_USAGE} (%)</div>
+                    <div class="box-body" id="chart_storage" style="height: 260px;" data-url=""></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--上线记录-->
+      <div class="row info-tab info-tab2" style="margin-top: 15px; display: none;">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.VAR_DEVICE_HISTORY}</h3>
+              <div class="pull-right box-tools"></div>
+            </div>
+            <div class="box-body">
+              <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                  <button class="btn btn-time-range2 btn-info btn-today2">{$Think.lang.VAR_TODAY}</button>
+                  <button class="btn btn-time-range2 btn-default btn-this-month2">{$Think.lang.THIS_MONTH}</button>
+                  <div class="input-group" style="width: 300px;">
+                    <span class="input-group-addon" style="background-color:#fff !important;"> <i class="fa fa-calendar"></i> </span>
+                    <input type="text" id="start_dt2" class="form-control" style="width: 182px" readonly>
+                  </div>
+              </div>
+              <table id="list2"></table>
+              <div id="pager2" style="margin-top: 30px !important;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--网络切换记录-->
+      <div class="row info-tab info-tab2" style="margin-top: 15px; display: none;">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.NET_CHANGE_RECORD}</h3>
+              <div class="pull-right box-tools"></div>
+            </div>
+            <div class="box-body">
+              <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                  <button class="btn btn-time-range22 btn-info btn-today22">{$Think.lang.VAR_TODAY}</button>
+                  <button class="btn btn-time-range22 btn-default btn-this-month22">{$Think.lang.THIS_MONTH}</button>
+                  <div class="input-group" style="width: 300px;">
+                    <span class="input-group-addon" style="background-color:#fff !important;"> <i class="fa fa-calendar"></i> </span>
+                    <input type="text" id="start_dt22" class="form-control" style="width: 182px" readonly>
+                  </div>
+              </div>
+              <table id="list22"></table>
+              <div id="pager22" style="margin-top: 30px !important;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--上报的参数文件-->
+      <div class="row info-tab info-tab5" style="margin-top: 15px; display: none;">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.VAR_CFG_FILENAME}</h3>
+              <div class="pull-right box-tools">
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                <form class="form-inline" role="form">
+                  <div class="btns">
+                    <button type="button" class="btn btn-default rwcs btn-download" data-grid-id="#list5" title="{$Think.lang.VAR_CP_DOWNLOAD}" data-act="termDetailDownCfg">
+                      <i class="fa fa-download"></i>&nbsp;{$Think.lang.VAR_CP_DOWNLOAD}
+                    </button>
+                    <button type="button" class="btn btn-default rwcs btn-refresh"  data-grid-id="#list5" title="{$Think.lang.VAR_REFRESH}">
+                      <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <table id="list5"></table>
+              <div id="pager5" style="margin-top: 30px !important;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--抓包文件-->
+      <div class="row info-tab info-tab5" style="margin-top: 15px; display: none;">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.VAR_CP_FILES}</h3>
+              <div class="pull-right box-tools">
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                <form class="form-inline" role="form">
+                  <div class="btns">
+                    <button type="button" class="btn btn-default rwcs btn-download" data-grid-id="#list55" title="{$Think.lang.VAR_CP_DOWNLOAD}" data-act="termDetailDownCap">
+                      <i class="fa fa-download"></i>&nbsp;{$Think.lang.VAR_CP_DOWNLOAD}
+                    </button>
+                    <button type="button" class="btn btn-default rwcs btn-refresh"  data-grid-id="#list55" title="{$Think.lang.VAR_REFRESH}">
+                      <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <table id="list55"></table>
+              <div id="pager55" style="margin-top: 30px !important;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+<!--模态框，功能说明-->
+<div class="modal fade" id="infoModal">
+  <div class="modal-dialog modal-lg" style="width: 900px; margin-top: 100px;">
+    <div class="modal-content">
+      <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+          <h4 class="modal-title">{$Think.lang.PAGE_DESC}</h4>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <li style="line-height:20px; margin: 0 0 10px 0;"><strong>{$Think.lang.CIRCLE_FENCE}：</strong>{$Think.lang.CIRCLE_FENCE_TIPS}</li>
+          <li style="line-height:20px; margin: 0 0 10px 0;"><strong>{$Think.lang.RECT_FENCE}：</strong>{$Think.lang.RECT_FENCE_TIPS}</li>
+          <li style="line-height:20px; margin: 0 0 10px 0;"><strong>{$Think.lang.POLYGON_FENCE}：</strong>{$Think.lang.POLYGON_FENCE_TIPS}</li>
+          <li style="line-height:20px; margin: 0 0 10px 0;"><strong>{$Think.lang.DRAW_CANCEL}：</strong>{$Think.lang.DRAW_CANCEL_TIPS}</li>
+          <li style="line-height:20px; margin: 0 0 10px 0;"><strong>{$Think.lang.DELETE_FENCE}：</strong>{$Think.lang.DELETE_FENCE_TIPS}</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">{$Think.lang.VAR_BTN_SURE}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--模态框，出入围栏记录 -->
+<div class="modal fade" id="recordModal" data-jqgrid-type="0">
+  <div class="modal-dialog modal-lg" style="width: 900px; margin-top: 100px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+        <h4 class="modal-title">{$Think.lang.ENTRY_EXIT_FENCE_RECORDS}</h4>
+      </div>
+      <div class="modal-body">
+        <table id="list4"></table>
+        <div id="pager4" style="margin-top: 30px !important;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" onclick="javascript:$('#list4').trigger('reloadGrid');">{$Think.lang.VAR_REFRESH}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="Homepage/footer"/>
+<!--daterangepicker-->
+<script type="text/javascript" src="../Public/daterangepicker/moment.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/daterangepicker/daterangepicker.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--highcharts-->
+<script type="text/javascript" src="../Public/highcharts/highcharts.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/highcharts/no-data-to-display.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--jqgrid-->
+<script type="text/javascript" src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">
+$.gf.sn = "{$row['sn']}";
+//$.gf.gid = "{$_REQUEST['gid']}";
+$.gf.ranges = {
+  '{$Think.lang.LAST_7DAYS}': [moment().subtract('days', 7), moment().subtract('days', 1)],
+  '{$Think.lang.LAST_30DAYS}': [moment().subtract('days', 30), moment().subtract('days', 1)],
+  '{$Think.lang.LAST_MONTH}': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')],
+  '{$Think.lang.THIS_YEAR}': [moment().startOf('year'), moment()],
+  '{$Think.lang.LAST_YEAR}': [moment().subtract('year', 1).startOf('year'), moment().subtract('year', 1).endOf('year')]
+};
+</script>
+<!-- leaflet -->
+<link rel="stylesheet" type="text/css" href="../Public/leaflet/leaflet.css?rand={$Think.const.CACHE_VERSION}" />
+<link rel="stylesheet" type="text/css" href="../Public/leaflet/markercluster/leaflet.markercluster.css?rand={$Think.const.CACHE_VERSION}" />
+<link rel="stylesheet" type="text/css" href="../Public/leaflet/markercluster/leaflet.markercluster.default.css?rand={$Think.const.CACHE_VERSION}" />
+<script type="text/javascript" src="../Public/leaflet/leaflet.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/leaflet/leaflet.ChineseTmsProviders.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/leaflet/LMap.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="__ROOT__/Tpl/Term/sbxq.js?rand={$Think.const.CACHE_VERSION}&r=20230602-1"></script>

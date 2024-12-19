@@ -1,0 +1,59 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/bower_components/bootstrap-datepicker/css/bootstrap-datepicker.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/bower_components/bootstrap-timepicker/css/bootstrap-timepicker.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Term/qjt.css?rand={$Think.const.CACHE_VERSION}">
+<!-- slider，用来改变播放速度 -->
+<link rel="stylesheet" type="text/css" href="../Public/bower_components/bootstrap-slider/slider.css?rand={$Think.const.CACHE_VERSION}">
+    <div class="content-wrapper" style="position: relative;">
+        <div id="search_container">
+          <input type="text" name="search" placeholder="{$Think.lang.VAR_SN2}">
+          <span class="fa fa-search"></span>
+        </div>
+        <div id="tooltip_container">
+          <span>{$Think.lang.SET_GPS_TOOLTIP}</span>
+          <button class="btn btn-default btn-xs btn-save-gps"><i class="fa fa-save"></i>&nbsp;{$Think.lang.SAVE_TEMPLATE}</button>
+          <button class="btn btn-default btn-xs btn-close"><i class="fa fa-close"></i>&nbsp;{$Think.lang.VAR_CLOSE}</button>
+        </div>
+        <div id="replay_container">
+          <div class="progress progress-xs">
+            <div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+          </div>
+          <div class="time-range">{$Think.lang.VAR_TIME_RANGE}：</div>
+          <div class="input-group date">
+            <input type="text" class="form-control" value="<?PHP echo date('Y-m-d')?>"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+          </div>
+          <div class="input-group bootstrap-timepicker timepicker">
+            <input type="text" class="form-control" id="time1">
+            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+          </div>
+          <div class="input-group bootstrap-timepicker timepicker">
+            <input type="text" class="form-control" id="time2">
+            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+          </div>
+          <input type="text" class="slider" data-slider-min="100" data-slider-max="1000"
+              data-slider-step="100" data-slider-value="500" data-slider-orientation="horizontal"
+               data-slider-selection="before" data-slider-tooltip="show" data-slider-id="blue">
+          <button class="btn btn-default btn-xs btn-replay"><i class="fa fa-play-circle"></i>&nbsp;{$Think.lang.VAR_TRACK_PLAY}</button>
+          <button class="btn btn-default btn-xs btn-close"><i class="fa fa-close"></i>&nbsp;{$Think.lang.VAR_CLOSE}</button>
+        </div>
+        <section class="content padding-top-0" id="gmc_container">
+        </section>
+    </div>
+<include file="Homepage/footer"/>
+<!-- datepicker -->
+<script type="text/javascript" src="../Public/bower_components/bootstrap-datepicker/js/bootstrap-datepicker.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/bower_components/bootstrap-datepicker/locales/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- timepicker -->
+<script type="text/javascript" src="../Public/bower_components/bootstrap-timepicker/js/bootstrap-timepicker.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- slider -->
+<script type="text/javascript" src="../Public/bower_components/bootstrap-slider/bootstrap-slider.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- map -->
+<script type="text/javascript" src="__ROOT__/Tpl/Public/js/map.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/js/markerclusterer/GMC_rtu.js?rand={$Think.const.CACHE_VERSION}"></script>
+<?PHP if ($lang == 'zh-cn'){ ?>
+  <script>$.gf.map_api += '&plugin=AMap.MarkerClusterer';</script>;
+<?PHP }else{ ?>
+  <script type="text/javascript" src="../Public/js/markerclusterer/src/markerclusterer.js?rand={$Think.const.CACHE_VERSION}"></script>
+<?PHP } ?>
+<script type="text/javascript" src="__ROOT__/Tpl/Term/qjt.js?rand={$Think.const.CACHE_VERSION}"></script>

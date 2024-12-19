@@ -1,0 +1,90 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/daterangepicker/daterangepicker.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Rtu/card.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/bootstrap_validator/bv.min.css?rand={$Think.const.CACHE_VERSION}">
+<style type="text/css">
+.lora.well .current{
+    min-width: 185px;
+}
+.lora.well .mt{
+    margin-top: 20px;
+}
+.lora.well .current_value{
+    font-weight: 700;
+}
+</style>
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <ul class="loras unstyled">
+        <li class="well" style="padding: 0">
+            <iframe src="{:U('Rtu/dashboardView')}?dashboard_id={$dashboard_id}&sn={$_REQUEST['gateway_sn']}" style="border: none; width: 100%; height:500px"></iframe>
+        </li>
+        <li class="well project-detail">
+          <div class="row-fluid">
+            <div class="col-lg-2">
+              <div class="current">
+                <span class="label label-info">{$Think.lang.TERM_INFO}</span>
+                <h3 class="title" id="h3_prjname">{$project['prjname']}</h3>
+                <p>{$project['create_time']}</p>
+                <p><a href="javascript:;" onclick="$.gf.projectEdit('{$_REQUEST['gateway_sn']}')"><i class="fa fa-edit"></i>&nbsp;{$Think.lang.VAR_EDIT}</a></p>
+              </div>
+            </div>
+            <div class="col-lg-4" style="margin-left:50px;height:200px;background:#f1eded;">
+              <table class="table">
+                <tr>
+                  <th class="text-center" width="135px">{$Think.lang.DEVICE_NAME}：</th>
+                  <td id="td_name">{$project['name']}</td>
+                </tr>
+                <tr>
+                  <th class="text-center">{$Think.lang.CONTACT}：</th>
+                  <td id="td_contact">{$project['contact']}</td>
+                </tr>
+                <tr>
+                  <th class="text-center">{$Think.lang.TEL}：</th>
+                  <td id="td_tel">{$project['tel']}</td>
+                </tr>
+                <tr>
+                  <th class="text-center">{$Think.lang.DETAIL_ADDR}：</th>
+                  <td id="td_address">{$project['address']}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-lg-5" style="height:200px; background:#f1eded;" id="map_container">
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+
+ <!--模态框-->
+<div class="modal fade" id="myLgModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<include file="Homepage/footer"/>
+<script type="text/javascript" src="../Public/bootstrap_validator/bv.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--map-->
+<script type="text/javascript" src="__ROOT__/Tpl/Public/js/map.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--highcharts-->
+<!-- <script type="text/javascript" src="../Public/highcharts/highcharts.js?rand={$Think.const.CACHE_VERSION}"></script> -->
+<script type="text/javascript" src="../Public/highcharts/highstock.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/highcharts/no-data-to-display.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/highcharts/theme/sand-signika.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- export excel -->
+<script type="text/javascript" src="../Public/js/buttons/jszip.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/js/buttons/buttons.html5.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">
+$.gf.data_num = "{$data_num}";
+$.gf.gateway_sn = "{$_REQUEST['gateway_sn']}";
+$.gf.gps = <?PHP echo json_encode($gps ? $gps : array()); ?>;
+$.gf.sensors = <?PHP echo json_encode(array_values($sensors))?>;
+</script>
+<script type="text/javascript" src="__ROOT__/Tpl/Rtu/dashboard.js?rand={$Think.const.CACHE_VERSION}"></script>

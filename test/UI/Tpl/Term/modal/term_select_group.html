@@ -1,0 +1,87 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title" id="h4_ztree">{$Think.lang.VAR_TG}</h4>
+</div>
+<div class="modal-body">
+    <!--<form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-3">搜索分组：</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" name="xx" />
+            </div>
+        </div>
+    </form>-->
+    <input type="text" class="form-control" id="zt_query_group"style="width:200px; height:30px; margin:0 auto 10px; border-radius:5px" placeholder="{$Think.lang.VAR_QUERY}：{$Think.lang.GROUP_NAME}" />
+    <ul id="tree_tg" class="ztree"></ul>
+</div>
+<div class="modal-footer">
+    <!-- <button type="button" class="btn btn-success" onclick="$('#ztreeModal2').modal('hide')">{$Think.lang.VAR_BTN_SURE}</button> -->
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_BTN_CANCLE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(function(){
+    $.gf.setFontCss = function(treeId, treeNode){
+        //background:'#e0e5ea'
+        return typeof treeNode.selected != 'undefined' && treeNode.selected ? {background:'#00C3F1', color:'#FFF'} : {};
+    };
+    var tree_setting = {
+        view: {
+            dblClickExpand: false,
+            fontCss: $.gf.setFontCss
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: function(){
+                /*$('#ul_tg button.btn-info').removeClass('btn-info').addClass('btn-default');
+                $('#ul_tg button.btn-son').parent().detach();
+                var abtn = $('#ul_tg button[data-gid='+arguments[2].id+']');
+                if (abtn.size() > 0){
+                    abtn.removeClass('btn-default').addClass('btn-info');
+                }else{
+                    var o = $('<li title=""><button class="btn btn-info btn-son" data-gid="'+arguments[2].id+'">'+arguments[2].name+'</button></li>');
+                    $('#ul_tg button:last').parent().before(o);
+                }*/
+                var name = (typeof arguments[2].oldname != 'undefined') ? arguments[2].oldname : arguments[2].name;
+                $('#change_gid span').attr('data-id', arguments[2].id).html(name.split(' ')[0]);
+                $('#search_fm,#search_fm2').get(0).reset();
+                $.gf.gid = arguments[2].id;
+                var from = "{$_REQUEST['from']}";
+                if (from == 'jklb'){
+                    $('#list2').setGridParam({page:1, postData:{
+                        gid:$.gf.gid,
+                        searchType:'term',
+                        searchString:''
+                    }}).trigger('reloadGrid');
+                } else if (from == 'lora') {
+                    $('#search_fm2').submit();
+                    if ($.gf.tp) {
+                        $('#search_fm').submit();
+                    }
+                } else if (from == 'lora_rtu'){
+                    $('#search_fm').submit();
+                }
+                $('#ztreeModal2').modal('hide');
+            }
+        }
+    };
+    var tree_nodes = %s, online = 0, total = 0, bracket = ['(', ')'], selected_gid = true;
+    for (var i=0; i<tree_nodes.length; i++){
+        tree_nodes[i].name += ' '+bracket[0]+tree_nodes[i].online+'/'+tree_nodes[i].total+bracket[1];
+        online += tree_nodes[i].online;
+        total += tree_nodes[i].total;
+        if (typeof tree_nodes[i].selected != 'undefined' && tree_nodes[i].selected) {
+            selected_gid = false;
+        }
+    }
+    tree_nodes.unshift({id:-10, pId:0, name:$lang.VAR_ALL_DEVICE+' '+bracket[0]+online+'/'+total+bracket[1], open:true, selected:selected_gid, iconOpen:$.gf.public_path+'images/icons/home.png', iconClose:$.gf.public_path+'images/icons/home.png'});
+    // tree_nodes.unshift({id:-10, pId:0, name:$lang.VAR_ALL_DEVICE, open:true});
+    $.fn.zTree.init($('#tree_tg'), tree_setting, tree_nodes);
+    fuzzySearch('tree_tg','#zt_query_group',null,true); //初始化模糊搜索方法
+});
+})(jQuery);
+</script>

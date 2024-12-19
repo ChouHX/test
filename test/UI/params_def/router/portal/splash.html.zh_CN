@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>免费无线网络</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Hotspot Auth Page">
+		<meta name="revised" content="fyang, 2014/4/11/" />
+		<meta name="author" content="fyang">
+
+		<!-- Le styles -->
+		<link href="bootstrap_portal.css" rel="stylesheet">
+		<style type="text/css">
+			body {
+				padding-top: 20px;
+				padding-bottom: 40px;
+				font-family: "Microsoft YaHei","Trebuchet MS","Myriad Pro",Arial,sans-serif;
+			}
+
+			/* Custom container */
+			.container-narrow {
+				margin: 0 auto;
+				max-width: 700px;
+			}
+			.container-narrow > hr {
+				margin: 30px 0;
+			}
+
+			/* Main marketing message and sign up button */
+			.jumbotron {
+				margin: 60px 0;
+				text-align: center;
+			}
+			.jumbotron h1 {
+				font-size: 72px;
+				line-height: 1;
+			}
+			.jumbotron .btn {
+				font-size: 21px;
+				padding: 14px 24px;
+			}
+
+			/* Supporting marketing content */
+			.marketing {
+				margin: 60px 0;
+			}
+			.marketing p + h4 {
+				margin-top: 28px;
+			}
+
+			.msginfo {
+				color: blue;
+			}
+			.msgerro {
+				color: red;
+			}
+
+			.qr {
+				height: 130px;
+			}
+		</style>
+		<link href="bootstrap-responsive_portal.css" rel="stylesheet">
+
+	</head>
+
+	<body>
+
+		<div class="container-narrow">
+
+			<div class="masthead">
+				<h3>欢迎使用WLAN免费热点</h3>
+			</div>
+
+			<!-- <hr> -->
+
+			<div id="myCarousel" class="carousel slide marketing">
+				<ol class="carousel-indicators">
+					<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+					<li data-target="#myCarousel" data-slide-to="1"></li>
+					<li data-target="#myCarousel" data-slide-to="2"></li>
+				</ol>
+
+				<div class="carousel-inner">
+					<div class="item active">
+						<img src="0001_portal.png" alt="">
+					</div>
+					<div class="item">
+						<img src="0002_portal.png" alt="">
+					</div>
+					<div class="item">
+						<img src="0003_portal.png" alt="">
+					</div>
+				</div>
+				<a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+				<a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+			</div>
+
+			<!-- <hr> -->
+
+			<div class="row-fluid marketing">
+					<div align="center">
+						<input class="btn btn-success" id="sendsms" type="submit" onclick="login();" value="同意以下条款" />
+						<span id="sendstatus"></span>
+			  		</div>
+					<h4 align="center">服务条款及免责协议</h4>
+						<h6><p><span class="badge badge-info">1</span>&nbsp; 
+							本WLAN热点不就通信系统或互联网的中断或无法运作、技术故障、计算机错误或病毒、
+							信息损坏或丢失或其它合理控制范围之外的原因而产生的其他任何性质的破坏而向您或任何第三方承担赔偿责任。
+						</p>
+						<p><span class="badge badge-info">2</span>&nbsp; 
+							本WLAN热点不担保其所提供的网络服务一定能满足您的要求，
+							也不担保网络服务不会中断。
+						</p>						
+						<p><span class="badge badge-info">3</span>&nbsp; 
+							您明确同意其使用本网络服务所存在的风险将完全由其自己承担；因其使用本网络服务而产生的一切后果也由其自己承担，
+							本WLAN热点对您不承担任何责任。
+						</p>						
+						<p><span class="badge badge-info">4</span>&nbsp; 
+							在所适用的法律允许的范围内，任何一方均无须就数据的丢失或损坏及任何间接的、附带的、特殊的、
+							后果性的损失向另一方负责赔偿（包括但不限于损失的利润、业务的中断、商业信息的丢失、商誉损失或其它经济损失）。
+						</p>						
+						<p><span class="badge badge-info">5</span>&nbsp; 
+							双方承认本条款反映了双方就协商谈判达成的一致意见。双方均完全了解本条款的后果并进一步承认本条款的合理性。
+						</p>
+						<p><span class="badge badge-info">6</span>&nbsp; 
+							在此特别提醒您，在您同意前请确实仔细阅读本协议，如果您对本协议的任何条款或将来随时可能修改、
+							补充的条款有异议，您可选择不同意，如果你选择同意，该条款将会定期再次弹出，谢谢！祝您愉快！
+						</p></h6>
+			</div>
+
+			<hr>
+		</div> <!-- /container -->
+
+		<script src="jquery_portal.js"></script>
+		<script src="jquery.md5_portal.js"></script>
+		<script src="jquery.client_portal.js"></script>
+		<script src="bootstrap.min_portal.js"></script>
+		<!-- js -->
+		<script type="text/javascript">
+
+			function login()
+			{
+				location.href = '/cgi-bin/do.cgi?cmd=1';
+				return true;
+			}
+			$(document).ready(function(){
+
+				$('.carousel').carousel({
+					interval: 2000
+				});
+				$('#myModal').modal({
+					keyboard: false
+				})
+			});
+		</script>
+
+	</body>
+</html>

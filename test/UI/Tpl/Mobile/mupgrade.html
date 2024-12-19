@@ -1,0 +1,95 @@
+<include file="Mobile/mheader" />
+    <div class="mui-card">
+        <ul id="ul_1" class="mui-table-view">
+        </ul>
+        <div class="mui-content-padded" style="text-align:center;">
+            <ul id="ul_2" class="mui-pagination">
+                <li class="mui-previous mui-disabled"><a href="#">&laquo;</a></li>
+                <li class="mui-active"><a id="btn0" href="#">1</a></li>
+                <li class="mui-next mui-disabled"><a href="#">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <a class="mui-icon mui-icon-back mui-pull-left"></a>
+        <h1 class="mui-title">{$Think.lang.SELECT_UPGRADE_PACK}</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script>
+function loadTerm(loginBtn){
+    mui(loginBtn).button('loading');
+    mui.ajax($lang.curl.replace('Index/replace','Mdata/loadUpgradePackageData'),{
+        data:{
+            filetype: 1,
+            page: currentpage
+        },
+        timeout: 10000,
+        type: 'get',
+        success:function(msg){
+            if (typeof msg == 'string'){
+                msg = JSON.parse(msg);
+            }
+            mui(loginBtn).button('reset');
+            if (typeof msg.data == 'undefined') return;
+            msg = msg.data;
+            for (var i=0,len=msg.rows.length,str=''; i<len; i++){
+                str += 
+                '<li class="mui-table-view-cell mui-left">\
+                    <div class="mui-slider-right mui-disabled" data-id="'+msg.rows[i].id+'" data-filename="'+msg.rows[i].filename+'" data-filesize="'+msg.rows[i].filesize_o+'" data-md5="'+msg.rows[i].md5_num+'">\
+                        <a class="mui-btn mui-btn-yellow0 upgrade">{$Think.lang.VAR_UPGRADE}</a>\
+                    </div>\
+                    <div class="mui-slider-handle">\
+                        <div class="mui-table-cell">\
+                            <p>\
+                                '+$lang.VAR_PACKAGE_NAME+': '+msg.rows[i].name+'<br>\
+                                '+$lang.VAR_PACKAGE_SIZE+': '+msg.rows[i].filesize+'<br>\
+								'+$lang.VAR_CREATOR+': '+msg.rows[i].creator+'<br>\
+                                '+$lang.VAR_CFG_CTIME+'：'+msg.rows[i].create_time+'<br>\
+                                '+$lang.VAR_NOTE+'：'+msg.rows[i].info+
+                            '</p>\
+                        </div>\
+                    </div>\
+                </li>';
+            }
+            document.getElementById('ul_1').innerHTML = str;
+            document.getElementById('ul_2').innerHTML = msg.pstr;
+            maxpage = msg.maxpage;
+        },
+        error:function(){mui(loginBtn).button('reset')},
+        timeout:function(){mui(loginBtn).button('reset')}
+    });
+}
+
+function initpage($, doc){
+    //---------------分页开始-------------
+    loadTerm(doc.getElementById('btn0'));
+    //---------------分页结束-------------
+
+    $(doc.body).on('tap', '#webheader .mui-icon-back', function(e){
+        history.go(-1);
+    });
+
+    $(doc.body).on('tap', '.upgrade', function(){
+        var e = this.parentNode, p = location.href.split('?');
+        p = p[1] + '&fileid='+e.getAttribute('data-id');
+        p += '&filename='+e.getAttribute('data-filename');
+        p += '&filesize='+e.getAttribute('data-filesize');
+        p += '&md5_num='+e.getAttribute('data-md5');
+        mui.confirm($lang.OPERATE_CONFIRM, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(){
+            if (arguments[0].index == 0){
+                mui.ajax($lang.curl.replace('Index/replace', 'Task/termUpgrade'),{
+                    data: p,
+                    timeout: 5000,
+                    type: 'post',
+                    success:function(msg){
+                        if (typeof msg == 'string'){
+                            msg = JSON.parse(msg);
+                        }
+                        mui.alert(msg.info, $lang.VAR_PROMPT);
+                    }
+                });
+            }
+        });
+    });
+}
+</script>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{$Think.lang.VAR_AD_PREVIEW}</title>
+    <link rel="icon" href="__ROOT__/favicon.ico" type="image/x-icon">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+    <script type="text/javascript" src="__ROOT__/Runtime/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+</head>
+
+
+<body>
+    <canvas id="canvas" width="1366px" height="768px"></canvas>
+</body>
+</html>
+<script src="../Public/js/jquery.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<!-- echarts -->
+<script type="text/javascript" src="../Public/echarts/echarts.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/echarts/options.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<!-- fabricjs -->
+<script src="../Public/fabricjs/fabric.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script src="../Public/fabricjs/fbc.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<!-- nice scroll -->
+<script src="../Public/js/jquery.nicescroll.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<script src="../Public/js/function.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">
+$.img_path = "../Public/images/canvas_editor/";
+$.gf = {
+    sn: "{$_REQUEST['sn']}",
+    data: '{$json}',
+    ctx: null,
+    nodes: {},              //FBCs,
+    current_v: [],          //即时数据
+    current_v_sids: [],
+    history_v: [],          //历史数据
+    history_v_sids: [],
+    history_v_datanums: []  //数据条目
+}
+</script>
+<script src="__ROOT__/Tpl/Rtu/dashboardView.js?rand={$Think.const.CACHE_VERSION}"></script>

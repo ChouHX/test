@@ -1,0 +1,205 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/daterangepicker/daterangepicker.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Rtu/card.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/bootstrap_validator/bv.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Term/ztree_container.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <!-- 设备分组
+            <div class="box-header with-border" style="padding-bottom: 0">
+              <ul id="ul_tg">
+              <?PHP
+                $back_gid = $_REQUEST['gid'] ? $_REQUEST['gid'] : -10;
+                array_unshift($groups, array('id'=>-10, 'name'=>L('VAR_ALL_DEVICE')));
+                array_push($groups, array('id'=>-100, 'name'=>'...'));
+                foreach ($groups as $k=>$row){
+                $btn_str = '<button class="btn btn-'.($row['id']==$back_gid?'info':'default').'" data-gid="'.$row['id'].'">'.$row['name'].'</button>';
+                if ($row['id'] == -10){
+                  $btn_str = '<div class="button-group">'.$btn_str.'<button type="button" class="btn btn-default btn-toggle" title="'.L('VAR_EXPAND').'"><i class="fa fa-caret-down"></i></button></div>';
+                }
+                echo '<li title="'.($row['id']==-100?L('VAR_MORE'):'').'">'.$btn_str.'</li>';
+              }?>
+              </ul>
+            </div> -->
+            <div class="box-body">
+              <div class="nav-tabs-custom" style="box-shadow: none">
+                <ul class="nav nav-tabs" id="tab_device_list">
+                  <li>
+                    <button type="button" class="btn btn-info" title="{$Think.lang.VAR_EXPAND}" id="change_gid" style="margin: 0 10px 0 10px;">
+                      <span data-id="-10">{$Think.lang.VAR_ALL_DEVICE}</span>&nbsp;<i class="fa fa-caret-down"></i>
+                    </button>
+                  </li>
+                  <li class="active"><a href="#tab_2" data-toggle="tab">{$Think.lang.LIST_SHOW}</a></li>
+                  <li><a href="#tab_1" data-toggle="tab">{$Think.lang.CARD_SHOW}</a></li>
+                </ul>
+                <div class="tab-content">
+                  <!-- Tab-1-card -->
+                  <div class="tab-pane jqgrid_c" id="tab_1" style="position: relative;">
+                    <div class="my-loading"></div><!--loading div-->
+                    <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                      <form class="form-inline" role="form" id="search_fm">
+                        <div class="btns">
+                          <button type="button" class="btn btn-default refresh-jqgrid" title="{$Think.lang.VAR_REFRESH}" data-index="1">
+                            <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                          </button>
+                        </div>
+                        <div class="input-group">
+                          <input type="text" name="searchString" class="form-control" placeholder="{$Think.lang.VAR_QUERY}" style="width: 130px" data-toggle="tooltip"  title="<?PHP echo sprintf('%s，%s，ICCID',L('VAR_SN2'),L('VAR_SYSCFG_ALIAS'))?>">
+                          <span class="input-group-btn">
+                            <button type="submit" class="btn btn-flat btn-search-border"><i class="fa fa-search"></i></button>
+                          </span>
+                        </div>
+                      </form>
+                    </div>
+                    <ul id="list1" class="card-container"></ul>
+                    <div id="list1_paging" style="padding:5px; margin-top:-20px; display:none;"></div>
+                  </div>
+                  <!-- Tab-2-jqgrid -->
+                  <div class="tab-pane active" id="tab_2">
+                    <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                      <form class="form-inline" role="form" id="search_fm2">
+                        <div class="btns">
+                          <?PHP if (!C('READ_ONLY_VERSION')) { ?>
+                          <button type="button" class="btn btn-default rwcs project-config" title="{$Think.lang.PROJECT_CONFIGURATION}">
+                            <i class="fa fa-cogs"></i>&nbsp;{$Think.lang.PROJECT_CONFIGURATION}
+                          </button>
+                          <button type="button" class="btn btn-default rwcs sensor-custom" title="{$Think.lang.THRESHOLD_SETTING}">
+                            <i class="fa fa-pencil-square-o"></i>&nbsp;{$Think.lang.THRESHOLD_SETTING}
+                          </button>
+                          <?PHP } ?>
+                          <button type="button" class="btn btn-default rwcs export-excel" title="{$Think.lang.VAR_DEVICE_EXPORT_EXCEL}">
+                            <i class="fa fa-file-excel-o"></i>&nbsp;{$Think.lang.VAR_DEVICE_EXPORT_EXCEL}
+                          </button>
+                          <?PHP if ($oem == 'HUARUN' || $oem == 'WANKE'){ ?>
+                          <button type="button" class="btn btn-default rwcs re-report-info" title="{$Think.lang.REPORT_CONFIGURATION_AGAIN}">
+                            <i class="fa fa-cloud-upload"></i>&nbsp;{$Think.lang.REPORT_CONFIGURATION_AGAIN}
+                          </button>
+                          <?PHP } ?>
+                          <button type="button" class="btn btn-default refresh-jqgrid" title="{$Think.lang.VAR_REFRESH}" data-index="2">
+                            <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                          </button>
+                        </div>
+                        <div class="input-group">
+                          <input type="text" name="searchString" class="form-control" placeholder="{$Think.lang.VAR_QUERY}" style="width: 130px" data-toggle="tooltip"  title="<?PHP echo sprintf('%s，%s，ICCID',L('VAR_SN2'),L('VAR_SYSCFG_ALIAS'))?>">
+                          <span class="input-group-btn">
+                            <button type="submit" class="btn btn-flat btn-search-border"><i class="fa fa-search"></i></button>
+                          </span>
+                        </div>
+                        <button type="button" class="btn btn-default" id="btn_set_columns" title="{$Think.lang.VAR_CFG_FIELDS}" style="margin-left: 10px">
+                          <i class="glyphicon glyphicon-th icon-th"></i>&nbsp;<span class="caret"></span>
+                        </button>
+                      </form>
+                    </div>
+                    <table id="list2"></table>
+                    <div id="pager2" style="margin-top: 5px !important;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+<!--模态框-->
+<div class="modal fade" id="myLgModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<!--自定义传感量类型-->
+<div class="modal fade" id="myLgModal2" data-jqgrid-sensor-type="0" data-sn="">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+                <h4 class="modal-title">{$Think.lang.SENSOR_TYPE}</h4>
+            </div>
+            <div class="modal-body">
+              <table id="list_sensor_type"></table>
+              <div id="pager_sensor_type" style="margin-top: 5px !important;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sensor-custom">{$Think.lang.VAR_UPDATE}</button>
+                <button type="button" class="btn btn-success btn-sensor-custom-submit" style="display: none;">{$Think.lang.VAR_BTN_SUBMIT}</button>
+                <!-- <button type="button" class="btn btn-warning btn-sensor-reset">{$Think.lang.VAR_BTN_RESET}</button> -->
+                <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--历史数据-->
+<div class="modal fade" id="myLgModal3">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<!--模态框，设置grid columns -->
+<div class="modal fade" id="gridColumnsModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+              <h4 class="modal-title" id="h4_add_edit">{$Think.lang.VAR_CFG_FIELDS}</h4>
+          </div>
+          <div class="modal-body">
+              <form class="form-horizontal" id="modal_fm_grid_columns">
+                <ul><!-- <li><input type="checkbox" name="columns"><span>{$Think.lang.VAR_TERM_STATUS}</span></li> --></ul>
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default grid_columns_reset">{$Think.lang.VAR_BTN_RESET}</button>
+              <button type="button" class="btn btn-info grid_columns_checkall">{$Think.lang.VAR_SELECT_ALL}</button>
+              <button type="button" class="btn btn-warning grid_columns_uncheckall">{$Think.lang.VAR_UN_SELECT_ALL}</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+          </div>
+        </div>
+    </div>
+</div>
+<!--模态框，ztree2-->
+<div class="modal fade" id="ztreeModal2">
+    <div class="modal-dialog modal-lg" style="width: 500px">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<include file="Homepage/footer"/>
+<script type="text/javascript" src="../Public/bootstrap_validator/bv.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--jqgrid-->
+<script type="text/javascript" src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--daterangepicker-->
+<script type="text/javascript" src="../Public/daterangepicker/moment.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/daterangepicker/daterangepicker.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--highcharts-->
+<!-- <script type="text/javascript" src="../Public/highcharts/highcharts.js?rand={$Think.const.CACHE_VERSION}"></script> -->
+<script type="text/javascript" src="../Public/highcharts/highstock.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/highcharts/no-data-to-display.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/highcharts/theme/sand-signika.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--map-->
+<script type="text/javascript" src="__ROOT__/Tpl/Public/js/map.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- export excel -->
+<script type="text/javascript" src="../Public/js/buttons/jszip.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/js/buttons/buttons.html5.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- ztree -->
+<link rel="stylesheet" type="text/css" href="../Public/ztree/css/zTreeStyle/zTreeStyle.css?rand={$Think.const.CACHE_VERSION}">
+<script type="text/javascript" src="../Public/ztree/js/jquery.ztree.all.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/ztree/js/jquery.ztree.exhide.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/ztree/js/fuzzysearch.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">
+$.gf.sensors = {$sensors};
+$.gf.oem = "{$oem}";
+</script>
+<script type="text/javascript" src="__ROOT__/Tpl/Rtu/card.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="__ROOT__/Tpl/Rtu/lora.js?rand={$Think.const.CACHE_VERSION}"></script>

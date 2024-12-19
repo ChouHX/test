@@ -1,0 +1,129 @@
+<style type="text/css">
+#modal_fm div.checkbox-inline{
+    margin-right: 15px;
+}
+#modal_fm div.checkbox-inline label{
+    cursor: pointer;
+}
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title" id="h4_add_edit">{$Think.lang.USR_GROUP_EDIT}</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="modal_fm">
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_NAME}:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <input type="hidden" name="id" value="%d" />
+                <input type="text" class="form-control" name="name" value="%s"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_USER_GROUP_PRIVILEGE}:</label>
+            <div class="col-md-8">
+                <input type="text" class="form-control ztree_search" placeholder="{$Think.lang.GROUP_NAME}" style="top: 2px; right: 57px;" />
+                <button type="button" class="btn btn-xs btn-default btn-my-search" style="top: 2px; right: 34px;"><i class="fa fa-search"></i></button>
+                <ul id="termGroupTree1" class="ztree" style="border: 1px solid #d2d6de; overflow-y: scroll; max-height: 300px; min-height: 26px;"></ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-info select_all">{$Think.lang.VAR_SELECT_ALL}</button>
+    <button type="button" class="btn btn-warning unselect_all">{$Think.lang.VAR_UN_SELECT_ALL}</button>
+    <button type="button" class="btn btn-success submit_group_edit">{$Think.lang.SAVE_TEMPLATE}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    $('.submit_group_edit').on('click', function(){
+        var obj = $("#modal_fm").data('bootstrapValidator');
+        obj.validate();
+        if (!obj.isValid()){
+            return;
+        }
+        var p = $.serializeObject('#modal_fm');
+        var nodes = $.gf.termGroupTree1.getCheckedNodes();
+        for (var i=0,len=nodes.length,ids=[]; i<len; i++){
+            ids.push(nodes[i].id);
+        }
+        p.privileges = ids.join(',');
+        ajax(tpurl('Syscfg','userGroupEdit'), p, function(msg){
+            $.notice(msg);
+            if (msg.status == 0){
+                $("#list2").trigger('reloadGrid');
+                $('#myLgModal').modal('hide');
+            }
+        });
+    });
+
+    $('#modal_fm').bootstrapValidator({
+       feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            }
+        }
+    });
+
+    $('button.select_all').click(function(){
+        $.gf.termGroupTree1.checkAllNodes(true);
+    });
+
+    $('button.unselect_all').click(function(){
+        $.gf.termGroupTree1.checkAllNodes(false);
+    });
+
+    var privileges = %s;
+    ajax(tpurl('Term','getTermGroupTreeNodes'), {}, function(msg){
+        var zNodes = [];
+        if (msg.status == 0){
+            for (var i=0,len=msg.data.length; i<len; i++){
+                zNodes.push({
+                    id: msg.data[i].id,
+                    pId: msg.data[i].pId,
+                    name: msg.data[i].name,
+                    open: msg.data[i].open,
+                    checked: $.inArray(msg.data[i].id, privileges) != -1
+                });
+            }
+        }
+        $.gf.termGroupTree1 = $.fn.zTree.init($("#termGroupTree1"), {
+            check:{
+                enable: true,
+                chkboxType: {'Y':'s', 'N':'s'}
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            }
+        }, zNodes);
+
+        fuzzySearch('termGroupTree1','.ztree_search',null,true); //初始化模糊搜索方法
+    });
+
+    $('.btn-my-search').click(function(){
+        var i = $(this).find('i');
+        if (i.hasClass('fa-search')) {
+            $('.ztree_search').fadeIn(500);
+            i.removeClass('fa-search').addClass('fa-close');
+        } else {
+            $('.ztree_search').val('').fadeOut(500);
+            $('.ztree_search').trigger('input');
+            i.removeClass('fa-close').addClass('fa-search');
+        }
+    });
+});
+})(jQuery);
+</script>

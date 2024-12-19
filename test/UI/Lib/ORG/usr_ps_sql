@@ -1,0 +1,137 @@
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(1, 'ROOT',                               '',                     '',                             0,      1);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(2, 'VAR_PTGK',                           'Information',          '',                             0,      1);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(3, 'VAR_DEVICE_MANAGE',                  'Term',                 '',                             0,      1);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(4, 'VAR_MENU_RTU',                       'Rtu',                  '',                             0,      1);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(5, 'VAR_MENU_TASK',                      'Taskmgr',              '',                             0,      1);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(6, 'VAR_MENU_SYSCFG',                    'Syscfg',               '',                             0,      1);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(113,'VAR_MENU_DEVICE',                   'Portal',               '',                             0,      1);
+-- 设备管理
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(7,  'VAR_MENU_TERM',                     'Term',                 'jklb',                         1,      3);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(8,  'TERM_DETAIL',                       'Term',                 'sbxq',                         1,      3);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(9,  'VAR_TG',                            'Term',                 'fzlb',                         1,      3);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(10, 'VAR_MENU_RESOURCE_FILE',            'Term',                 'zywj',                         1,      3);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(11, 'PANORAMA',                          'Term',                 'qjt',                          1,      3);
+-- 操作按钮
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(12,  'VAR_MENU1',                        '',                     '',                             0,      7);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(13,  'VAR_ADD',                          'Term',                 'termAdd',                      1,      12);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(14,  'VAR_EDIT',                         'Term',                 'termEdit',                     1,      12);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(15,  'VAR_DEL',                          'Term',                 'termDel',                      1,      12);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(16,  'VAR_BATCH_EDIT_GROUP',             'Term',                 'setGroup',                     1,      12);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(17,  'CLEAN_RUN_INFO',                   'Term',                 'cleanRunInfo',                 1,      12);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(18,  'MULTI_SET_POS',                    'Term',                 'multiSetGps',                  1,      12);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(19,  'REFRESH_BASE_STATION_LOCATION',    'Term',                 'resetCell',                    1,      12);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(20,  'REFRESH_WIFI_LOCATION',            'Term',                 'resetWifi',                    1,      12);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(21,  'VAR_MENU2',                        '',                     '',                             0,      7);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(22,  'VAR_TERM_GET_PARAM',               'Task',                 'configGet',                    1,      21);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(23,  'VAR_EDIT_PARAM',                   'Task',                 'configSet',                    1,      21);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(24,  'CFG_FILE_UPLOAD',                  'Task',                 'cfgFileUpload',                1,      21);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(25,  'VAR_CFG_ISSUED',                   'Task',                 'downCfg',                      1,      21);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(26,  'GET_RTU_SCRIPT',                   'Task',                 'rtuScriptGet',                 1,      21);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(27,  'SET_RTU_SCRIPT',                   'Task',                 'rtuScriptSet',                 1,      21);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(28,  'VAR_MENU3',                        '',                     '',                             0,      7);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(29,  'VAR_RESTART',                      'Task',                 'termRestart',                  1,      28);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(30,  'VAR_UPGRADE',                      'Task',                 'termUpgrade',                  1,      28);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(31,  'VAR_CATCH_PACKAGE',                'Task',                 'catchPackage',                 1,      28);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(32,  'CLEAR_FLASH',                      'Task',                 'clearFlash',                   1,      28);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(33,  'DATA_SEND',                        'Task',                 'rtuDataSend',                  1,      28);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(34,  'DATA_TRANSMISSION',                'Term',                 'dataTrans',                    1,      28);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(35,  'SIM_CHANGE',                       'Task',                 'simChange',                    1,      28);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(121, 'RECOVERY_MODULE',                  'Task',                 'restartModule',                1,      28);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(36,  'RC_CONNECT',                       'Task',                 'rcConnect',                    1,      28);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(37,  'RC_DISCONNECT',                    'Task',                 'rcDissconnect',                1,      28);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(38,  'N2N_ROUTER_ADD',                   'Term',                 'n2nRouteradd',                 1,      28);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(39,  'VAR_MENU_OVERVIEW',                '',                     '',                             0,      7);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(40,  'DEVICE_REPORT',                    'Term',                 'exportTerm',                   1,      39);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(41,  'FLUX_REPORT',                      'Term',                 'exportTermFlux',               1,      39);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(42,  'SIGNAL_REPORT',                    'Term',                 'exportSignal',                 1,      39);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(43,  'VAR_LOGIN_RECORD',                 'Term',                 'exportLogins',                 1,      39);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(44,  'NET_CHANGE_RECORD',                'Term',                 'exportNetChange',              1,      39);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(45,  'VAR_MENU_TASK_LIST',               '',                     '',                             0,      8);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(46,  'VAR_MENU_TASK_ONCE',               '',                     '',                             0,      45);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(47,  'VAR_MENU_TASK_TIMED',              '',                     '',                             0,      45);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(48,  'VAR_DEL',                          'Taskmgr',              'termDetailDeleteTask',         1,      46);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(49,  'VAR_DEL',                          'Taskmgr',              'termDetailDeleteTimedTask',    1,      47);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(50,  'VAR_MENU_RESOURCE_FILE',           '',                     '',                             0,      8);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(51,  'VAR_CFG_FILENAME',                 '',                     '',                             0,      50);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(52,  'VAR_CP_FILES',                     '',                     '',                             0,      50);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(53,  'VAR_CP_DOWNLOAD',                  'Syscfg',               'termDetailDownCfg',            1,      51);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(54,  'VAR_CP_DOWNLOAD',                  'Syscfg',               'termDetailDownCap',            1,      52);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(55,  'VAR_TG',                           '',                     '',                             0,      9);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(56,  'VAR_TG_RULE',                      '',                     '',                             0,      9);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(57,  'VAR_ADD',                          'Syscfg',               'termGroupAdd',                 1,      55);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(58,  'VAR_EDIT',                         'Syscfg',               'termGroupEdit',                1,      55);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(59,  'VAR_DEL',                          'Syscfg',               'termGroupDel',                 1,      55);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(60,  'VAR_ADD',                          'Syscfg',               'groupRulesAdd',                1,      56);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(61,  'VAR_EDIT',                         'Syscfg',               'groupRulesEdit',               1,      56);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(62,  'VAR_DEL',                          'Syscfg',               'groupRulesDel',                1,      56);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(63,  'RULE_EXEC',                        'Syscfg',               'execGroupRule',                1,      56);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(64,  'VAR_AD_ADD_FILE',                  'Syscfg',               'addResFile',                   1,      10);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(65,  'VAR_AD_DEL_FILE',                  'Syscfg',               'deleteResFile',                1,      10);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(66,  'DOWNLOAD_FILE',                    'Syscfg',               'resDownload',                  1,      10);
+-- 数据采集
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(67, 'DATA_LIST',                         'Rtu',                  'lora',                         1,      4);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(68, 'COLLECTION_SETTINGS',               'Rtu',                  'sjlx',                         1,      4);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(69, 'VAR_ALARM_RECORD',                  'Rtu',                  'gjjl',                         1,      4);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(70, 'PROJECT_INFO',                      'Rtu',                  'wgjd',                         1,      4);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(122,'DATA_TRANSMISSION',                 'Rtu',                  'sjtc',                         1,      4);
+-- 操作按钮
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(71, 'PROJECT_CONFIGURATION',             'Rtu',                  'projectEdit',                  1,      67);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(72, 'THRESHOLD_SETTING',                 'Rtu',                  'sensorTypeCustom',             1,      67);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(73, 'VAR_DEVICE_EXPORT_EXCEL',           'Rtu',                  'exportRtu',                    1,      67);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(74,  'VAR_ADD',                          'Rtu',                  'sensorTypeAdd',                1,      68);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(75,  'VAR_EDIT',                         'Rtu',                  'sensorTypeEdit',               1,      68);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(76,  'VAR_DEL',                          'Rtu',                  'sensorTypeDel',                1,      68);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(77,  'VAR_IMPORT',                       'Rtu',                  'sensorTypeImport',             1,      68);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(78,  'EXCEL_TEMPLATE',                   'Rtu',                  'sensorTypeExcelDownload',      1,      68);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(79,  'VAR_DEVICE_EXPORT_EXCEL',          'Rtu',                  'exportAlarmRecord',            1,      69);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(80,  'VAR_DEL',                          'Rtu',                  'delAlarmRecords',              1,      69);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(123, 'DATA_TRANS_OPERATION',        		'Rtu',                  'sjtcOperation',                1,      122);
+-- 任务管理
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(81, 'VAR_MENU_TASK_ONCE',                'Taskmgr',              'rwlb',                         1,      5);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(82, 'VAR_TASK_DETAIL',                   'Taskmgr',              'rwxq',                         1,      81);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(83, 'VAR_MENU_TASK_TIMED',               'Taskmgr',              'dsrwlb',                       1,      5);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(84, 'VAR_TASK_DETAIL',                   'Taskmgr',              'dsrwxq',                       1,      83);
+-- 操作按钮
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(85, 'VAR_ENABLE',                        'Taskmgr',              'taskEnable',                   1,      81);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(86, 'VAR_DEL',                           'Taskmgr',              'taskDel',                      1,      81);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(87, 'VAR_DEL',                           'Taskmgr',              'taskDetailDel',                1,      82);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(88, 'VAR_RETRY',                         'Taskmgr',              'taskDetailRetry',              1,      82);
+-- 系统管理
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(89, 'VAR_USER_GROUP_LIST',               'Syscfg',               'yhzlb',                        1,      6);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(90, 'VAR_MENU_USER_LIST',                'Syscfg',               'yhlb',                         1,      6);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(91, 'ALARM_STRATEGY',                    'Syscfg',               'gjcl',                         1,      6);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(118,'SOFTWARE_UPGRADE',                  'Syscfg',               'rjsj',                         1,      6);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(92, 'SYSTEM_SETTING',                    'Syscfg',               'xtsz',                         1,      6);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(93, 'PERSONAL_CENTER',                   'Syscfg',               'grzx',                         1,      6);
+-- 操作按钮
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(94, 'VAR_ADD',                           'Syscfg',               'userGroupAdd',                 1,      89);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(95, 'VAR_EDIT',                          'Syscfg',               'userGroupEdit',                1,      89);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(96, 'VAR_DEL',                           'Syscfg',               'userGroupDelete',              1,      89);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(97, 'VAR_ADD',                           'Syscfg',               'userAdd',                      1,      90);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(98, 'VAR_EDIT',                          'Syscfg',               'userEdit',                     1,      90);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(99, 'VAR_DEL',                           'Syscfg',               'userDel',                      1,      90);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(100,'VAR_UPDATE',                        'Syscfg',               'editAlarmParams',              1,      91);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(101,'TEST_EMAIL_CONFIG',                 'Syscfg',               'emailConfigTest',              1,      92);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(102,'TEST_WEIXIN_CONFIG',                'Weixin',               'wx_test_config',               1,      92);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(103,'DEL_ALARM_RECORD',                  'Syscfg',               'alarmSendRecordDelete',        1,      91);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(104,'VAR_MENU_SYSCFG_EDIT',              'Syscfg',               'editSystemParams',             1,      92);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(105,'VAR_USER_EDIT_MYSELT',              'Syscfg',               'editMyInfo',                   1,      93);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(106,'VAR_EDIT_PASS',                     'Syscfg',               'editPass',                     1,      93);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(107,'SET_ENTERPRISE_WECHAT_QR_CODE',     'Syscfg',               'setQrcode',                    1,      92);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(108,'HEAD_IMG_EDIT',                     'Syscfg',               'editHeadImg',                  1,      93);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(119,'START_UPGRADE',						'Syscfg',				'kssj',							1,		118);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(109,'VPN_CONNECT_DISCONNECT',            'Task',                 'vpnConnect',                   1,      28);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(110,'DOWNLOAD_FILE',                     'Taskmgr',              'cpFilesDownload',              1,      82);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(111,'GPS_SETUP',                         'Term',                 'setgps',                       1,      11);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(112,'ADD_FENCE',                         'Term',                 'setFence',                     1,      8);
+-- 移动设备
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(114,'VAR_DEVICE_LIST',                   'Portal',               'sblb',                         1,      113);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(115,'VAR_MENU_AD',                       'Portal',               'portal',                       1,      113);
+-- 操作按钮
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(116,'VAR_AD_ADD',                        'Portal',               'portalAdd',                    1,      115);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(117,'VAR_AD_DEL',                        'Portal',               'portalDelete',                 1,      115);
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(120,'VAR_AD_SEND',						'Task',					'adSend',						1,		28);
+-- 重启模块
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(124, 'MODULE_RESTART',                   'Task',                 'termModuleRestart',            1,      28);
+-- 以太网口配置
+INSERT INTO page_nodes (id, alias, module_name, action_name, checkbox, pid) VALUES(125, 'SET_ETHERNET_PORT_STATUS',         'Task',                 'interfaceSet',                 1,      21);

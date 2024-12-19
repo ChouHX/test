@@ -1,0 +1,147 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/daterangepicker/daterangepicker.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Rtu/card.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/bootstrap_validator/bv.min.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <ul class="loras unstyled">
+        <li class="well project-detail">
+          <div class="row-fluid">
+            <div class="col-lg-2">
+              <div class="current">
+                <span class="label label-info">{$Think.lang.PROJECT_INFO}</span>
+                <h3 class="title">{$project['prjname']}</h3>
+                <p class="time">{$project['create_time']}</p>
+                <?PHP if (!C('READ_ONLY_VERSION')) { ?>
+                <p><a href="javascript:;" onclick="$.gf.projectEdit('{$_REQUEST['gateway_sn']}')"><i class="fa fa-pencil"></i>&nbsp;{$Think.lang.PROJECT_INFO}</a></p>
+                <?PHP } ?>
+              </div>
+            </div>
+            <div class="col-lg-9">
+              <table class="table">
+                <tr>
+                  <th class="text-center" width="135px">{$Think.lang.DEVICE_NAME}：</th>
+                  <td>{$project['name']}</td>
+                </tr>
+                <tr>
+                  <th class="text-center">{$Think.lang.DETAIL_ADDR}：</th>
+                  <td>{$project['address']}</td>
+                </tr>
+                <tr>
+                  <th class="text-center">{$Think.lang.CONTACT}：</th>
+                  <td>{$project['contact']}</td>
+                </tr>
+                <tr>
+                  <th class="text-center">{$Think.lang.TEL}：</th>
+                  <td>{$project['tel']}</td>
+                </tr>
+                <tr>
+                  <th class="text-center">{$Think.lang.DATA_SHOW}：</th>
+                  <td><?PHP echo sprintf('<input type="checkbox" %s name="wgjd_show_type">', $wgjd_show_type == 1 ? 'checked' : ''); ?>&nbsp;<span style="color: #999">{$Think.lang.DATA_SHOW_DESC}</span></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </li>
+        <?PHP foreach ($loras as $key => $lora){ ?>
+        <li class="lora well">
+          <div class="row-fluid">
+            <div class="col-lg-2">
+              <div class="current">
+                <span class="label label-info"><?PHP echo $data_num == 0 ? 'Lora' : L('VAR_GATEWAY') ?></span>
+                <h3 class="title"><?PHP echo $lora[$lora['term_type']==1 && $lora['loraname'] ? 'loraname':'sn'] ?></h3>
+                <p class="time">{$lora['last_time']}</p>
+              </div>
+            </div>
+            <ul class="col-lg-10 sensors" data-sn="{$lora['sn']}">
+              <?PHP foreach ($sensors as $k => $row){ ?>
+              <li class="sensor" data-value_type="{$row['value_type']}" data-id="{$row['id']}" data-slave_id="{$row['slave_id']}" data-addr="{$row['addr']}" id="{$lora['sn']}_{$row['slave_id']}_{$row['addr']}">
+                <a href="javascript:;">
+                  <h4>{$row['name']}</h4>
+                  <dl>
+                    <dt>{$Think.lang.CURRENT_VALUE}&nbsp;({$row['unit']})</dt>
+                    <dd>
+                      <strong class="current_value">--</strong>
+                    </dd>
+                    <dt>{$Think.lang.VAR_RANGES}</dt>
+                    <dd>
+                      <strong class="">{$row['min']}~{$row['max']}</strong>
+                    </dd>
+                    <dt>{$Think.lang.VAR_DEVICE_URL_REPORT_TIME}</dt>
+                    <dd>
+                      <strong class="report_time">--</strong>
+                    </dd>
+                  </dl>
+                </a>
+              </li>
+              <?PHP } ?>
+            </ul>
+          </div>
+        </li>
+        <?PHP } ?>
+        <li class="well project-detail">
+          <div class="row-fluid">
+            <div class="col-lg-2">
+              <div class="current">
+                <span class="label label-info">{$Think.lang.DLWZ}</span>
+                <h3 class="title">{$project['prjname']}</h3>
+                <p class="time">{$project['create_time']}</p>
+                <?PHP if (!C('READ_ONLY_VERSION')) { ?>
+                <p><a href="javascript:;" onclick="$.gf.projectEdit('{$_REQUEST['gateway_sn']}')"><i class="fa fa-pencil"></i>&nbsp;{$Think.lang.DLWZ}</a></p>
+                <?PHP } ?>
+              </div>
+            </div>
+            <div class="col-lg-9" style="height: 200px; background:#f1eded; margin-left: 15px;" id="map_container">
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+<!--模态框-->
+<div class="modal fade" id="myLgModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<!--历史数据-->
+<div class="modal fade" id="myLgModal3">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<include file="Homepage/footer"/>
+<script type="text/javascript" src="../Public/bootstrap_validator/bv.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--jqgrid-->
+<script type="text/javascript" src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--map-->
+<script type="text/javascript" src="__ROOT__/Tpl/Public/js/map.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--daterangepicker-->
+<script type="text/javascript" src="../Public/daterangepicker/moment.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/daterangepicker/daterangepicker.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--highcharts-->
+<!-- <script type="text/javascript" src="../Public/highcharts/highcharts.js?rand={$Think.const.CACHE_VERSION}"></script> -->
+<script type="text/javascript" src="../Public/highcharts/highstock.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/highcharts/no-data-to-display.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/highcharts/theme/sand-signika.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- export excel -->
+<script type="text/javascript" src="../Public/js/buttons/jszip.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/js/buttons/buttons.html5.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- jquery cookie -->
+<script type="text/javascript" src="../Public/js/jquery.cookie.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">
+$.gf.data_num = "{$data_num}";
+$.gf.gateway_sn = "{$_REQUEST['gateway_sn']}";
+$.gf.gps = <?PHP echo json_encode($gps ? $gps : array()); ?>;
+$.gf.wgjd_show_type = {$wgjd_show_type};
+</script>
+<script type="text/javascript" src="__ROOT__/Tpl/Rtu/wgjd.js?rand={$Think.const.CACHE_VERSION}"></script>

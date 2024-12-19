@@ -1,0 +1,510 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/daterangepicker/daterangepicker.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<!--fileinput-->
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Public/bootstrap_fileinput/css/fileinput.min.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.SYSTEM_SETTING}</h3>
+            </div>
+            <div class="box-body">
+              <div class="nav-tabs-custom" style="position: relative; margin-bottom: 10px;">
+                <div class="my-loading"></div><!--loading div-->
+                <ul class="nav nav-tabs" id="tab_params_list">
+                  <li class="active"><a href="#params_tab_1" data-toggle="tab">{$Think.lang.SYSTEM_INFO}</a></li><!--系统信息-->
+                  <li><a href="#params_tab_2" data-toggle="tab">{$Think.lang.SYSCFG_DEVICE_FLUX}</a></li><!-- 移动设备配置-->
+                  <?PHP if (!C('READ_ONLY_VERSION')) { ?>
+                  <li><a href="#params_tab_3" data-toggle="tab">{$Think.lang.SYSCFG_ROUTER_FLUX}</a></li><!-- 设备流量限制-->
+                  <!-- <li><a href="#params_tab_4" data-toggle="tab">{$Think.lang.SYSCFG_ROUTER_HB}</a></li> 路由器流水记录-->
+                  <!-- <li><a href="#params_tab_5" data-toggle="tab">{$Think.lang.SYSCFG_AUTO_CAP}</a></li> 自动抓包-->
+                  <li><a href="#params_tab_6" data-toggle="tab">{$Think.lang.SIM_CONFIG}</a></li><!--sim卡自动切换-->
+                  <?PHP } ?>
+                  <!--<li><a href="#params_tab_8" data-toggle="tab">{$Think.lang.OTHER_SETTING}</a></li> 其他设置-->
+                  <li><a href="#params_tab_9" data-toggle="tab">{$Think.lang.VAR_TG_RULE}</a></li><!--设备分组规则-->
+                  <li><a href="#params_tab_10" data-toggle="tab">{$Think.lang.MAIL_SERVER_SETTINGS}</a></li><!--发件箱配置-->
+                  <li><a href="#params_tab_11" data-toggle="tab">{$Think.lang.ENTERPRISE_WECHAT_CONFIG}</a></li><!--企业微信配置-->
+                  <li><a href="#params_tab_7" data-toggle="tab">{$Think.lang.VAR_MENU_LOG}</a></li><!--日志-->
+                  <!--注意：修改了tab个数后要去文件SystemParamsjson.js中修改参数(maxFormId)-->
+                </ul>
+                <div class="tab-content params-tab-content">
+                  <div class="tab-pane active" id="params_tab_1">
+                    <form class="form-horizontal" role="form" id="form_param_1">
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.LICENCE_TYPE_TITLE}：</label>
+                        <div class="col-lg-3">
+                          <input type="text" class="form-control" name="licence_type" id="tpid_licence_type" disabled="disabled">
+                        </div>
+                        <label class="col-lg-5 control-label input-notes"></label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.PLATFORM_VALID_PERIOD}：</label>
+                        <div class="col-lg-3">
+                          <input type="text" class="form-control" name="licence_end_time" id="tpid_licence_end_time" disabled="disabled">
+                        </div>
+                        <label class="col-lg-5 control-label input-notes" id="tpid_licence_end_time_tips"></label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.LICENCE_LIMIT_TITLE}：</label>
+                        <div class="col-lg-3">
+                          <input type="text" class="form-control" name="licence_limit" id="tpid_licence_limit" disabled="disabled">
+                        </div>
+                        <label class="col-lg-5 control-label input-notes">{$Think.lang.LICENCE_LIMIT}</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.VAR_COPYRIGHT_1}：</label>
+                        <div class="col-lg-3">
+                          <input type="text" class="form-control" name="version" value="{$Think.const.UI_VERSION}" disabled="disabled">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.VAR_COPYRIGHT_2}：</label>
+                        <div class="col-lg-3">
+                          <input type="text" class="form-control" name="release" value="{$Think.const.UI_RELEASE_DATE}" disabled="disabled">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.PAGE_DESC}：</label>
+                        <div class="col-sm-10">
+                          <p class="form-control-static">{$Think.lang.PAGE_DESC_0}</p>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="params_tab_2">
+                    <form class="form-horizontal" role="form" id="form_param_2">
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.DEVICE_FLUX_LIMIT_VALUE_TITLE}：</label>
+                        <div class="col-lg-2">
+                          <input type="text" class="form-control" name="device_month_flux_limit" id="tpid_device_month_flux_limit">
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.DEVICE_FLUX_LIMIT_VALUE}</label>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.DAILY_FLUX_LIMIT}：</label>
+                        <div class="col-lg-2">
+                          <input type="text" class="form-control" name="device_day_flux_limit" id="tpid_device_day_flux_limit">
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.DAILY_FLUX_LIMIT_INFO}</label>
+                      </div>
+
+                      <div class="form-group" style="display: none;">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.ENABLE_SINGLE_DEVICE_DATA_LIMIT}：</label>
+                        <div class="col-lg-2">
+                          <div class="checkbox-inline">
+                            <input class="ck-top-0" type="checkbox" name="enable_device_conf_limit" id="tpid_enable_device_conf_limit">
+                          </div>
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.ENABLE_SINGLE_DEVICE_DATA_LIMIT_DESC}</label>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.ENABLE_DEVICE_MONTH_FLUX_LIMIT}：</label>
+                        <div class="col-lg-2">
+                          <div class="checkbox-inline">
+                            <input class="ck-top-0" type="checkbox" name="enable_device_month_flux_limit" id="tpid_enable_device_month_flux_limit">
+                          </div>
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.ENABLE_DEVICE_GROUP_DATA_LIMIT_DESC}</label>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.ENABLE_DEVICE_DAY_FLUX_LIMIT}：</label>
+                        <div class="col-lg-2">
+                          <div class="checkbox-inline">
+                            <input class="ck-top-0" type="checkbox" name="enable_device_day_flux_limit" id="tpid_enable_device_day_flux_limit">
+                          </div>
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.ENABLE_DEVICE_GROUP_DATA_LIMIT_DESC}</label>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.DEVICE_AUTH_DURATION_TITLE}：</label>
+                        <div class="col-lg-2 text-right">
+                          <input type="text" class="form-control" name="device_auth_duration" id="tpid_device_auth_duration">
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.DEVICE_AUTH_DURATION}</label>
+                      </div>
+
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.PAGE_DESC}：</label>
+                        <div class="col-sm-10">
+                          <p class="form-control-static">{$Think.lang.PAGE_DESC_1}</p>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="params_tab_3">
+                    <form class="form-horizontal" role="form" id="form_param_3">
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.DEVICE_MONTHLY_FLUX_LIMIT}：</label>
+                        <div class="col-lg-1">
+                            <label class="checkbox-inline">
+                              <input class="ck-top-0" type="checkbox" name="enable_month_flux_limit" id="tpid_enable_month_flux_limit">
+                            </label>
+                        </div>
+                        <div class="col-lg-1">&nbsp;</div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.ROUTER_FLUX_LIMIT_VALUE}</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.DEVICE_DAILY_FLUX_LIMIT}：</label>
+                        <div class="col-lg-1">
+                            <label class="checkbox-inline">
+                              <input class="ck-top-0" type="checkbox" name="enable_day_flux_limit" id="tpid_enable_day_flux_limit">
+                            </label>
+                        </div>
+                        <div class="col-lg-1">&nbsp;</div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.ROUTER_FLUX_LIMIT_VALUE_DAY}</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.ENABLE_GEO_FENCE}：</label>
+                        <div class="col-lg-2">
+                          <!--
+                          <label class="checkbox-inline">
+                            <input class="ck-top-0" type="checkbox" name="enable_electronic_fence" id="tpid_enable_electronic_fence">
+                          </label>
+                          -->
+                          <select class="form-control" name="enable_electronic_fence" id="tpid_enable_electronic_fence">
+                            <option value="0">{$Think.lang.VAR_DISABLE}</option>
+                            <option value="1">{$Think.lang.LEAVE_FENCE_LIMIT_DATA}</option>
+                            <option value="2">{$Think.lang.IN_FENCE_LIMIT_DATA}</option>
+                          </select>
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.ENABLE_GEO_FENCE_DESC}</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.PAGE_DESC}：</label>
+                        <div class="col-sm-10">
+                          <p class="form-control-static">{$Think.lang.PAGE_DESC_2}</p>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="params_tab_4">
+                    <form class="form-horizontal" role="form" id="form_param_4">
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.ROUTER_HB_FLOW_ENABLE_TITLE}：</label>
+                        <div class="col-lg-1 text-right">
+                            <label class="checkbox-inline">
+                              <input class="ck-top-0" type="checkbox" name="router_hb_flow_enable" id="tpid_router_hb_flow_enable">
+                            </label>
+                        </div>
+                        <div class="col-lg-1">&nbsp;</div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.ROUTER_HB_FLOW_ENABLE}</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.PAGE_DESC}：</label>
+                        <div class="col-sm-10">
+                          <p class="form-control-static">{$Think.lang.PAGE_DESC_3}</p>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="params_tab_5">
+                    <form class="form-horizontal" role="form" id="form_param_5">
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.AUTO_CAP_ENABLE_TITLE}：</label>
+                        <div class="col-lg-1 text-right">
+                            <label class="checkbox-inline">
+                              <input class="ck-top-0" type="checkbox" name="auto_cap_enable" id="tpid_auto_cap_enable">
+                            </label>
+                        </div>
+                        <div class="col-lg-1">&nbsp;</div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.ROUTER_HB_FLOW_ENABLE}</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.AUTO_CAP_TRI_TIME_TITLE}：</label>
+                        <div class="col-lg-2">
+                          <input type="text" class="form-control" name="auto_cap_tri_time" id="tpid_auto_cap_tri_time">
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.AUTO_CAP_TRI_TIME}</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.AUTO_CAP_TRI_FLUX_TITLE}：</label>
+                        <div class="col-lg-2">
+                          <input type="text" class="form-control" name="auto_cap_tri_flux" id="tpid_auto_cap_tri_flux">
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.AUTO_CAP_TRI_FLUX}</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.AUTO_CAP_CAP_TIME_TITLE}：</label>
+                        <div class="col-lg-2">
+                          <input type="text" class="form-control" name="auto_cap_cap_time" id="tpid_auto_cap_cap_time">
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.AUTO_CAP_CAP_TIME}</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.AUTO_CAP_CAP_LEVEL_TITLE}：</label>
+                        <div class="col-lg-2">
+                          <select class="form-control" name="auto_cap_cap_level" id="tpid_auto_cap_cap_level">
+                            <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                            <option value="1">Level 1</option>
+                            <option value="2">Level 2</option>
+                            <option value="3">Level 3</option>
+                          </select>
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.AUTO_CAP_CAP_LEVEL}</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.AUTO_CAP_SILENT_TIME_TITLE}：</label>
+                        <div class="col-lg-2">
+                          <input type="text" class="form-control" name="auto_cap_silent_time" id="tpid_auto_cap_silent_time">
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.AUTO_CAP_SILENT_TIME}</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.PAGE_DESC}：</label>
+                        <div class="col-sm-10">
+                          <p class="form-control-static">{$Think.lang.PAGE_DESC_4}</p>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="params_tab_6">
+                    <form class="form-horizontal" role="form" id="form_param_6">
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.SIM_CHANGE_THRESHOLD}：</label>
+                        <div class="col-lg-2">
+                          <input type="text" class="form-control" name="change_sim_pos_flux" id="tpid_change_sim_pos_flux">
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.SIM_CHANGE_THRESHOLD_DESC}</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.PAGE_DESC}：</label>
+                        <div class="col-sm-10">
+                          <p class="form-control-static">{$Think.lang.PAGE_DESC_6}</p>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="params_tab_7">
+                    <form class="form-horizontal" role="form" id="form_param_7">
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.AUTO_CLEAN_LOG}：</label>
+                        <div class="col-lg-1 text-left">
+                            <label class="checkbox-inline">
+                              <input class="ck-top-0" type="checkbox" name="log_auto_clear" id="tpid_log_auto_clear">
+                            </label>
+                        </div>
+                        <div class="col-lg-1">&nbsp;</div>
+                        <label class="col-lg-8 control-label input-notes"></label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.LOG_RETENTION_TIME}：</label>
+                        <div class="col-lg-2">
+                          <input type="text" class="form-control" name="log_reserve" id="tpid_log_reserve">
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.LOG_RETENTION_TIME_DESC}</label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.AUTOMATICALLY_CLEAN_GPS_DATA_FILES}：</label>
+                        <div class="col-lg-1 text-left">
+                            <label class="checkbox-inline">
+                              <input class="ck-top-0" type="checkbox" name="auto_clear_gps" id="tpid_auto_clear_gps">
+                            </label>
+                        </div>
+                        <div class="col-lg-1">&nbsp;</div>
+                        <label class="col-lg-8 control-label input-notes"></label>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.GPS_DATA_RETENTION_TIME}：</label>
+                        <div class="col-lg-2">
+                          <input type="text" class="form-control" name="gps_reserve_days" id="tpid_gps_reserve_days">
+                        </div>
+                        <label class="col-lg-8 control-label input-notes">{$Think.lang.UNIT_IN_DAYS}</label>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="params_tab_9">
+                    <form class="form-horizontal" role="form" id="form_param_9">
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label fw700">{$Think.lang.RULE_RUN_MODE}：</label>
+                        <div class="col-lg-3 text-left">
+                          <select class="form-control" name="term_group_rule_mode" id="tpid_term_group_rule_mode">
+                            <option value="0">{$Think.lang.FIRST_LOGIN_EXEC_RULE}</option>
+                            <option value="1">{$Think.lang.EVERY_LOGIN_EXEC_RULE}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="params_tab_10">
+                    <form class="form-horizontal" role="form" id="form_param_10">
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label">{$Think.lang.SEND_SERVER_ADDRESS}：</label>
+                        <div class="col-lg-4">
+                          <input type="text" class="form-control" name="email_config_host" id="tpid_email_config_host">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="endtime" class="col-lg-2 control-label">SSL：</label>
+                        <div class="col-lg-4">
+                          <label class="checkbox-inline">
+                            <input type="checkbox" name="email_config_ssl" id="tpid_email_config_ssl">&nbsp;
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label">{$Think.lang.SERVER_PORT}：</label>
+                        <div class="col-lg-4">
+                          <input type="text" class="form-control" name="email_config_port" id="tpid_email_config_port">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label">{$Think.lang.ACCOUNT}：</label>
+                        <div class="col-lg-4">
+                          <input type="text" class="form-control" name="email_config_account" id="tpid_email_config_account">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label">{$Think.lang.VAR_PASSWD}：</label>
+                        <div class="col-lg-4">
+                          <input type="text" class="form-control" name="email_config_password" id="tpid_email_config_password">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label">{$Think.lang.SENDER_NAME}：</label>
+                        <div class="col-lg-4">
+                          <input type="text" class="form-control" name="email_config_from" id="tpid_email_config_from">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="endtime" class="col-lg-2 control-label">Smtp auth：</label>
+                        <div class="col-lg-4">
+                          <label class="checkbox-inline">
+                            <input type="checkbox" name="email_config_smtp_auth" id="tpid_email_config_smtp_auth">&nbsp;
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="endtime" class="col-lg-2 control-label">{$Think.lang.TEST_EMAIL_CONFIG}：</label>
+                        <div class="col-lg-4">
+                          <input type="text" class="form-control" id="test_email">
+                        </div>
+                        <button type="button" class="btn btn-default" id="btn_test_email">{$Think.lang.VAR_TEST}</button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="tab-pane" id="params_tab_11">
+                    <form class="form-horizontal" role="form" id="form_param_11">
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label">{$Think.lang.REGISTER_ADDR}：</label>
+                        <div class="col-lg-4">
+                          <p class="form-control-static"><a href="https://work.weixin.qq.com/" target="_blank">https://work.weixin.qq.com/</a></p>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label">corpid：</label>
+                        <div class="col-lg-4">
+                          <input type="text" class="form-control" name="weixin_config_corpid" id="tpid_weixin_config_corpid">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label">corpsecret：</label>
+                        <div class="col-lg-4">
+                          <input type="text" class="form-control" name="weixin_config_corpsecret" id="tpid_weixin_config_corpsecret">
+                        </div>
+                        <button type="button" class="btn btn-default btn-test-wx" data-type="0">{$Think.lang.VAR_TEST}</button>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label">agentid：</label>
+                        <div class="col-lg-4">
+                          <input type="text" class="form-control" name="weixin_config_agentid" id="tpid_weixin_config_agentid">
+                        </div>
+                        <button type="button" class="btn btn-default btn-test-wx" data-type="1">{$Think.lang.VAR_TEST}</button>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label">txl_secret：</label>
+                        <div class="col-lg-4">
+                          <input type="text" class="form-control" name="weixin_config_txl_secret" id="tpid_weixin_config_txl_secret">
+                        </div>
+                        <button type="button" class="btn btn-default btn-test-wx" data-type="2">{$Think.lang.VAR_TEST}</button>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-lg-2 control-label">{$Think.lang.QR_CODE}：</label>
+                        <div class="col-lg-4">
+                          <img src="../Public/images/wxqyh.jpg" class="img-responsive img-qrcode">
+                        </div>
+                        <button type="button" class="btn btn-default btn-upload-qrcode">{$Think.lang.VAR_UPLOAD}</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div role="toolbar" class="text-center">
+                <button type="button" class="btn btn-default btn-sm" id="btn_reload_params"><i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-default btn-sm" id="btn_confirm"><i class="fa fa-pencil"></i>&nbsp;{$Think.lang.VAR_UPDATE}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--日志-->
+      <div class="row" style="margin-top: 15px;">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.SYSTEM_OPERATION_LOG}</h3>
+            </div>
+            <div class="box-body" id="tab_1">
+              <table id="list1"></table>
+              <div id="pager1" style="margin-top: 30px !important;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+<!--模态框 edit qrcode-->
+<div class="modal fade" id="myLgModal2">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_BTN_SURE}</span></button>
+                <h4 class="modal-title">{$Think.lang.QR_CODE}</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="modal_fm2">
+                    <div class="form-group">
+                      <label class="col-md-2" style="text-align: right;">{$Think.lang.VAR_UPGRADE_FILE}:<span class="required-field"></span></label>
+                      <div class="col-md-8">
+                        <input type="file" id="filedata" name="filedata">
+                      </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success save_edit_qrcode">{$Think.lang.VAR_BTN_SURE}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="Homepage/footer"/>
+<!--jqgrid-->
+<script type="text/javascript" src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--fileinput-->
+<script type="text/javascript" src="__ROOT__/Tpl/Public/bootstrap_fileinput/js/fileinput.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="__ROOT__/Tpl/Public/bootstrap_fileinput/js/locales/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">$.gf.lang = '<?PHP echo $lang?>';</script>
+<!--daterangepicker-->
+<script type="text/javascript" src="../Public/daterangepicker/moment.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/daterangepicker/daterangepicker.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">
+  $.gf.task_type = "<?PHP echo $_REQUEST['type']?>";
+  $.gf.gid = "<?PHP echo $_REQUEST['gid']?>";
+  $.gf.sns = "<?PHP echo $_REQUEST['sns']?>";
+</script>
+<script type="text/javascript" src="__ROOT__/Tpl/Syscfg/SystemParamsJson.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="__ROOT__/Tpl/Syscfg/xtsz.js?rand={$Think.const.CACHE_VERSION}"></script>

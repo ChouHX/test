@@ -1,0 +1,94 @@
+<include file="Mobile/mheader" />
+    <div class="mui-card">
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+                <div class="mui-input-row">
+                    <label>{$Think.lang.VAR_SN2}</label>
+                    <input type="text" value="{$row['sn']}" disabled>
+                </div>
+            </li>
+			<li class="mui-table-view-cell">
+                <div class="mui-input-row">
+                    <label>{$Think.lang.TERM_MODEL}</label>
+                    <select id="termeidt_term_model">
+						<option value="">{$Think.lang.VAR_UNKNOWN}</option>
+						<?PHP foreach (C('TERM_MODEL') as $k => $v){
+							echo  '<option '.($v==$row['term_model']?'selected':'').' value="'.$v.'">'.$v.'</option>';
+						}?>
+					</select>
+                </div>
+            </li>
+			<li class="mui-table-view-cell">
+                <div class="mui-input-row">
+                    <label>{$Think.lang.VAR_TG}</label>
+                    <select id="termeidt_gid">
+                        <?PHP foreach ($rs as $k=>$ro){
+                            echo '<option '.($ro['id']==$row['group_id']?'selected':'').' value="'.$ro['id'].'">'.$ro['name'].'</option>';
+                        } ?>
+                    </select>
+                </div>
+            </li>
+            <li class="mui-table-view-cell">
+                <div class="mui-input-row">
+                    <label>{$Think.lang.VAR_SIM_NUMBER}</label>
+                    <input type="text" class="mui-input-clear" value="{$row['sim']}" id="termedit_sim">
+                </div>
+            </li>
+            <li class="mui-table-view-cell">
+                <div class="mui-input-row">
+                    <label>{$Think.lang.VAR_SYSCFG_ALIAS}</label>
+                    <input type="text" class="mui-input-clear" value="{$row['alias']}" id="termedit_alias">
+                </div>
+            </li>           
+            <li class="mui-table-view-cell">
+                <div class="mui-button-row">
+                    <button type="button" class="mui-btn mui-btn-primary savetermedit">{$Think.lang.VAR_BTN_SURE}</button>&nbsp;&nbsp;
+                    <button type="button" class="mui-btn mui-btn-danger canceltermedit">{$Think.lang.VAR_BTN_CANCLE}</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <a class="mui-icon mui-icon-back mui-pull-left"></a>
+        <h1 class="mui-title">{$Think.lang.VAR_TERM_EDIT}</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script>
+function initpage($, doc){
+    $(doc.body).on('tap', '#webheader .mui-icon-back', function(e){
+        $.openWindow({
+            id: 'mobile-term',
+            url: "{:U('Mobile/mterm')}"
+        });
+    });
+
+    $(doc.body).on('tap', '.savetermedit', function(e){
+        var savebtn = this;
+        mui(savebtn).button('loading');
+        mui.ajax($lang.curl.replace('Index/replace','Term/termEdit'),{
+            data:{
+                sn: "{$_REQUEST['id']}",
+                sim: doc.getElementById('termedit_sim').value,
+                alias: doc.getElementById('termedit_alias').value,
+                gid: doc.getElementById('termeidt_gid').value,
+				term_model:doc.getElementById('termeidt_term_model').value
+            },
+            timeout: 10000,
+            type: 'post',
+            success:function(msg){
+                mui(savebtn).button('reset');
+                if (typeof msg == 'string'){
+                    msg = JSON.parse(msg);
+                }
+                mui.alert(msg.info, $lang.VAR_PROMPT);
+            },
+            error:function(){mui(savebtn).button('reset')},
+            timeout:function(){mui(savebtn).button('reset')}
+        });
+    });
+
+    $(doc.body).on('tap', '.canceltermedit', function(e){
+        history.go(-1);
+    });
+}
+</script>

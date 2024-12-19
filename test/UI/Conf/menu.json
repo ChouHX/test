@@ -1,0 +1,60 @@
+{
+    "Information": {
+        "icon": "fa-dashboard",
+        "lang":  "VAR_PTGK",
+        "childrens": [],
+        "action": "ptgk"
+    },
+    "Term": {
+        "icon": "fa-sitemap",
+        "lang":  "VAR_DEVICE_MANAGE",
+        "childrens": [
+            {"action": "jklb", "icon": "fa-angle-right", "lang": "VAR_MENU_TERM"},
+            {"action": "fzlb", "icon": "fa-angle-right", "lang": "TERM_GROUP_LIST"},
+            {"action": "zywj", "icon": "fa-angle-right", "lang": "VAR_MENU_RESOURCE_FILE"},
+            {"action": "qjt", "icon": "fa-angle-right", "lang": "PANORAMA"}
+        ]
+    },
+    "Rtu": {
+        "icon": "fa-codepen",
+        "lang":  "VAR_MENU_RTU",
+        "childrens": [
+            {"action": "cdz", "icon": "fa-angle-right", "lang": "CHARGING_STATION"},
+            {"action": "wfy", "icon": "fa-angle-right", "lang": "NETWORK_ANALYZER"},
+            {"action": "lora", "icon": "fa-angle-right", "lang": "DATA_LIST"},
+            {"action": "sjlx", "icon": "fa-angle-right", "lang": "COLLECTION_SETTINGS"},
+            {"action": "gjjl", "icon": "fa-angle-right", "lang": "VAR_ALARM_RECORD"},
+            {"action": "sjtc", "icon": "fa-angle-right", "lang": "DATA_TRANSMISSION"}
+        ]
+    },
+    "Portal": {
+        "icon": "fa-wifi",
+        "lang":  "PORTAL_FUNCTION",
+        "childrens": [
+            {"action": "sblb", "icon": "fa-angle-right", "lang": "VAR_DEVICE_LIST"},
+            {"action": "portal", "icon": "fa-angle-right", "lang": "VAR_MENU_AD"}
+        ]
+    },
+    "Taskmgr": {
+        "icon": "fa-flag-o",
+        "lang":  "VAR_MENU_TASK",
+        "childrens": [
+            {"action": "rwlb", "icon": "fa-angle-right", "lang": "VAR_MENU_TASK_ONCE"},
+            {"action": "dsrwlb", "icon": "fa-angle-right", "lang": "VAR_MENU_TASK_TIMED"}
+        ]
+    },
+    "Syscfg": {
+        "icon": "fa-gear",
+        "lang":  "VAR_MENU_SYSCFG",
+        "childrens": [
+            {"action": "yhzlb", "icon": "fa-angle-right", "lang": "VAR_USER_GROUP_LIST"},
+            {"action": "yhlb", "icon": "fa-angle-right", "lang": "VAR_MENU_USER_LIST"},
+            {"action": "gjcl", "icon": "fa-angle-right", "lang": "ALARM_STRATEGY"},
+            {"action": "rjsj", "icon": "fa-angle-right", "lang": "SOFTWARE_UPGRADE"},
+            {"action": "xtsz", "icon": "fa-angle-right", "lang": "SYSTEM_SETTING"},
+            {"action": "grzx", "icon": "fa-angle-right", "lang": "PERSONAL_CENTER"}
+        ]
+    }
+}
+
+

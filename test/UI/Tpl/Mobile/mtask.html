@@ -1,0 +1,124 @@
+<include file="Mobile/mheader" />
+    <div class="mui-card">
+        <div class="mui-input-row mui-search">
+            <input id="queryterm" type="search" class="mui-input-clear" placeholder="">
+        </div>
+        <ul id="ul_1" class="mui-table-view">
+        </ul>
+        <div class="mui-content-padded" style="text-align:center;">
+            <ul id="ul_2" class="mui-pagination">
+                <li class="mui-previous mui-disabled"><a href="#">&laquo;</a></li>
+                <li class="mui-active"><a id="btn0" href="#">1</a></li>
+                <li class="mui-next mui-disabled"><a href="#">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <h1 class="mui-title">{$Think.lang.VAR_MENU_TASK}</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script>
+function loadTerm(loginBtn){
+    mui(loginBtn).button('loading');
+    mui.ajax($lang.curl.replace('Index/replace','Mdata/loadTaskData'),{
+        data:{
+            page: currentpage,
+            query: document.getElementById('queryterm').value 
+        },
+        timeout: 10000,
+        type: 'get',
+        success:function(msg){
+            if (typeof msg == 'string'){
+                msg = JSON.parse(msg);
+            }
+            mui(loginBtn).button('reset');
+            if (typeof msg.data == 'undefined') return;
+            msg = msg.data;
+            for (var i=0,len=msg.rows.length,str=''; i<len; i++){
+                str += 
+                '<li class="mui-table-view-cell mui-left">\
+                    <div class="mui-slider-right mui-disabled" data-id="'+msg.rows[i].id+'">\
+                        <a class="mui-btn mui-btn-grey mui-icon mui-icon-more act-task-detail"></a>'+
+                        (msg.rows[i].progress ? '<a class="mui-btn mui-btn-yellow mui-icon mui-icon-download act-task-download-progress"></a>':'')+
+                        '<a class="mui-btn mui-btn-red mui-icon mui-icon-trash act-task-delete"></a>\
+                    </div>\
+                    <div class="mui-slider-handle">\
+                        <div class="mui-table-cell">\
+                            <p>\
+                                <span style="margin-right:30px;">'+$lang.PPTP_CLIENT_ENABLE+': <img src="../Public/images/icons/'+(msg.rows[i].is_enable=='1'?'accept':'nobuy')+'.png" /></span><br>\
+                                '+$lang.VAR_USER_NAME+': '+msg.rows[i].username+'<br>\
+                                '+$lang.VAR_CMD_NAME+': '+msg.rows[i].cmd+'<br>\
+                                '+$lang.VAR_CMD_CREATETIME+'：'+msg.rows[i].create_time+
+                            '</p>\
+                        </div>\
+                    </div>\
+                </li>';
+            }
+            document.getElementById('ul_1').innerHTML = str;
+            document.getElementById('ul_2').innerHTML = msg.pstr;
+            maxpage = msg.maxpage;
+        },
+        error:function(){mui(loginBtn).button('reset')},
+        timeout:function(){mui(loginBtn).button('reset')}
+    });
+}
+
+function initpage($, doc){
+    //---------------分页开始-------------
+    loadTerm(doc.getElementById('btn0'));
+
+    doc.getElementById("queryterm").addEventListener('keyup',function(e){
+        if (e && e.keyCode == 13){
+            currentpage = 1;
+            loadTerm(mui('#ul_2 a')[0]);
+        }
+    });
+
+    doc.getElementById('queryterm').addEventListener('focus', function(){
+        mui(".mui-icon-clear")[0].addEventListener('tap',function(){
+            loadTerm(mui('#ul_2 a')[0]);
+        });
+    });
+    //---------------分页结束-------------
+
+    $(doc.body).on('tap', '.act-task-detail', function(){
+        var id = this.parentNode.getAttribute('data-id');
+        mui.openWindow({
+            id: 'task-detail',
+            url: "{:U('Mobile/mtaskinfo')}?id="+id
+        });
+    });
+
+    $(doc.body).on('tap', '.act-task-download-progress', function(){
+        var id = this.parentNode.getAttribute('data-id');
+        mui.openWindow({
+            id: 'task-download-progress',
+            url: "{:U('Mobile/mtaskprogress')}?id="+id
+        });
+    });
+
+    $(doc.body).on('tap', '.act-task-delete', function(){
+        var id = this.parentNode.getAttribute('data-id');
+        mui.confirm($lang.VAR_CONFIRM_DEL_TASK, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(){
+            if (arguments[0].index == 0){
+                mui.ajax($lang.curl.replace('Index/replace', 'Taskmgr/taskDel'),{
+                    data: 'ids='+id,
+                    timeout: 5000,
+                    type: 'post',
+                    success:function(msg){
+                        if (typeof msg == 'string'){
+                            msg = JSON.parse(msg);
+                        }
+                        mui.alert(msg.info, $lang.VAR_PROMPT, $lang.VAR_BTN_SURE, function(){
+                            if (msg.status == 0){
+                                var active = doc.getElementById('ul_2').querySelector('.mui-active');
+                                $.trigger(active.querySelector('a'), 'tap');
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+}
+</script>

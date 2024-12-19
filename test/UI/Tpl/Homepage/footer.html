@@ -1,0 +1,151 @@
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      {$Think.lang.VAR_COPYRIGHT_1}: {$Think.const.UI_VERSION}
+    </div>
+    <strong>Copyright &copy; <?PHP echo date('Y')?></strong> All rights reserved.
+  </footer>
+</div>
+<script {$href_src[2]}="../Public/js/jquery.min.js?rand={$Think.const.CACHE_VERSION}" {$href_src[3]}="http://sinoios.net/m2m3.0/jquery.min.js"></script>
+<script {$href_src[2]}="../Public/js/jquery.cookie.js?rand={$Think.const.CACHE_VERSION}" {$href_src[3]}="http://sinoios.net/m2m3.0/jquery.cookie.js"></script>
+
+<!-- Bootstrap 3.3.7 -->
+<script {$href_src[2]}="../Public/bower_components/bootstrap/js/bootstrap.min.js?rand={$Think.const.CACHE_VERSION}" {$href_src[3]}="http://sinoios.net/m2m3.0/bootstrap.min.js"></script>
+
+<!-- Slimscroll -->
+<script {$href_src[2]}="../Public/bower_components/jquery-slimscroll/jquery.slimscroll.min.js?rand={$Think.const.CACHE_VERSION}" {$href_src[3]}="http://sinoios.net/m2m3.0/jquery.slimscroll.min.js"></script>
+
+<!-- AdminLTE App -->
+<script {$href_src[2]}="../Public/js/adminlte.min.js?rand={$Think.const.CACHE_VERSION}" {$href_src[3]}="http://sinoios.net/m2m3.0/adminlte.min.js"></script>
+
+<!-- notify -->
+<script src="../Public/layer/layer.js?rand={$Think.const.CACHE_VERSION}"></script>
+
+<!--jquery ui-->
+<script {$href_src[2]}="../Public/bower_components/jquery-ui/jquery-ui.min.js?rand={$Think.const.CACHE_VERSION}" {$href_src[3]}="http://sinoios.net/m2m3.0/jquery-ui.min.js"></script>
+
+<!-- nice scroll -->
+<!-- <script src="../Public/js/jquery.nicescroll.min.js?rand={$Think.const.CACHE_VERSION}"></script> -->
+
+<!-- <script src="../Public/js/demo.js?rand={$Think.const.CACHE_VERSION}"></script> -->
+
+<script type="text/javascript">
+  $.gf = {
+    root_path: '__ROOT__/',
+    public_path:'../Public/',
+    highChartsOptions: {
+      global: { useUTC: false },
+      lang: {
+        loading: $lang.VAR_LOADING,
+        noData: $lang.EXT_PAGING_1
+      }
+    },
+    oem: '{$oem}',
+    email_reg: <?PHP echo C('EMAIL_REG') ? C('EMAIL_REG') : 'null'; ?>,
+    sm_screen: window.screen.height <= 768 ? true : false,
+    jq_pagesize: window.screen.height <= 768 ? 10 : 15,
+    lang: "{$lang}",
+    map_api: "{$Think.config.MAP_API}",
+    gaode_ui: "{$Think.config.GAODE_UI_LIB}",
+    empty_js: "../Public/js/empty.js",
+    default_gps_png: "../Public/images/default_gps_<?PHP echo $lang=='zh-cn'?'zh-cn':'en-us'; ?>.png",
+    map_static_api: "{$Think.config.MAP_STATIC_API}",
+    show_onelink_month_flux: {$Think.config.SHOW_ONELINK_MONTH_FLUX},
+    map_center: [{$Think.config.GPS_DEFAULT_LAT}, {$Think.config.GPS_DEFAULT_LNG}],
+    current_link_arr: <?PHP echo json_encode(L('CURRENT_LINK_ARR')); ?>,
+    refresh_rtu_data_alarm: function(){
+      ajax(tpurl('Rtu','getWarningInfo'), {}, function(msg){
+          if (msg.status == 0){
+            $('li.notifications-menu span.label-warning').html(msg.data.num);
+            $('li.notifications-menu li.header').html($lang.HAVE_N_ALERT.replace('%d',msg.data.num));
+            var str = '';
+            if (msg.data.rows){
+              for (var i=0,row=null,content=''; i<msg.data.rows.length; i++){
+                row = msg.data.rows[i];
+                switch (row.warning_type){
+                  case '0':
+                    content = format_warning_info(row.value, row);
+                    break;
+                  case '1':
+                    content = $lang.RTU_DATA_ALARM_TYPE[0];
+                    break;
+                  case '2':
+                    content = row.content;
+                    break;
+                  default:
+                    break;
+                }
+                str += '<li><a href="{:U('Rtu/gjjl')}"><i class="fa fa-bell-o text-yellow"></i>&nbsp;'+row.sn+'：'+content+'</a></li>';
+              }
+            }
+            $('li.notifications-menu ul.menu').html(str);
+          }
+      });
+    }
+  };
+
+  $(function(){
+    //menus active
+    var module_name = "<?PHP echo MODULE_NAME?>", act_name = "<?PHP echo ACTION_NAME?>";
+    /*
+    $('li.treeview.'+module_name).addClass('active');
+    $('.treeview-menu li.'+act_name).addClass('active');
+    */
+
+    //menus auto click
+    $('.treeview>a').click(function(){
+      var new_module_name = $(this).parent().get(0).classList[1];
+      if (new_module_name && new_module_name != module_name){
+        var href = $(this).next().find('a:eq(0)').attr('href');
+        if (href){
+          location.href = href;
+        }
+      }
+    });
+
+    //Change lang
+    $('.change_lang a').click(function(){
+      $.ajax({
+        url: tpurl('Index','changeLang'),
+        data: {lang:$(this).attr('lang')},
+        success:function(msg){
+          location.reload();
+        }
+      });
+    });
+    var lang = ($.cookie('think_language') || 'en-us').toLowerCase();
+    $('.change_lang a[lang='+lang+']').css({
+      'font-weight':700,
+      'text-decoration':'underline'
+    });
+
+    //Tooltip
+    $("[data-toggle='tooltip']").tooltip();
+
+    //Homepage href
+    var a = $('ul.sidebar-menu li:first ul li:first a');
+    if (a.size() != 0){
+      $('#h1-logo a').attr('href', a.attr('href'));
+    }
+
+    //Dialog move
+    $('.modal-dialog').draggable({handle: ".modal-header"});
+
+    //滚动条
+    // $('body').niceScroll({cursorcolor:"#cccccc"});
+
+    /*刷新告警信息
+    $.gf.refresh_rtu_data_alarm();
+    window.setInterval(function(){
+      $.gf.refresh_rtu_data_alarm();
+    }, 10000);*/
+
+    //header和aside增加fixed，content-wrapper增加margin-top:50px
+    /*固定sidebar
+    window.setTimeout(function(){
+      $('body').addClass('fixed');
+    }, 600);*/
+  });
+</script>
+<script src="../Public/js/function.js?rand={$Think.const.CACHE_VERSION}"></script>
+</body>
+</html>

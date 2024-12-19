@@ -1,0 +1,151 @@
+<include file="Mobile/mheader" />
+    <style>
+        .desc{padding:11px 15px; background-color:#eeeeee;}
+        .mui-input-row {height:inherit !important;}
+        /*.mui-input-row label {width:45%;}
+        .mui-input-row label~input {width:55%;}
+        .mui-input-row label~select {width:55%;}*/
+    </style>
+    <div class="mui-card">
+        <ul class="mui-table-view">
+            <!--软件版本-->
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.VAR_SWV}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.LICENCE_LIMIT_TITLE}</label>
+                            <input type="text" name="licence_limit" id="spid_licence_limit" disabled>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.VAR_COPYRIGHT_1}</label>
+                            <input type="text" name="version" value="{$Think.const.UI_VERSION}" disabled>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.VAR_COPYRIGHT_2}</label>
+                            <input type="text" name="version" value="{$Think.const.UI_RELEASE_DATE}" disabled>
+                        </div>
+                        <div class="desc">{$Think.lang.PAGE_DESC}：{$Think.lang.PAGE_DESC_0}</div>
+                    </form>
+                </div>
+            </li>
+
+            <!--路由器流量限制-->
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.SYSCFG_ROUTER_FLUX}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.SINGLE_ROUTER_FLUX_LIMIT_ENABLE_TITLE} (kB)</label>
+                            <input type="text" name="router_flux_limit_value" id="spid_router_flux_limit_month">
+                        </div>
+                        <div class="desc">{$Think.lang.PAGE_DESC}：{$Think.lang.PAGE_DESC_2}</div>
+                    </form>
+                </div>
+            </li>
+    <header id="webheaderhidden" style="display:none;">
+        <a class="mui-icon mui-icon-back mui-pull-left"></a>
+        <h1 class="mui-title">{$Think.lang.VAR_MENU_SYSCFG}</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script type="text/javascript" src="__ROOT__/Tpl/Mobile/systemparams.js"></script>
+<script>
+function initpage($, doc){
+    $(doc.body).on('tap', '#webheader .mui-icon-back', function(){
+        history.go(-1);
+    });
+
+    /*
+    $(doc.body).on('tap','#spid_device_flux_limit_enable', function(){
+        var e = mui('#spid_device_flux_limit_value')[0];
+        if (this.classList.contains("mui-active")){
+            e.removeAttribute('readonly');
+        }else{
+            e.setAttribute('readonly', true);
+        }
+    });
+
+    $(doc.body).on('tap','#spid_router_flux_limit_enable', function(){
+        var e = mui('#spid_router_flux_limit_value')[0];
+        if (this.classList.contains("mui-active")){
+            e.removeAttribute('readonly');
+        }else{
+            e.setAttribute('readonly', true);
+        }
+    });
+
+    $(doc.body).on('tap','#spid_router_hb_flow_enable', function(){
+        var e = mui('#spid_router_hb_flow_auto_clear')[0], e2 = mui('#spid_router_hb_flow_reserve')[0];
+        if (this.classList.contains("mui-active")){
+            e.className = e.className.replace('mui-disabled','');
+            e2.removeAttribute('readonly');
+        }else{
+            e.className += ' mui-disabled';
+            e2.setAttribute('readonly', true);
+        }
+    });
+
+    $(doc.body).on('tap','#spid_auto_cap_enable', function(){
+        var es = document.getElementsByClassName('auto_cap'), len = es.length;
+        if (this.classList.contains("mui-active")){
+            for (var i=0; i<len; i++){
+                es[i].removeAttribute('readonly');
+            }
+        }else{
+            for (var i=0; i<len; i++){
+                es[i].setAttribute('readonly', true);
+            }
+        }
+    });*/
+
+    //Load sys config
+    var sp = new SystemParams();
+    sp.bindEvent();
+    sp.paramsLoading = true;
+    mui.ajax($lang.curl.replace('Index/replace','Syscfg/loadSystemParams'),{
+        timeout: 3000,
+        type: 'post',
+        success:function(msg){
+            if (typeof msg == 'string'){
+                msg = JSON.parse(msg);
+            }
+            sp.setFieldsValue(msg);
+            sp.paramsLoading = false;
+        }
+    });
+
+    $(doc.body).on('tap', '.saveparamsedit', function(e){
+        var savebtn = this, p = [];
+        for (key in sp.changedParams) {
+            p.push(key+'='+sp.changedParams[key]);
+        }
+        if (p.length == 0) {
+            mui.alert($lang.VAR_NO_CHANGE, $lang.VAR_PROMPT);
+            return;
+        }
+        mui.confirm($lang.OPERATE_CONFIRM, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(){
+            if (arguments[0].index == 0){
+                mui(savebtn).button('loading');
+                mui.ajax($lang.curl.replace('Index/replace','Operating/editSystemParams'),{
+                    data: {params: p.join(',')},
+                    timeout: 5000,
+                    type: 'post',
+                    success:function(msg){
+                        mui(savebtn).button('reset');
+                        if (typeof msg == 'string'){
+                            msg = JSON.parse(msg);
+                        }
+                        mui.alert(msg.info, $lang.VAR_PROMPT);
+                    },
+                    error:function(){mui(savebtn).button('reset')},
+                    timeout:function(){mui(savebtn).button('reset')}
+                });
+            }
+        });
+    });
+
+    $(doc.body).on('tap', '.cancelparamsedit', function(e){
+        location.reload(true);
+    });
+}
+</script>

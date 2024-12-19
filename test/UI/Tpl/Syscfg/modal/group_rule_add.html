@@ -1,0 +1,165 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title" id="h4_add_edit">{$Think.lang.VAR_ADD}</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="modal_fm">
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.RULE_FILED}:<span class="required-field"></span></label>
+            <div class="col-md-6">
+                <select name="rule_type" class="form-control">
+                    <option value="ud_sn">{$Think.lang.VAR_SN1}</option>
+                    <option value="vsn">{$Think.lang.VAR_VSN}</option>
+                    <option value="sw_version">{$Think.lang.VAR_SWV}</option>
+                    <option value="imei">IMEI</option>
+                    <option value="imsi">IMSI</option>
+                    <option value="iccid">ICCID</option>
+                </select>
+                <input type="hidden" name="act" value="add" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.RULE_KEYWORD}:<span class="required-field"></span></label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" name="rule_key" />
+            </div>
+            <label class="col-lg-6 control-label input-notes" style="text-align: left; padding-top: 0"></label>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.MOVE_TO_GROUP}:<span class="required-field"></label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" name="gid" readonly="readonly" style="background: #fff; cursor: pointer" />
+                <div id="tree_tg_content" style="height:300px;">
+                    <input type="text" class="form-control ztree_search" placeholder="{$Think.lang.GROUP_NAME}" />
+                    <button type="button" class="btn btn-xs btn-default btn-my-search"><i class="fa fa-search"></i></button>
+                    <div class="ztree_close" onclick="$('#modal_fm input[name=gid]').click();" title="{$Think.lang.VAR_COLLAPSE}" style="width:412px;"><i class="fa fa-angle-double-up"></i></div>
+                    <ul id="tree_tg" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-lg-2 control-label">{$Think.lang.IS_ENABLE}:</label>
+            <div class="col-lg-3">
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="is_enable" class="ck-top-0" checked="checked" />
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_SYSCFG_ALIAS}:</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" name="info" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.PAGE_DESC}:</label>
+            <div class="col-md-10">
+                <p class="form-control-static">{$Think.lang.GROUP_RULE_DESC}</p>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success submit_rule_add">{$Think.lang.SAVE_TEMPLATE}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    $('.submit_rule_add').on('click', function(){
+        var obj = $("#modal_fm").data('bootstrapValidator');
+        obj.validate();
+        if (!obj.isValid()){
+            return;
+        }
+        var p = $.serializeObject('#modal_fm');
+        p.is_enable = typeof p.is_enable != 'undefined' ? 1 : 0;
+        p.group_id = $('#modal_fm input[name=gid]').attr('data-gid');
+        ajax(tpurl('Syscfg', 'groupRulesAdd'), p, function(msg){
+            $.notice(msg);
+            if (msg.status == 0){
+                $("#list3").trigger('reloadGrid');
+                $('#myLgModal').modal('hide');
+            }
+        });
+    });
+
+    $('#modal_fm').bootstrapValidator({
+       feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            rule_type: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            },
+            rule_key: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            }
+        }
+    });
+
+    $.gf.tree_click = function(node){
+        var o = $('#modal_fm input[name=gid]');
+        o.attr('data-gid', node.id);
+        o.val(node.oldname || node.name);
+        $('#tree_tg_content').hide();
+    };
+
+    var tree_setting = {
+        view: {
+            dblClickExpand: false
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: function(){
+                $.gf.tree_click(arguments[2]);
+            }
+        }
+    };
+    var tree_nodes = %s;
+    $.gf.ztree = $.fn.zTree.init($("#tree_tg"), tree_setting, tree_nodes);
+    var node = $.gf.ztree.getNodeByParam('id', '%s');
+    if (node){
+        $.gf.ztree.selectNode(node); // 选择节点
+        $.gf.tree_click(node);
+    }else{
+        $('#modal_fm input[name=gid]').val('Root');
+    }
+    $('#modal_fm input[name=gid]').click(function(){
+        var o = $('#tree_tg_content');
+        if (o.is(':hidden')){
+            $('#tree_tg_content').css('width', $('#modal_fm input[name=gid]').parent().width()); //设置ztree宽度
+            o.show();
+        }else{
+            o.fadeOut();
+        }
+    });
+    fuzzySearch('tree_tg','.ztree_search',null,true); //初始化模糊搜索方法
+    $('.btn-my-search').click(function(){
+        var i = $(this).find('i');
+        if (i.hasClass('fa-search')) {
+            $('.ztree_search').fadeIn(500);
+            i.removeClass('fa-search').addClass('fa-close');
+        } else {
+            $('.ztree_search').val('').fadeOut(500);
+            $('.ztree_search').trigger('input');
+            i.removeClass('fa-close').addClass('fa-search');
+        }
+    });
+});
+})(jQuery);
+</script>

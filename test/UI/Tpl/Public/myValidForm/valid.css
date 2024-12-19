@@ -1,0 +1,13 @@
+.myValidForm span.myValidFormSpan{
+    color: red;
+    line-height: 34px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: none;
+}
+
+.myValidForm .myValidField.borderRed{
+    border: 1px solid red;
+}

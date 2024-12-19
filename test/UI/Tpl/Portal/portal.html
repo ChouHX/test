@@ -1,0 +1,106 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Portal/portal.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Public/bootstrap_fileinput/css/fileinput.min.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0" style="min-height: 524px">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.VAR_MENU_AD_LIST}</h3>
+            </div>
+            <div class="box-body jqgrid_c" style="position: relative;">
+              <div class="my-loading"></div><!--loading div-->
+              <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                <form class="form-inline" role="form" id="search_fm">
+                  <div class="btns btn-task-acts">
+                    <button type="button" class="btn btn-default rwcs" onclick="$.gf.ad_add()">
+                      <i class="fa fa-plus"></i>&nbsp;{$Think.lang.VAR_ADD}
+                    </button>
+                    <button type="button" class="btn btn-default" data-act="refresh">
+                      <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                    </button>
+                  </div>
+                  <div class="input-group">
+                    <input type="text" name="searchString" class="form-control" placeholder="{$Think.lang.VAR_QUERY}" style="width: 130px" data-toggle="tooltip"  title="{$Think.lang.VAR_NAME}">
+                    <span class="input-group-btn">
+                      <button type="submit" class="btn btn-flat btn-search-border"><i class="fa fa-search"></i></button>
+                    </span>
+                  </div>
+                </form>
+              </div>
+              <div id="list1" style="min-height:150px"></div>
+              <div id="list1_paging" style="padding:5px; margin-top:-5px; display:none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+<!--模态框，文件上传-->
+<div class="modal fade" id="myLgModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_BTN_SURE}</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="modal_fm">
+                  <div class="form-group">
+                    <label class="col-md-2">{$Think.lang.VAR_AD_NAME}:<span class="required-field"></span></label>
+                    <div class="col-md-8">
+                      <input type="text" class="form-control" name="name" value="" />
+                      <input type="hidden" name="ad_id" value="" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2">{$Think.lang.VAR_UPGRADE_FILE}:<span class="required-field"></span></label>
+                    <div class="col-md-8">
+                      <input type="file" id="filedata" name="filedata[]" multiple />
+                    </div>
+                  </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="$.gf.ad_save_file()">{$Think.lang.VAR_BTN_SURE}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--模态框，portal详情查看 -->
+<div class="modal fade" id="gridFileList" data-init="0" data-ad-id="">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+        <h4 class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <table id="list3"></table>
+        <div id="pager3" style="margin-top: 30px !important;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" onclick="javascript:$.gf.ad_delete_file();"><i class="fa fa-close"></i>&nbsp;{$Think.lang.VAR_DEL}</button>
+        <button type="button" class="btn btn-info" onclick="javascript:$('#list3').trigger('reloadGrid');">{$Think.lang.VAR_REFRESH}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="Homepage/footer"/>
+<script type="text/javascript" src="__ROOT__/Tpl/Portal/portalpaging.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- jqgrid -->
+<script type="text/javascript" src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script src="__ROOT__/Tpl/Public/bootstrap_fileinput/js/fileinput.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script src="__ROOT__/Tpl/Public/bootstrap_fileinput/js/locales/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">$.gf.lang = '<?PHP echo $lang?>';</script>
+<script type="text/javascript" src="__ROOT__/Tpl/Portal/portal.js?rand={$Think.const.CACHE_VERSION}"></script>

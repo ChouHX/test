@@ -1,0 +1,118 @@
+<include file="Mobile/mheader" />
+    <style>
+        .chart{width:100%; height:260px;}
+    </style>
+    <div class="mui-card">
+        <div class="chart" id="chart_online"><p style="text-align:center;margin-top:10px;">Loading...</p></div>
+    </div>
+    <div class="mui-card">
+        <div class="chart" id="chart_flux"></div>
+    </div>
+    <div class="mui-card">
+        <div class="chart" id="chart_new"></div>
+    </div>
+    <div class="mui-card">
+        <div class="chart" id="chart_swv"></div>
+    </div>
+    <div class="mui-card">
+        <div class="chart" id="chart_netmode"></div>
+    </div>
+    <div class="mui-card">
+        <div class="chart" id="chart_task"></div>
+    </div>
+    <div class="mui-card">
+        <ul class="mui-table-view" id="ul_1">
+            <li class="mui-table-view-cell" style="text-align:center;">
+                Loading...
+            </li>
+        </ul>
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <h1 class="mui-title">{$Think.lang.VAR_DEVICE_STATEMENT}</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script type="text/javascript" src="../Public/echarts/echarts.min.js"></script>
+<script>
+function drawchart(chartype, id, title, legend, x, y){
+    var myChart = echarts.init(document.getElementById(id));
+    var option = {
+        title: {
+            text: title,
+            x: 'center'
+        },
+        tooltip: {},
+        legend: {
+            left: 'right',
+            data:[legend]
+        },
+        xAxis: {
+            data: x
+        },
+        yAxis: {},
+        series: [{
+            name: legend,
+            type: chartype,
+            data: y
+        }],
+        color: ['#429ade']
+    };
+    myChart.setOption(option);
+}
+
+function piechart(i, a, b){
+    window.setTimeout(function(){
+        mui.ajax($lang.curl.replace('Index/replace','Term/loadDashboardData'),{
+            data: {retName:i},
+            timeout: 30000,
+            success:function(msg){
+                if (typeof msg == 'string'){
+                    msg = JSON.parse(msg);
+                    for (var j=0,data=msg[i],tmp=null, x=[],y=[]; j<data.length; j++){	
+                        tmp = data[j];
+                        x.push(tmp[0]);
+                        y.push(tmp[1]);
+                    }
+                }
+                drawchart('line', i, a, b, x, y);
+            }
+        });
+    }, 100*i);
+}
+
+function initpage($, doc){
+    mui.ajax($lang.curl.replace('Index/replace','Term/ptgkStatisticalInfo'),{
+        timeout: 3000,
+        success:function(msg){
+            if (typeof msg == 'string'){
+                msg = JSON.parse(msg);
+                var data0 = msg['statics_info'];
+				var name_title = [$lang.NUMBER_OF_TERMS_ONLINE,$lang.TODAY_TASK,$lang.TODAY_FLUX,$lang.FLUX_CURRENT_MONTH]  ;
+				var name = ['info_box_online','info_box_task','info_box_flux','info_box_month_flux'];
+                for (var i=0,str=''; i<4; i++){
+                    str += 
+                    '<li class="mui-table-view-cell">\
+                        <span style="display:inline-block;margin-top:5px;margin-right:10px;">'+name_title[i]+':</span>'+data0[name[i]]+'\
+                    </li>';
+                }
+				console.log(str);
+                document.getElementById('ul_1').innerHTML = str;
+				
+				var title = ['chart_swv', 'chart_netmode','chart_task'];
+				var titles = [$lang.VAR_SWV, $lang.NET_MODE, $lang.TASK_STATISTICS];
+				for (var i=5; i<=7; i++){
+					for (var tmp=msg[title[i-5]],j=0,x=[],y=[]; j<tmp.length; j++){
+                        x.push(tmp[j][0]);
+                        y.push(tmp[j][1]);
+                    }
+					drawchart('bar',title[i-5], titles[i-5],'',x,y);
+				}
+                
+            }
+        }
+    });
+
+    piechart('chart_online', $lang.ONLINE_TREND, $lang.NUMBER);
+    piechart('chart_flux', $lang.FLUX_TREND, $lang.VAR_TERM_FLUX+' (KB)');
+    piechart('chart_new', $lang.NEW_DAILY_ROUTER_NUM, $lang.NUMBER);
+}
+</script>

@@ -1,0 +1,314 @@
+<style type="text/css">
+	/*tab style*/
+	#tbl_res tr{
+		cursor: pointer;
+	}
+	#tbl_res input{
+		vertical-align: middle;
+	}
+	.tr_selected_cfg{
+		background: #aedae4;
+	}
+	.params-tab-content .tab-pane{
+		padding-top: 10px;
+	}
+	#fm_rwcs{
+		margin-top: 10px;
+	}
+
+	/*params input style*/
+	.ck-top-0{
+		top: 0;
+	}
+	.form-horizontal label.input-notes{
+		text-align: left;
+		color: gray;
+	}
+
+	/*loading*/
+	.my-loading{
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 100;
+		width: 100%;
+		height: 100%;
+		background: rgba(255,255,255,.6) url(../Public/images/loading.gif) no-repeat center;
+	}
+
+	/*task dest ul*/
+	.task-dest{
+		list-style: none;
+		display: inline-block;
+		margin: 0;
+		padding: 0;
+	}
+	.task-dest li{
+		float: left;
+		background-color: #ecf0f5;
+		margin: 0 20px 15px 0;
+		line-height: 30px;
+		padding: 0 5px;
+		border-radius: 3px;
+	}
+	.timed-task-params{
+		display: none;
+	}
+	.timed-task-params .checkbox-inline{
+		min-width: 45px;
+	}
+</style>
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+	<h4 class="modal-title"></h4>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-12" style="position: relative">
+			<div class="my-loading"></div><!--loading div-->
+			<div class="nav-tabs-custom" style="box-shadow:none;">
+				<ul class="nav nav-tabs" id="tab_params_list" style="position: relative;">
+					<?PHP $params_type = $_REQUEST['params_type'];
+					if ($params_type == 'router' || $params_type == 'rtu') { ?>
+					<!-- <li class="active"><a href="#params_tab_security" data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_SECURITY}</a></li> -->
+					<li class="dropdown active"><!-- 基本网络 -->
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.BASIC_NETWORK} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#params_tab_wan" data-toggle="tab">{$Think.lang.WAN_NETWORK}</a></li>
+							<li><a href="#params_tab_3g"  data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_3G}</a></li>
+							<li><a href="#params_tab_lan" data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_LAN}</a></li>
+							<!-- <li><a href="#params_tab_vlan" data-toggle="tab">{$Think.lang.VLAN}</a></li> -->
+							<li><a href="#params_tab_link_scheduling" data-toggle="tab">{$Think.lang.LINK_SCHEDULING}</a></li>
+							<li><a href="#params_tab_dynamic_domain_name" data-toggle="tab">{$Think.lang.DYNAMIC_DOMAIN_NAME}</a></li>
+							<li><a href="#params_tab_route_table_settings" data-toggle="tab">{$Think.lang.ROUTING_TABLE_SETTINGS}</a></li>
+						</ul>
+					</li>
+					<li class="dropdown"><!-- WLAN设置 -->
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.WLAN_SETTING} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<!-- <li><a href="#params_tab_overview" data-toggle="tab">{$Think.lang.OVERVIEW}</a></li> -->
+							<li><a href="#params_tab_basic_parameter_settings" data-toggle="tab">{$Think.lang.ETH1_W10}</a></li>
+							<li><a href="#params_tab_basic_parameter_settings1" data-toggle="tab">{$Think.lang.W10}.1</a></li>
+							<li><a href="#params_tab_basic_parameter_settings2" data-toggle="tab">{$Think.lang.W10}.2</a></li>
+							<li><a href="#params_tab_basic_parameter_settings3" data-toggle="tab">{$Think.lang.W10}.3</a></li>
+						</ul>
+					</li>
+					<li class="dropdown"><!-- 高级网络 -->
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.ADVANCED_NETWORK} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#params_tab_port_forwarding" data-toggle="tab">{$Think.lang.PORT_FORWARDING}</a></li>
+							<li><a href="#params_tab_port_redirecting" data-toggle="tab">{$Think.lang.PORT_REDIRECTING}</a></li>
+							<li><a href="#params_tab_dmz" data-toggle="tab">{$Think.lang.DMZ_SETTING}</a></li>
+							<li><a href="#params_tab_ip_penetration" data-toggle="tab">{$Think.lang.IP_PENETRATION}</a></li>
+							<li><a href="#params_tab_port_trigger" data-toggle="tab">{$Think.lang.PORT_TRIGGER}</a></li>
+							<li><a href="#params_tab_portal" data-toggle="tab">{$Think.lang.PORTAL}</a></li>
+							<li><a href="#params_tab_serial_port_application" data-toggle="tab">{$Think.lang.SERIAL_APPLICATION}</a></li>
+							<li><a href="#params_tab_upnp_setting" data-toggle="tab">{$Think.lang.UPnP_SETTING}</a></li>
+							<li><a href="#params_tab_bandwidth_speed_limit" data-toggle="tab">{$Think.lang.BANDWIDTH_SPEED_LIMIT}</a></li>
+							<li><a href="#params_tab_vrrp" data-toggle="tab">{$Think.lang.VRRP}</a></li>
+							<li><a href="#params_tab_static_dhcp" data-toggle="tab">{$Think.lang.STATIC_DHCP}</a></li>
+						</ul>
+					</li>
+					<li class="dropdown"><!-- 防火墙 -->
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.FIREWALL} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#params_tab_url_filter"    data-toggle="tab">{$Think.lang.IP_URL_FILTER}</a></li>
+							<li><a href="#params_tab_domain_filter" data-toggle="tab">{$Think.lang.DOMAIN_FILTER}</a></li>
+						</ul>
+					</li>
+					<li class="dropdown"><!-- VPN隧道 -->
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.VPN_MODE} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#params_tab_vpn_gre" data-toggle="tab">{$Think.lang.VPN_GRE}</a></li>
+							<li><a href="#params_tab_open_vpn_client" data-toggle="tab">{$Think.lang.OPEN_VPN_CLIENT}</a></li>
+							<li><a href="#params_tab_pptp_l2tp" data-toggle="tab">{$Think.lang.VPN_PPTP_L2TP}</a></li>
+							<li><a href="#params_tab_ipsec" data-toggle="tab">{$Think.lang.IPSEC}</a></li>
+						</ul>
+					</li>
+					<li class="dropdown"><!-- 系统配置 -->
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.SYSTEM_CONFIG} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#params_tab_router_identified" data-toggle="tab">{$Think.lang.SYSTEM_IDENTITY_SETTING}</a></li>
+							<li><a href="#params_tab_timezone" data-toggle="tab">{$Think.lang.TIME_SETTING}</a></li>
+							<li><a href="#params_tab_access_settings" data-toggle="tab">{$Think.lang.ACCESS_SETTINGS}</a></li>
+							<li><a href="#params_tab_scheduled_reboot" data-toggle="tab">{$Think.lang.SCHEDULED_REBOOT}</a></li>
+							<li><a href="#params_tab_storage" data-toggle="tab">{$Think.lang.STORAGE_MANAGE}</a></li>
+							<li><a href="#params_tab_m2m" data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_PLATFORM}</a></li>
+							<li><a href="#params_tab_mqtt" data-toggle="tab">{$Think.lang.MQTT_CONN_SETTINGS}</a></li>
+							<!-- <li><a href="#params_tab_backup_restore_setting" data-toggle="tab">{$Think.lang.BACKUP_RESTORE_SETTING}</a></li> -->
+							<li><a href="#params_tab_log_management" data-toggle="tab">{$Think.lang.LOG_MANAGEMENT}</a></li>
+							<li><a href="#params_tab_http_send" data-toggle="tab">Http send</a></li>
+							<!-- <li><a href="#params_tab_firmware_upgrade" data-toggle="tab">{$Think.lang.FIRMWARE_UPGRADE}</a></li> -->
+						</ul>
+					</li>
+					<?PHP } elseif ($params_type == 'rt52' || $params_type == 'rt30') { ?>
+					<li class="active"><a href="#params_tab_security" data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_SECURITY}</a></li>
+					<li class="dropdown"><!-- 采集上报 -->
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.COLLECTION_REPORT} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#params_tab_rtu_collection_settings" data-toggle="tab">{$Think.lang.ACQUISITION_FUNCTION_SETTINGS}</a></li>
+							<li><a href="#params_tab_rtu_modbus_cmd_list"     data-toggle="tab">{$Think.lang.MODBUS_COMMAND_LIST}</a></li>
+							<li><a href="#params_tab_mqtt_settings"     	  data-toggle="tab">{$Think.lang.MQTT_CONN_SETTINGS}</a></li>
+						</ul>
+					</li>
+					<li class="dropdown"><!-- 连接设置 -->
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.CONNECTION_SETTINGS} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<!-- <li><a href="#params_tab_network_settings" data-toggle="tab">{$Think.lang.NETWORK_SETTINGS}</a></li> -->
+							<li><a href="#params_tab_3g"  data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_3G}</a></li>
+						</ul>
+					</li>
+					<li class="dropdown"><!-- 局域网络 -->
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.VAR_TERM_PARAM_LAN} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#params_tab_lan" data-toggle="tab">{$Think.lang.LOCAL_AREA_NETWORK_SETTINGS}</a></li>
+						</ul>
+					</li>
+					<li class="dropdown"><!-- 无线网 -->
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.VAR_WIFI} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#params_tab_wifi" data-toggle="tab">{$Think.lang.BASIC_PARAMETER_SETTING}</a></li>
+						</ul>
+					</li>
+					<li class="dropdown"><!-- 系统配置 -->
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.SYSTEM_CONFIG} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#params_tab_scheduled_reboot"  data-toggle="tab">{$Think.lang.SCHEDULED_REBOOT}</a></li>
+							<li><a href="#params_tab_timezone"          data-toggle="tab">{$Think.lang.TIME_SETTING}</a></li>
+							<li><a href="#params_tab_m2m"               data-toggle="tab">{$Think.lang.VAR_TERM_PARAM_PLATFORM}</a></li>
+							<li><a href="#params_tab_access_settings"   data-toggle="tab">{$Think.lang.ACCESS_SETTINGS}</a></li>
+						</ul>
+					</li>
+					<?PHP } elseif ($params_type == 'dtu') { ?>
+					<li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+					<li><a href="#params_tab_position_parameter" data-toggle="tab">{$Think.lang.POSITIONING_PARAMETER}</a></li>
+					<li><a href="#params_tab_serial_port_parameter" data-toggle="tab">{$Think.lang.SERIAL_PORT_PARAMETER}</a></li>
+					<li><a href="#params_tab_dtu_parameter" data-toggle="tab">{$Think.lang.DTU_PARAMETER}</a></li>
+					<li><a href="#params_tab_collection_control_parameter" data-toggle="tab">{$Think.lang.COLLECTION_CONTROL_PARAMETER}</a></li>
+					<li><a href="#params_tab_dialup_network_parameter" data-toggle="tab">{$Think.lang.DIALUP_NETWORK_PARAMETER}</a></li>
+					<li><a href="#params_tab_other_parameter" data-toggle="tab">{$Think.lang.OTHER_PARAMETER}</a></li>
+					<li><a href="#params_tab_load_balancing" data-toggle="tab">{$Think.lang.LOAD_BALANCING}</a></li>
+					<?PHP } elseif ($params_type == 'v20lr') { ?>
+					<li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+					<li><a href="#params_tab_lora" data-toggle="tab">LORA</a></li>
+					<li><a href="#params_tab_serial_port_parameter" data-toggle="tab">{$Think.lang.SERIAL_PORT_PARAMETER}</a></li>
+					<li><a href="#params_tab_collection_control_parameter" data-toggle="tab">{$Think.lang.COLLECTION_CONTROL_PARAMETER}</a></li>
+					<li><a href="#params_tab_dtu_settings" data-toggle="tab">{$Think.lang.DTU_SETTINGS}</a></li>
+					<li><a href="#params_tab_other_parameter" data-toggle="tab">{$Think.lang.OTHER_PARAMETER}</a></li>
+					<?PHP } elseif ($params_type == 'v21') { ?>
+					<li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+					<li><a href="#params_tab_dialup_network_parameter" data-toggle="tab">{$Think.lang.DIALUP_NETWORK_PARAMETER}</a></li>
+					<li><a href="#params_tab_serial_port_settings" data-toggle="tab">{$Think.lang.SERIAL_PORT_SETTINGS}</a></li>
+					<li><a href="#params_tab_data_collection" data-toggle="tab">{$Think.lang.VAR_MENU_RTU}</a></li>
+					<li><a href="#params_tab_data_report" data-toggle="tab">{$Think.lang.DATA_REPORT}</a></li>
+					<li><a href="#params_tab_operating_mode" data-toggle="tab">{$Think.lang.OPERATING_MODE}</a></li>
+					<li><a href="#params_tab_data_center" data-toggle="tab">{$Think.lang.REMOTE_MANAGEMENT}</a></li>
+					<?PHP } elseif ($params_type == 'rt10') { ?>
+					<li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+					<li><a href="#params_tab_lora" data-toggle="tab">LORA</a></li>
+					<li><a href="#params_tab_serial_port_parameter" data-toggle="tab">{$Think.lang.SERIAL_PORT_PARAMETER}</a></li>
+					<li><a href="#params_tab_collection_control_parameter" data-toggle="tab">{$Think.lang.COLLECTION_CONTROL_PARAMETER}</a></li>
+					<li><a href="#params_tab_dialup_network_parameter" data-toggle="tab">{$Think.lang.DIALUP_NETWORK_PARAMETER}</a></li>
+					<li><a href="#params_tab_other_parameter" data-toggle="tab">{$Think.lang.OTHER_PARAMETER}</a></li>
+					<li><a href="#params_tab_load_balancing" data-toggle="tab">{$Think.lang.LOAD_BALANCING}</a></li>
+					<?PHP } elseif ($params_type == 'rt20') { ?>
+					<li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+					<li><a href="#params_tab_sim_card_1" data-toggle="tab">{$Think.lang.SIM_CARD} 1</a></li>
+					<li><a href="#params_tab_sim_card_2" data-toggle="tab">{$Think.lang.SIM_CARD} 2</a></li>
+					<li><a href="#params_tab_rain_bucket" data-toggle="tab">{$Think.lang.RAIN_BUCKET}</a></li>
+					<li><a href="#params_tab_osmometer" data-toggle="tab">{$Think.lang.OSMOMETER}</a></li>
+					<li><a href="#params_tab_inclinometer" data-toggle="tab">{$Think.lang.INCLINOMETER}</a></li>
+					<li><a href="#params_tab_position_parameter" data-toggle="tab">{$Think.lang.POSITIONING_PARAMETER}</a></li>
+					<li><a href="#params_tab_other_parameter" data-toggle="tab">{$Think.lang.OTHER_PARAMETER}</a></li>
+					<li><a href="#params_tab_data_center" data-toggle="tab">{$Think.lang.DATA_CENTER}</a></li>
+					<?PHP } elseif ($params_type == 'dtau') { ?>
+					<li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+					<li><a href="#params_tab_dial" data-toggle="tab">{$Think.lang.DIAL}</a></li>
+					<li><a href="#params_tab_rs485" data-toggle="tab">{$Think.lang.VAR_RS485}</a></li>
+					<li><a href="#params_tab_rain_bucket" data-toggle="tab">{$Think.lang.RAIN_BUCKET}</a></li>
+					<li><a href="#params_tab_osmometer" data-toggle="tab">{$Think.lang.OSMOMETER}</a></li>
+					<li><a href="#params_tab_inclinometer" data-toggle="tab">{$Think.lang.INCLINOMETER}</a></li>
+					<li><a href="#params_tab_position_parameter" data-toggle="tab">{$Think.lang.POSITIONING_PARAMETER}</a></li>
+					<li><a href="#params_tab_other_parameter" data-toggle="tab">{$Think.lang.OTHER_PARAMETER}</a></li>
+					<li><a href="#params_tab_data_center" data-toggle="tab">{$Think.lang.DATA_CENTER}</a></li>
+					<?PHP } elseif ($params_type == 'd21') { ?>
+					<li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+					<li><a href="#params_tab_dialup_network_parameter" data-toggle="tab">{$Think.lang.DIALUP_NETWORK_PARAMETER}</a></li>
+					<li><a href="#params_tab_serial_port_settings" data-toggle="tab">{$Think.lang.SERIAL_PORT_SETTINGS}</a></li>
+					<li><a href="#params_tab_data_center" data-toggle="tab">{$Think.lang.DATA_CENTER}</a></li>
+					<li class="dropdown"><!-- IO控制 -->
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">{$Think.lang.IO_CONTROL} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#params_tab_di1" data-toggle="tab">DI1</a></li>
+							<li><a href="#params_tab_di2" data-toggle="tab">DI2</a></li>
+							<li><a href="#params_tab_do1" data-toggle="tab">DO1</a></li>
+							<li><a href="#params_tab_do2" data-toggle="tab">DO2</a></li>
+						</ul>
+					</li>
+					<li><a href="#params_tab_sms_config" data-toggle="tab">{$Think.lang.SMS_CONFIG}</a></li>
+					<li><a href="#params_tab_serial_port_command" data-toggle="tab">{$Think.lang.SERIAL_PORT_COMMAND}</a></li>
+					<li><a href="#params_tab_operating_mode" data-toggle="tab">{$Think.lang.OPERATING_MODE}</a></li>
+					<li><a href="#params_tab_remote_manage" data-toggle="tab">{$Think.lang.REMOTE_MANAGEMENT}</a></li>
+					<?PHP } elseif ($params_type == 'd20') { ?>
+					<li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+					<li><a href="#params_tab_dialup_network_parameter" data-toggle="tab">{$Think.lang.DIALUP_NETWORK_PARAMETER}</a></li>
+					<li><a href="#params_tab_channel_1_setting" data-toggle="tab">{$Think.lang.CHANNEL_1_SETTING}</a></li>
+					<li><a href="#params_tab_channel_2_setting" data-toggle="tab">{$Think.lang.CHANNEL_2_SETTING}</a></li>
+					<li><a href="#params_tab_protocol" data-toggle="tab">{$Think.lang.VAR_PROTOCOL}</a></li>
+					<li><a href="#params_tab_io_control" data-toggle="tab">{$Think.lang.IO_CONTROL}</a></li>
+					<li><a href="#params_tab_operating_mode" data-toggle="tab">{$Think.lang.OPERATING_MODE}</a></li>
+					<li><a href="#params_tab_remote_manage" data-toggle="tab">{$Think.lang.REMOTE_MANAGEMENT}</a></li>
+					<?PHP } elseif ($params_type == 'd10') { ?>
+					<li class="active"><a href="#params_tab_product_info" data-toggle="tab">{$Think.lang.PRODUCT_INFORMATION}</a></li>
+					<li><a href="#params_tab_serial_port_settings" data-toggle="tab">{$Think.lang.SERIAL_PORT_SETTINGS}</a></li>
+					<li><a href="#params_tab_dialup_network_parameter" data-toggle="tab">{$Think.lang.DIALUP_NETWORK_PARAMETER}</a></li>
+					<li><a href="#params_tab_data_center" data-toggle="tab">{$Think.lang.DATA_CENTER}</a></li>
+					<li><a href="#params_tab_protocol" data-toggle="tab">{$Think.lang.VAR_PROTOCOL}</a></li>
+					<li><a href="#params_tab_operating_mode" data-toggle="tab">{$Think.lang.OPERATING_MODE}</a></li>
+					<li><a href="#params_tab_remote_manage" data-toggle="tab">{$Think.lang.REMOTE_MANAGEMENT}</a></li>
+					<?PHP } ?>
+					<li class="pull-right" style="position:absolute;right:-20px;"><a href="javascript:;" class="text-muted" id="btn_reload_params" title="{$Think.lang.VAR_REFRESH}"><i class="fa fa-refresh"></i></a></li>
+				</ul>
+				<div class="tab-content params-tab-content">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-success btn-submit-params">{$Think.lang.NEXT_STEP}</button>
+	<button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_BTN_CANCLE}</button>
+</div>
+
+<script type="text/javascript">
+	(function($) {
+		$(document).ready(function() {
+			$('#rwcs2Modal h4').html($.gf.tp.task_name);
+			$('#rwcs2Modal .btn-submit-params').on('click', function() {
+				var params = $.gf.tpo.getParams();
+				if (!params) return;
+				$('#rwcs2Modal').modal('hide');
+				$.gf.tp.params = params;
+				$('#rwcs3Modal').modal({remote: tpurl('Term', 'getModalHtml', 'tpl_id=params_config_set_time')});
+			});
+
+			//Change tab, set title
+			$('#tab_params_list a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				var p = $(this).parent().parent();
+				var phtml = p.hasClass('dropdown-menu') ? ('&nbsp;&gt;&nbsp;'+p.prev().html().replace(' <span class="caret"></span>','')) : '';
+				$('#rwcs2Modal h4').html($lang.VAR_EDIT_PARAM+'<span style="font-size:13px; color:#0dc4ef;">'+phtml+'&nbsp;&gt;&nbsp;'+$(this).html()+'</span>');
+			});
+
+			window.setTimeout(function() {
+				$.getScript($.gf.params_def_src.replace('%s', $.gf.tp.params_type), function() {
+					if ($.gf.tpo) delete $.gf.tpo;
+					$.gf.tpo = new TermParams($.gf.tp.params_type);
+					$.gf.tpo.load();
+					$('#btn_reload_params').click(function(){
+							$.gf.tpo.load();
+					});
+				});
+			}, 300);
+		});
+	})(jQuery);
+</script>

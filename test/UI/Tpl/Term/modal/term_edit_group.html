@@ -1,0 +1,91 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title" id="h4_add_edit">%s</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="modal_fm">
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_TG}:</label>
+            <div class="col-md-8">
+                <input type="hidden" name="sns" value="%s" />
+                <input type="text" class="form-control" name="gid" readonly="readonly" style="background: #fff; cursor: pointer" />
+                <div id="tree_tg_content" style="height:300px;">
+                    <input type="text" class="form-control ztree_search" placeholder="{$Think.lang.GROUP_NAME}" />
+                    <button type="button" class="btn btn-xs btn-default btn-my-search"><i class="fa fa-search"></i></button>
+                    <div class="ztree_close" onclick="$('#modal_fm input[name=gid]').click();" title="{$Think.lang.VAR_COLLAPSE}"><i class="fa fa-angle-double-up"></i></div>
+                    <ul id="tree_tg" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success submit_term_edit_group">{$Think.lang.VAR_UPDATE}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    $('.submit_term_edit_group').on('click', function(){
+        var p = $.serializeObject('#modal_fm');
+        p.gid = $('#modal_fm input[name=gid]').attr('data-gid');
+        ajax(tpurl('Term','setGroup'), p, function(msg){
+            $.notice(msg);
+            if (msg.status == 0){
+                $("#list2").trigger('reloadGrid');
+                $('#myLgModal').modal('hide');
+            }
+        });
+    });
+
+    $.gf.tree_click = function(node){
+        var o = $('#modal_fm input[name=gid]');
+        o.attr('data-gid', node.id);
+        o.val(node.oldname || node.name);
+        $('#tree_tg_content').hide();
+    };
+
+    var tree_setting = {
+        view: {
+            dblClickExpand: false
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: function(){
+                $.gf.tree_click(arguments[2]);
+            }
+        }
+    };
+    var tree_nodes = %s;
+    $.gf.ztree = $.fn.zTree.init($("#tree_tg"), tree_setting, tree_nodes);
+    var node = $.gf.ztree.getNodeByParam('id', '%s');
+    $.gf.ztree.selectNode(node); // 选择节点
+    $.gf.tree_click(node);
+    $('#modal_fm input[name=gid]').click(function(){
+        var o = $('#tree_tg_content');
+        if (o.is(':hidden')){
+            $('#tree_tg_content').css('width', $('#modal_fm input[name=gid]').parent().width()); //设置ztree宽度
+            o.show();
+        }else{
+            o.fadeOut();
+        }
+    });
+    fuzzySearch('tree_tg','.ztree_search',null,true); //初始化模糊搜索方法
+    $('.btn-my-search').click(function(){
+        var i = $(this).find('i');
+        if (i.hasClass('fa-search')) {
+            $('.ztree_search').fadeIn(500);
+            i.removeClass('fa-search').addClass('fa-close');
+        } else {
+            $('.ztree_search').val('').fadeOut(500);
+            $('.ztree_search').trigger('input');
+            i.removeClass('fa-close').addClass('fa-search');
+        }
+    });
+});
+})(jQuery);
+</script>

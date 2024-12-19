@@ -1,0 +1,127 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" rel="stylesheet" type="text/css" href="../Public/bootstrap_validator/bv.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Syscfg/grzx.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+<!--fileinput-->
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Public/bootstrap_fileinput/css/fileinput.min.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <!--个人信息-->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.USR_BASIC_INFO}</h3>
+            </div>
+            <div class="box-body">
+              <div class="my-loading"></div><!--loading div-->
+              <table class="table table-bordered tbl-params" id="tbl-params" style="position: relative;">
+                <tr>
+                  <th rowspan="4" class="th-head-container">
+                    <img src="../../Upload/headimg/{$row['head']}" title="{$Think.lang.HEAD_IMG}" class="user-head-img-edit">
+                  </th>
+                  <th width="200px">{$Think.lang.VAR_USER_NAME}：</th>
+                  <td>{$row['name']}</td>
+                  <th width="200px">{$Think.lang.VAR_USER_TYPE}：</th>
+                  <td>{$row['usr_type_text']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.VAR_CMD_CREATETIME}：</th>
+                  <td>{$row['create_time']}</td>
+                  <th>{$Think.lang.EXPIRED_TIME}：</th>
+                  <td>{$row['expired_time']}</td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.VAR_DEVICE_EMAIL}：</th>
+                  <td class="td-input"><input type="text" name="email" value="{$row['email']}"><i class="fa fa-pencil"></i></td>
+                  <th>{$Think.lang.MOBILE_NUMBER}：</th>
+                  <td class="td-input"><input type="text" name="sim" value="{$row['sim']}"><i class="fa fa-pencil"></i></td>
+                </tr>
+                <tr>
+                  <th>{$Think.lang.VAR_NOTE}：</th>
+                  <td colspan="1" class="td-input"><input type="text" name="info" value="{$row['info']}"><i class="fa fa-pencil"></i></td>
+                  <th>{$Think.lang.VAR_OPERATION}：</th>
+                  <td>
+                    <div class="toolbar">
+                      <button type="button" class="btn btn-default btn-xs" id="btn_edit_basic">&nbsp;{$Think.lang.SAVE_TEMPLATE}</button>&nbsp;&nbsp;
+                      <button type="button" class="btn btn-default btn-xs" id="btn_edit_pass">&nbsp;{$Think.lang.VAR_EDIT_PASS}</button>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+              <!--
+              <div class="toolbar" style="text-align: right; padding-right: 10px; margin-top: 10px;">
+                <button type="button" class="btn btn-default btn-sm" id="btn_edit_pass"><span class="fa fa-pencil">&nbsp;{$Think.lang.VAR_EDIT_PASS}</span></button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-default btn-sm" id="btn_edit_basic"><span class="fa fa-save">&nbsp;{$Think.lang.SAVE_TEMPLATE}</span></button>
+              </div>
+              -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--登陆历史-->
+      <div class="row" style="margin-top: 15px;">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.USR_LOGIN_HISTORY}</h3>
+              <div class="pull-right box-tools"></div>
+            </div>
+            <div class="box-body jqgrid_c">
+              <table id="list2"></table>
+              <div id="pager2" style="margin-top: 30px !important;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+<!--模态框 edit pass-->
+<div class="modal fade" id="myLgModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<!--模态框 edit headimg-->
+<div class="modal fade" id="myLgModal2">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_BTN_SURE}</span></button>
+                <h4 class="modal-title">{$Think.lang.HEAD_IMG_EDIT}</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="modal_fm2">
+                    <div class="form-group">
+                      <label class="col-md-2" style="text-align: right;">{$Think.lang.VAR_UPGRADE_FILE}:<span class="required-field"></span></label>
+                      <div class="col-md-8">
+                        <input type="file" id="filedata" name="filedata">
+                      </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success save_edit_headimg">{$Think.lang.VAR_BTN_SURE}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="Homepage/footer"/>
+<script type="text/javascript" src="../Public/bootstrap_validator/bv.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/bootstrap_validator/lang/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--jqgrid-->
+<script type="text/javascript" src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--fileinput-->
+<script type="text/javascript" src="__ROOT__/Tpl/Public/bootstrap_fileinput/js/fileinput.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="__ROOT__/Tpl/Public/bootstrap_fileinput/js/locales/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">$.gf.lang = '<?PHP echo $lang?>';</script>
+<script type="text/javascript" src="__ROOT__/Tpl/Syscfg/grzx.js?rand={$Think.const.CACHE_VERSION}"></script>

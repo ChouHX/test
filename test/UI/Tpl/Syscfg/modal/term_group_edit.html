@@ -1,0 +1,215 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title" id="h4_add_edit">{$Think.lang.VAR_TG_EDIT}</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="modal_fm">
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_NAME}:<span class="required-field"></span></label>
+            <div class="col-md-4">
+                <input type="hidden" name="id" value="%d">
+                <input type="text" class="form-control" name="name" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_TG_SELECT_PARENT}:</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="gid" readonly="readonly" style="background: #fff; cursor: pointer" />
+                <div id="tree_tg_content" style="height:300px;">
+                    <input type="text" class="form-control ztree_search" placeholder="{$Think.lang.GROUP_NAME}" />
+                    <button type="button" class="btn btn-xs btn-default btn-my-search"><i class="fa fa-search"></i></button>
+                    <div class="ztree_close" onclick="$('#modal_fm input[name=gid]').click();" title="{$Think.lang.VAR_COLLAPSE}" style="width:265px;"><i class="fa fa-angle-double-up"></i></div>
+                    <ul id="tree_tg" class="ztree ztree2"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.DEVICE_MONTHLY_FLUX_LIMIT}:</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="month_flux_limit" value="%d" />
+            </div>
+            <label class="col-lg-6 control-label input-notes" style="text-align: left; padding-top: 0">{$Think.lang.ROUTER_MONTH_FLUX_LIMIT_DESC}</label>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.DEVICE_DAILY_FLUX_LIMIT}:</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="day_flux_limit" value="%d" />
+            </div>
+            <label class="col-lg-6 control-label input-notes" style="text-align: left; padding-top: 0">{$Think.lang.ROUTER_DAY_FLUX_LIMIT_DESC}</label>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.PORTAL_DEVICE_MONTHLY_FLUX_LIMIT}:</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="device_month_flux_limit" value="%d" />
+            </div>
+            <label class="col-lg-6 control-label input-notes" style="text-align: left; padding-top: 0">{$Think.lang.PORTAL_MONTH_FLUX_LIMIT_DESC}</label>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.PORTAL_DEVICE_DAILY_FLUX_LIMIT}:</label>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="device_day_flux_limit" value="%d" />
+            </div>
+            <label class="col-lg-6 control-label input-notes" style="text-align: left; padding-top: 0">{$Think.lang.PORTAL_DAY_FLUX_LIMIT_DESC}</label>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success submit_group_edit">{$Think.lang.VAR_UPDATE}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    $.gf.chk_num = function(v) {
+        if (isNaN(v) || v.indexOf('.') != -1){
+            return false;
+        }
+        v = parseInt(v);
+        if (v >= 0 && v <= 4294967295){
+            return true;
+        }
+        return false;
+    }
+
+    $('input[name=name]').val( unescape('%s') );
+    $('.submit_group_edit').on('click', function(){
+        var obj = $("#modal_fm").data('bootstrapValidator');
+        obj.validate();
+        if (!obj.isValid()){
+            return;
+        }
+        var p = $.serializeObject('#modal_fm');
+        p.pid = $('#modal_fm input[name=gid]').attr('data-gid');
+        ajax(tpurl('Syscfg','termGroupEdit'), p, function(msg){
+            $.notice(msg);
+            if (msg.status == 0){
+                $("#list2").trigger('reloadGrid');
+                $('#myLgModal').modal('hide');
+            }
+        });
+    });
+
+    $('#modal_fm').bootstrapValidator({
+       feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            },
+            month_flux_limit: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    },
+                    callback: {
+                        message: $lang.INT_VALIDATE,
+                        callback:function(v){
+                            return $.gf.chk_num(v);
+                        }
+                    }
+                }
+            },
+            day_flux_limit: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    },
+                    callback: {
+                        message: $lang.INT_VALIDATE,
+                        callback:function(v){
+                            return $.gf.chk_num(v);
+                        }
+                    }
+                }
+            },
+            device_month_flux_limit: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    },
+                    callback: {
+                        message: $lang.INT_VALIDATE,
+                        callback:function(v){
+                            return $.gf.chk_num(v);
+                        }
+                    }
+                }
+            },
+            device_day_flux_limit: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    },
+                    callback: {
+                        message: $lang.INT_VALIDATE,
+                        callback:function(v){
+                            return $.gf.chk_num(v);
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    $.gf.tree_click = function(node){
+        var o = $('#modal_fm input[name=gid]');
+        o.attr('data-gid', node.id);
+        o.val(node.oldname || node.name);
+        $('#tree_tg_content').hide();
+    };
+
+    var tree_setting = {
+        view: {
+            dblClickExpand: false
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: function(){
+                $.gf.tree_click(arguments[2]);
+            }
+        }
+    };
+    var tree_nodes = %s;
+    $.gf.ztree = $.fn.zTree.init($("#tree_tg"), tree_setting, tree_nodes);
+    var node = $.gf.ztree.getNodeByParam('id', '%s');
+    if (node){
+        $.gf.ztree.selectNode(node); // 选择节点
+        $.gf.tree_click(node);
+    }else{
+        $('#modal_fm input[name=gid]').val('Root');
+    }
+    $('#modal_fm input[name=gid]').click(function(){
+        var o = $('#tree_tg_content');
+        if (o.is(':hidden')){
+            $('#tree_tg_content').css('width', $('#modal_fm input[name=gid]').parent().width()); //设置ztree宽度
+            o.show();
+        }else{
+            o.fadeOut();
+        }
+    });
+    fuzzySearch('tree_tg','.ztree_search',null,true); //初始化模糊搜索方法
+    $('.btn-my-search').click(function(){
+        var i = $(this).find('i');
+        if (i.hasClass('fa-search')) {
+            $('.ztree_search').fadeIn(500);
+            i.removeClass('fa-search').addClass('fa-close');
+        } else {
+            $('.ztree_search').val('').fadeOut(500);
+            $('.ztree_search').trigger('input');
+            i.removeClass('fa-close').addClass('fa-search');
+        }
+    });
+});
+})(jQuery);
+</script>

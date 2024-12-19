@@ -1,0 +1,264 @@
+<style>
+.timed-task-params{
+  display: none;
+}
+.timed-task-params .checkbox-inline{
+  min-width: 45px;
+}
+</style>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+  <h4 class="modal-title" id="rwcs_modal_h4"></h4>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal" role="form" id="fm_rwcs" style="margin-top: 10px">
+    <div class="form-group">
+      <label class="col-lg-2 control-label">{$Think.lang.TASK_TARGET}：</label>
+      <div class="col-lg-3">
+        <select id="act" class="form-control">
+          <option value="term">{$Think.lang.SELECTED_DEVICE}</option>
+          <option value="group">{$Think.lang.SELECTED_GROUP}</option>
+          <option value="all">{$Think.lang.VAR_ALL_ROUTER}</option>
+        </select>
+        <textarea id="dest_sns" disabled="disabled" style="display:none; width: 80%; height: 50px; border-color: #d2d6de"></textarea>
+      </div>
+      <label class="col-lg-7 control-label input-notes">{$Think.lang.TASK_DEST_TIPS}</label>
+    </div>
+    <div class="form-group">
+      <label for="starttime" class="col-lg-2 control-label">{$Think.lang.VAR_CP_START}：</label>
+      <div class="col-lg-3">
+        <input type="text" class="form-control" name="start_dt" id="start_dt" value="" />
+      </div>
+      <label class="col-lg-7 control-label input-notes">{$Think.lang.TASK_START_TIME_DESC}</label>
+    </div>
+    <div class="form-group">
+      <label for="endtime" class="col-lg-2 control-label">{$Think.lang.EXPIRED_TIME}：</label>
+      <div class="col-lg-3">
+        <input type="text" class="form-control" name="end_dt" id="end_dt" value="" />
+      </div>
+      <label class="col-lg-7 control-label input-notes">{$Think.lang.TASK_END_TIME_DESC}</label>
+    </div>
+    <div class="form-group">
+      <label class="col-lg-2 control-label">{$Think.lang.SCHEDULED_EXEC}：</label>
+      <div class="col-lg-3">
+        <select class="form-control" id="select_timed_type">
+          <option value="-1">{$Think.lang.VAR_DISABLE}</option>
+          <option value="1" data-show="1,3,6">{$Think.lang.MONTHLY_EXEC}</option>
+          <option value="2" data-show="2,3,6">{$Think.lang.WEEKLY_EXEC}</option>
+          <option value="3" data-show="4,6">{$Think.lang.DAILY_EXEC}</option>
+          <option value="4" data-show="5">{$Think.lang.HOURLY_EXEC}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group timed-task-params timed-params-1">
+      <label class="col-lg-2 control-label">{$Think.lang.VAR_TRACK_DATE}：</label>
+      <div class="col-lg-10">
+        <?PHP for ($i=1; $i<32; $i++) {
+          echo sprintf('<label class="checkbox-inline" style="margin-left:10px"><input type="checkbox" value="%s" name="days" />%s</label>', $i, $i);
+        } ?>
+      </div>
+    </div>
+    <div class="form-group timed-task-params timed-params-2">
+      <label class="col-lg-2 control-label">{$Think.lang.VAR_WEEK}：</label>
+      <div class="col-lg-10">
+        <?PHP
+          $week_arr = L('VAR_WEEK_ARR');
+          foreach ($week_arr as $key => $val) {
+            echo sprintf('<label class="checkbox-inline"><input type="checkbox" name="weeks" value="%s" />%s&nbsp;&nbsp;</label>', $key, $val);
+          }
+        ?>
+      </div>
+    </div>
+    <div class="form-group timed-task-params timed-params-3">
+      <label class="col-lg-2 control-label">{$Think.lang.HOURS}：</label>
+      <div class="col-lg-2">
+        <div class="input-group">
+          <select class="form-control">
+            <?PHP for ($i=0; $i<24; $i++) {
+              echo sprintf('<option value="%d">%s%d</option>', $i, ($i<10?'0':''), $i);
+            } ?>
+          </select>
+          <div class="input-group-addon" style="background: #f4f4f4">{$Think.lang.BY_HOUR}</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group timed-task-params timed-params-4">
+      <label class="col-lg-2 control-label">{$Think.lang.HOURS}：</label>
+      <div class="col-lg-10">
+        <?PHP for ($i=0; $i<24; $i++) {
+          echo sprintf('<label class="checkbox-inline" style="margin-left:10px"><input type="checkbox" name="hours" value="%d" />%s%d</label>', $i, ($i<10?'0':''), $i);
+        } ?>
+      </div>
+    </div>
+    <div class="form-group timed-task-params timed-params-5">
+      <label class="col-lg-2 control-label">{$Think.lang.MINUTES}：</label>
+      <div class="col-lg-10">
+        <?PHP for ($i=0; $i<60; $i+=5) {
+          echo sprintf('<label class="checkbox-inline" style="margin-left:10px"><input type="checkbox" name="minutes" value="%d" />%s%d</label>', $i, ($i<10?'0':''), $i);
+        } ?>
+      </div>
+    </div>
+    <div class="form-group timed-task-params timed-params-6">
+      <label class="col-lg-2 control-label">{$Think.lang.MINUTES}：</label>
+      <div class="col-lg-2">
+        <div class="input-group">
+          <select class="form-control">
+            <?PHP for ($i=0; $i<60; $i+=5) {
+              echo sprintf('<option value="%d">%s%d</option>', $i, ($i<10?'0':''), $i);
+            } ?>
+          </select>
+          <div class="input-group-addon" style="background: #f4f4f4">{$Think.lang.VAR_MINUTE}</div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-success btn-task-save">{$Think.lang.VAR_BTN_SURE}</button>
+  <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_BTN_CANCLE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+  $.gf.tp = {
+    addon_params: "<?PHP echo I('addon_params', 0, 'intval')?>",
+    task_name: "<?PHP echo $_REQUEST['task_name']?>",
+    task_type: "<?PHP echo $_REQUEST['task_type']?>",
+    task_confirm: "<?PHP echo $_REQUEST['task_confirm']?>",
+    term_list: '',
+    batch: "<?PHP echo I('batch', 0, 'intval')?>",
+    check_model: "<?PHP echo I('check_model', 0, 'intval')?>",
+    enable_model: '<?PHP echo $_REQUEST['enable_model']?>'
+  };
+  $.gf.daterangepicker_opt = {
+    "singleDatePicker": true,
+    "timePicker": true,
+    "timePicker24Hour": true,
+    'drops': 'down',
+    "locale": {
+      "format": "YYYY-MM-DD HH:mm:ss",
+      "daysOfWeek": $lang.VAR_WEEK_ARR,
+      "monthNames": $lang.VAR_MONTH.replace('[','').replace(']','').replace(/'/g,'').split(','),
+      "applyLabel": $lang.VAR_BTN_SURE,
+      "cancelLabel": $lang.VAR_BTN_CANCLE
+    }
+  };
+
+  $(function(){
+    $('#rwcs_modal_h4').html($.gf.tp.task_name);
+    if ($.gf.tp.batch == '0') {
+      $('#act').attr('disabled', true);
+    }
+      $('#start_dt').val(moment().format('YYYY-MM-DD HH:mm:00')).daterangepicker($.gf.daterangepicker_opt);
+      $('#end_dt').val(moment().add(30, 'days').format('YYYY-MM-DD HH:mm:00')).daterangepicker($.gf.daterangepicker_opt);
+
+    // 切换定期执行
+    $('#select_timed_type').on('change', function(){
+      var v = $(this).val(), ids = $(this).find('option:selected').attr('data-show');
+      for (var i=1,o=null; i<7; i++) {
+        o = $('div.timed-params-'+i);
+        if (v == -1) {
+          o.hide();
+        } else {
+          ids.indexOf(i) != -1 ? o.show() : o.hide();
+        }
+      }
+    });
+
+    $('.btn-task-save').click(function() {
+      var term_list = $('#list2').jqGrid('getGridParam','selarrrow');
+      if ($.gf.tp.batch == '0' && term_list.length != 1) {
+        $.notice(1, term_list.length == 0 ? $lang.VAR_MSG_SELECT_TERM : $lang.ONLY_SELECT_ONE_DEVICE);
+        return;
+      }
+
+      $.gf.tp.start_ts = new Date($('#start_dt').val().replace(/-/g, '/')).getTime() / 1000;
+      $.gf.tp.end_ts = new Date($('#end_dt').val().replace(/-/g, '/')).getTime() / 1000;
+      $.gf.tp.act = $('#act').val();
+      if ($.gf.tp.act == 'term') {
+        $.gf.tp.term_list = term_list.join(',');
+        if ($.gf.tp.term_list == '') {
+          $.notice(1, $lang.VAR_MSG_SELECT_TERM);
+          return;
+        }
+      } else if ($.gf.tp.act == 'group') {
+        $.gf.tp.gids = $('#change_gid span').attr('data-id');
+      }
+
+      // 定时任务参数
+      $.gf.tp.timed_type = parseInt($('#select_timed_type').val());
+      if ($.gf.tp.timed_type != -1) {
+        var v1 = [], v2 = [], v3 = $('.timed-params-3 select').val(), v4 = [], v5 = [], v6 = $('.timed-params-6 select').val();
+        $('.timed-params-1 input[name=days]').each(function(){
+          if ($(this).is(':checked')) v1.push($(this).val());
+        });
+        $('.timed-params-2 input[name=weeks]').each(function(){
+          if ($(this).is(':checked')) v2.push($(this).val());
+        });
+        $('.timed-params-4 input[name=hours]').each(function(){
+          if ($(this).is(':checked')) v4.push($(this).val());
+        });
+        $('.timed-params-5 input[name=minutes]').each(function(){
+          if ($(this).is(':checked')) v5.push($(this).val());
+        });
+        switch ($.gf.tp.timed_type) {
+          case 1:
+            if (v1.length == 0) {
+              $.notice(1, $lang.TIPS_SELECT_EXEC_DATE);
+              return;
+            }
+            $.gf.tp.timed_params = v6+'|'+v3+'|'+v1.join(',')+'|0';
+            break;
+          case 2:
+            if (v2.length == 0) {
+              $.notice(1, $lang.TIPS_SELECT_EXEC_DATE);
+              return;
+            }
+            $.gf.tp.timed_params = v6+'|'+v3+'|0|'+v2.join(',');
+            break;
+          case 3:
+            if (v4.length == 0) {
+              $.notice(1, $lang.TIPS_SELECT_EXEC_TIME);
+              return;
+            }
+            $.gf.tp.timed_params = v6+'|'+v4.join(',')+'|0|0';
+            break;
+          case 4:
+            if (v5.length == 0) {
+              $.notice(1, $lang.TIPS_SELECT_EXEC_TIME);
+              return;
+            }
+            $.gf.tp.timed_params = v5.join(',')+'|0|0|0';
+            break;
+        }
+      }
+
+      // 如果是不需要额外参数的任务，直接提交到后台
+      var do_work = function() {
+        ajax(tpurl('Task', $.gf.tp.task_type), $.gf.tp, function(msg) {
+          msg.data ? $.notice(1, msg.info) : $.notice(msg);
+          if (msg.status == 0) {
+            $('#rwcs0Modal').modal('hide');
+            $.gf.getStaticsInfo();
+          }
+        });
+      }
+
+      if ($.gf.tp.addon_params == 0) {
+        if ($.gf.tp.act == 'group' || $.gf.tp.act == 'all') {
+          $.confirm($lang.TASK_TARGET+'：' + ($.gf.tp.act == 'group' ? $('#change_gid span').html() : $lang.VAR_ALL_ROUTER)+'<br>' +
+            $lang.VAR_CMD_NAME+'：'+$.gf.tp.task_name+'<br>' +
+            '<span style="color:red">'+$lang.BATCH_OPERATION_CONFIRM+'</span>', function(){
+            do_work();
+          });
+        } else {
+          do_work();
+        }
+        return;
+      }
+
+      $.gf.tp.show_rwcs = 1;
+      $('#rwcs0Modal').modal('hide');
+    });
+  });
+})(jQuery);
+</script>

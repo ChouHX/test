@@ -1,0 +1,259 @@
+<style type="text/css">
+#modal_fm div.checkbox-inline{
+    margin-right: 15px;
+}
+#modal_fm div.checkbox-inline label{
+    cursor: pointer;
+}
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+    <h4 class="modal-title" id="h4_add_edit">新增</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="modal_fm">
+        <div class="form-group">
+            <label class="col-md-2">配置类型:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <label class="radio-inline">
+                    <input type="radio" name="set_type" value="0" checked="checked">&nbsp;采集配置                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="set_type" value="1">&nbsp;告警配置                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">名称:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">从设备地址:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="slave_id" value="1" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">地址:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="addr">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">单位:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="unit">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">数据类型:<span class="required-field"></span></label>
+            <div class="col-md-8">
+                <select class="form-control" name="value_type">
+                    <option value="4" selected>模拟量</option>
+                    <option value="3">数字量(单字节)</option>
+                    <option value="2">数字量(双字节)</option>
+                    <option value="1">数字量(四字节)</option>
+                </select>
+            </div>
+        </div>
+        <div id="minmax_fields">
+            <div class="form-group">
+                <label class="col-md-2">最小值:<span class="required-field"></span></label>
+                <div class="col-md-8">
+                    <input class="form-control" name="min">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2">最大值:<span class="required-field"></span></label>
+                <div class="col-md-8">
+                    <input class="form-control" name="max">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">数据修正:</label>
+            <div class="col-md-4">
+                <select class="form-control" name="operator" id="operator">
+                    <option value="">请选择运算符</option>
+                    <option value="*">乘以</option>
+                    <option value="+">加上</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="op_value" id="op_value" placeholder="运算系数" readonly />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">展开更多配置项:</label>
+            <div class="col-md-8">
+                <i class="fa fa-angle-down" id="show_addon_fields" style="cursor: pointer; margin-top: 6px; font-weight: 700; font-size: 15px"></i>
+                <i class="fa fa-angle-up" id="hide_addon_fields" style="display: none; cursor: pointer; margin-top: 6px; font-weight: 700; font-size: 15px"></i>
+            </div>
+        </div>
+        <div id="addon_fields" style="display: none;">
+            <div class="form-group">
+                <label class="col-md-2">编号:</label>
+                <div class="col-md-8">
+                    <input class="form-control" name="code">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2">触发告警级别:</label>
+                <div class="col-md-8">
+                    <input class="form-control" name="warn_level">
+                </div>
+            </div>
+            <!--<div class="form-group">
+                <label class="col-md-2">修正值:</label>
+                <div class="col-md-8">
+                    <input class="form-control" name="revised">
+                </div>
+            </div>-->
+            <div class="form-group">
+                <label class="col-md-2">备注:</label>
+                <div class="col-md-8">
+                    <textarea class="form-control" name="info"></textarea>
+                </div>
+            </div>
+        </div>
+    <input type="hidden" name="__hash__" value="c4d0b07c4db06399a5f0e0b153177cf3_f8c99067b595d3bfd6031bdcf1b1bf41" /></form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success submit_sensor_add">保存</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    $('.submit_sensor_add').on('click', function(){
+        var obj = $("#modal_fm").data('bootstrapValidator');
+        obj.validate();
+        if (!obj.isValid()){
+            return;
+        }
+        ajax(tpurl('Rtu', 'sensorTypeAdd'), $('#modal_fm').serialize()+'&act=add', function(msg){
+            $.notice(msg);
+            if (msg.status == 0){
+                $("#list2").trigger('reloadGrid');
+                $('#myLgModal').modal('hide');
+            }
+        });
+    });
+
+    $('#operator').on('change', function(){
+        var o = $('#op_value'), v = $(this).val();
+        if (v == '') {
+            o.val('').attr('readonly', true);
+        } else {
+            o.removeAttr('readonly');
+        }
+    });
+
+    $('#modal_fm').bootstrapValidator({
+       feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            name: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            },
+            slave_id: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            },
+            addr: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            },
+            unit: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            },
+            value_type: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    }
+                }
+            },
+            min: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    },
+                    regexp: {
+                        regexp: /^[+|-]?\d*\.?\d*$/,
+                        message: $lang.NUMBER_VALIDATE
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 7,
+                        message: $lang.LENGTH_1_TO_7
+                    }
+                }
+            },
+            max: {
+                validators: {
+                    notEmpty: {
+                        message: $lang.FIELD_REQUIRED
+                    },
+                    regexp: {
+                        regexp: /^[+|-]?\d*\.?\d*$/,
+                        message: $lang.NUMBER_VALIDATE
+                    },
+                    stringLength: {
+                        min: 1,
+                        max: 7,
+                        message: $lang.LENGTH_1_TO_7
+                    }
+                }
+            }
+        }
+    });
+
+    $('#show_addon_fields').on('click',function(){
+        $('#addon_fields').show();
+        $(this).hide().next().show();
+    });
+    $('#hide_addon_fields').on('click',function(){
+        $('#addon_fields').hide();
+        $(this).hide().prev().show();
+    });
+
+    $('input[name=set_type]').on('change',function(){
+        var v = $(this).val(), mm = $('#minmax_fields'), unit_require = $('input[name=unit]').parent().parent().find('.required-field');
+        var info = $('textarea[name=info]').parent().parent();
+        $('#modal_fm').bootstrapValidator('enableFieldValidators', 'min', v==0);
+        $('#modal_fm').bootstrapValidator('enableFieldValidators', 'max', v==0);
+        v == 1 ? mm.hide() : mm.show();
+        $('select[name=value_type]').val(v == 1 ? '3' : '4');
+
+        v == 1 ? unit_require.hide() : unit_require.show();
+        $('#modal_fm').bootstrapValidator('enableFieldValidators', 'unit', v==0);
+
+        if (v == 1){
+            $('#minmax_fields').before(info);
+            info.find('label').html($lang.ALARM_INFO+':');
+        }else{
+            $('#addon_fields').append(info);
+            info.find('label').html($lang.VAR_NOTE+':');
+        }
+    });
+});
+})(jQuery);
+</script>

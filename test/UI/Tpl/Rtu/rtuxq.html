@@ -1,0 +1,77 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/daterangepicker/daterangepicker.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Rtu/rtuxq.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <!--传感器数据-->
+      <div class="row" style="margin-top: 15px;">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.HISTORY_DATA}</h3>
+            </div>
+            <div class="box-body">
+              <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                  <button class="btn btn-time-range btn-info btn-today">{$Think.lang.VAR_TODAY}</button>
+                  <button class="btn btn-time-range btn-default btn-yesterday">{$Think.lang.VAR_YESTERDAY}</button>
+                  <div class="input-group" style="width: 300px;">
+                    <span class="input-group-addon" style="background-color:#fff !important;"> <i class="fa fa-calendar"></i> </span>
+                    <input type="text" id="start_dt" class="form-control" style="width: 200px" readonly>
+                  </div>
+                  <div class="btn-group">
+                    <button type="button" class="btn data-show-type btn-sm btn-info">{$Think.lang.CHART_SHOW}</button>
+                    <button type="button" class="btn data-show-type btn-sm btn-default">{$Think.lang.LIST_SHOW}</button>
+                  </div>
+              </div>
+              <?PHP foreach ($sensors as $k => $sensor){ ?>
+              <div class="sensor-data" id="sensor-data-{$sensor['slave_id']}-{$sensor['addr']}" data-value-type="{$sensor['value_type']}">
+                <div class="current">
+                  <p class="current-title">{$sensor['name']}</p>
+                  <p class="current-value">
+                    <span>0</span>&nbsp;<small style="font-size: 50%;">{$sensor['unit']}</small>
+                  </p>
+                  <p class="current-report-time">0000-00-00 00:00:00</p>
+                </div>
+                <div class="history" id="chart_{$k}"></div>
+                <div class="history-list" id="data_list_{$k}" style="display: none;">
+                  <table id="list{$k}"></table>
+                  <div id="pager{$k}" style="margin-top: 1px !important;"></div>
+                </div>
+              </div>
+              <?PHP } ?>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+<include file="Homepage/footer"/>
+<!--daterangepicker-->
+<script type="text/javascript" src="../Public/daterangepicker/moment.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/daterangepicker/daterangepicker.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--highcharts-->
+<script type="text/javascript" src="../Public/highcharts/highstock.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/highcharts/theme/sand-signika.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/highcharts/no-data-to-display.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--jqgrid-->
+<script src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">
+$.gf.sn = "{$row['sn']}";
+$.gf.sensors = <?PHP echo count($sensors) ?>;
+$.gf.ranges = {
+  '{$Think.lang.VAR_TODAY}' : [moment(), moment()],
+  '{$Think.lang.VAR_YESTERDAY}' : [moment().subtract('days', 1), moment().subtract('days', 1)],
+  '{$Think.lang.LAST_7DAYS}': [moment().subtract('days', 7), moment().subtract('days', 1)],
+  '{$Think.lang.LAST_30DAYS}': [moment().subtract('days', 30), moment().subtract('days', 1)],
+  '{$Think.lang.THIS_MONTH}': [moment().startOf('month'), moment()],
+  '{$Think.lang.LAST_MONTH}': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+};
+</script>
+<script type="text/javascript" src="__ROOT__/Tpl/Rtu/rtuxq.js?rand={$Think.const.CACHE_VERSION}"></script>

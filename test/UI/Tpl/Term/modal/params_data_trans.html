@@ -1,0 +1,214 @@
+<style type="text/css">
+  /*tab style*/
+  #tbl_res tr{
+    cursor: pointer;
+  }
+  #tbl_res input{
+    vertical-align: middle;
+  }
+  .tr_selected_cfg{
+    background: #aedae4;
+  }
+  .params-tab-content .tab-pane{
+    padding-top: 10px;
+  }
+  #fm_rwcs{
+    margin-top: 10px;
+  }
+
+  /*params input style*/
+  .ck-top-0{
+    top: 0;
+  }
+  .form-horizontal label.input-notes{
+    text-align: left;
+    color: gray;
+  }
+
+  /*loading*/
+  .my-loading{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,.6) url(../Public/images/loading.gif) no-repeat center;
+  }
+
+  /*task dest ul*/
+  .task-dest{
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+  }
+  .task-dest li{
+    float: left;
+    background-color: #ecf0f5;
+    margin: 0 20px 15px 0;
+    line-height: 30px;
+    padding: 0 5px;
+    border-radius: 3px;
+  }
+  .timed-task-params{
+    display: none;
+  }
+  .timed-task-params .checkbox-inline{
+    min-width: 45px;
+  }
+</style>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+  <h4 class="modal-title"></h4>
+</div>
+<div class="modal-body">
+  <table id="tbl_dt"></table>
+  <div id="pager_dt" style="margin-top: 30px !important;"></div>
+  <form class="form-horizontal" role="form" id="fm_rwcs" style="margin-top: 20px; /*border: 1px solid #ddd; padding-top: 15px;*/">
+    <div class="form-group">
+      <label class="col-md-2">{$Think.lang.VALUE_TYPE}:</label>
+      <div class="col-md-3">
+        <select class="form-control" name="data_type">
+            <option value="0">{$Think.lang.DATA_TYPE_STRING}</option>
+            <option value="1">{$Think.lang.DATA_TYPE_BYTES}</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="checkbox-inline">
+          <input type="checkbox" name="send_enter" style="top: 0">
+        </label>
+        <span style="position: relative; top: 8px">{$Think.lang.SEND_ENTER}</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2">{$Think.lang.GPS_PORT}:<span class="required-field"></label>
+      <div class="col-md-3">
+        <select class="form-control" name="interface_type">
+          <option value="0">{$Think.lang.INTERFACE_TYPE_0}</option>
+          <option value="1">{$Think.lang.INTERFACE_TYPE_1}</option>
+          <option value="2">{$Think.lang.INTERFACE_TYPE_2}</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select class="form-control" name="interface_num">
+          <option value="0">{$Think.lang.INTERFACE_TYPE_0} (COM1)</option>
+          <option value="1">{$Think.lang.INTERFACE_TYPE_0} (COM2)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2">{$Think.lang.VAR_DATA}:<span class="required-field"></span></label>
+      <div class="col-md-8">
+        <input type="text" class="form-control" name="value" />
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-info" onclick="javascript:$('#tbl_dt').trigger('reloadGrid');">{$Think.lang.VAR_REFRESH}</button>
+  <button type="button" class="btn btn-success btn-dt-save">{$Think.lang.VAR_SEND}</button>
+  <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+
+<script type="text/javascript">
+  (function($) {
+    $(document).ready(function() {
+      var term_list = $('#list2').jqGrid('getGridParam','selarrrow');
+      $('#rwcs2Modal h4').html($.gf.tp.task_name);
+      $('#fm_rwcs input[name=value]').focus();
+      $('#fm_rwcs select[name=interface_type]').on('change',function() {
+        var v = $(this).val(), obj = $('#fm_rwcs select[name=interface_num]'), j = 2, text1 = $lang.INTERFACE_TYPE_0, text2 = 'COM';
+        if (v == '1') {
+            j = 4;
+            text1 = $lang.INTERFACE_TYPE_1;
+            text2 = 'LAN';
+        } else if (v == '2') {
+            j = 2;
+            text1 = $lang.INTERFACE_TYPE_2;
+            text2 = 'USB';
+        }
+        obj.empty();
+        for (var i=0; i<j; i++) {
+          obj.append($("<option>").val(i).text(text1+' ('+text2+(i+1)+')'));
+        }
+      });
+
+      $('.btn-dt-save').click(function() {
+        $('#fm_rwcs input[type=text]').css('border-color','#d2d6de');
+        var p = $.serializeObject('#fm_rwcs'), info = '';
+        if (p.value == '') {
+          info = $lang.ENTER_DOWN_DATA;
+        } else if (p.data_type == '0' && p.value.length > 1000) {
+          info = $lang.MAX_LENGTH_256.replace('256','1000');
+        } else if (p.data_type == '1') {
+          var reg = /[0-9a-fA-F]{2,}/;
+          if (!reg.test(p.value) || p.value.length%2 != 0) {
+            info = $lang.BYTE_STREAM_FORMAT_INCORRECT;
+          } else if (p.value.length > 2000) {
+            info = $lang.MAX_LENGTH_256.replace('256','1000');
+          }
+        }
+        if (info != '') {
+          $.notice(1, info);
+          $('#fm_rwcs input[name=value]').css('border-color','red');
+          return;
+        }
+        p.sn = term_list[0];
+        ajax(tpurl('Term', 'dataTrans'), p, function(msg) {
+          $.notice(msg);
+          if (msg.status == 0) {
+            $('#tbl_dt').trigger('reloadGrid');
+          }
+        });
+      });
+
+      $('#tbl_dt').jqGrid({
+          url: tpurl('Term', 'loadRecvData'),
+          datatype: 'json',
+          mtype: 'post',
+          colNames: ['id', $lang.DATA_TRANS_DIR, $lang.VALUE_TYPE, $lang.VAR_DATA, $lang.VAR_DATA+'('+$lang.DATA_TYPE_STRING+')', $lang.GPS_PORT, $lang.VAR_DEVICE_STATUS, $lang.TIME],
+          colModel:[
+              {name:'id',           index:'id',           jsonmap:'id',             width:50,   align:'center', hidden:true,  search:false, key:true},
+              {name:'from_type',    index:'from_type',    jsonmap:'from_type',      width:50,   align:'center', hidden:false, search:false, formatter:function(v){
+                return '<span style="width:100%; display:inline-block; background:'+(v=='0' ? '#ffedc2' : '#cbd4dd')+'">'+(v=='0'?$lang.DATA_TRANS_DIR_0:$lang.DATA_TRANS_DIR_1)+'</span>';
+              }},
+              {name:'data_type',    index:'data_type',    jsonmap:'data_type',      width:50,   align:'center', hidden:false, search:false},
+              {name:'value',        index:'value',        jsonmap:'value',          width:100,  align:'center', hidden:false, search:false},
+              {name:'value2',       index:'value',        jsonmap:'value2',         width:100,  align:'center', hidden:false, search:false},
+              {name:'data_port',    index:'data_port',    jsonmap:'data_port',      width:50,   align:'center', hidden:false, search:false},
+              {name:'status',       index:'status',       jsonmap:'status',         width:100,  align:'center', hidden:false, search:false},
+              {name:'time',         index:'time',         jsonmap:'time',           width:100,  align:'center', hidden:false, search:false, sortable:false}
+          ],
+          pager: '#pager_dt',
+          rowNum: 10,
+          rowList: [10, 20, 30, 40, 50, 100],
+          sortname: 'id',
+          sortorder: 'DESC',
+          viewrecords: true,
+          width: $('#rwcs2Modal .modal-dialog').width()-30,
+          autoScroll: true,
+          height: 'auto',
+          multiselect: false,
+          multiselectWidth: 30,
+          page: 1,
+          pagerpos: 'center',
+          pgbuttons: true,
+          pginput: true,
+          postData: {
+            searchType:'term_transparent_data',
+            sns: term_list[0]
+          },
+          rownumbers: true,
+          rownumWidth: 30,
+          jsonReader: {repeatitems: false}
+      });
+      // 5秒自动刷新数据透传
+      if (typeof $.gf.dt_timer == 'undefined') {
+        $.gf.dt_timer = setInterval(function() {
+          $('#tbl_dt').trigger('reloadGrid');
+        }, 5000);
+      }
+    });
+  })(jQuery);
+</script>

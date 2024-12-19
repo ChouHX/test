@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html class="ui-page-login">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title></title>
+<link href="../Public/mui/css/mui.min.css" rel="stylesheet" />
+<link href="../Public/mui/css/style.css" rel="stylesheet" />
+<style>
+    .area {
+        margin: 20px auto 0px auto;
+    }
+    
+    .mui-input-group {
+        margin-top: 10px;
+    }
+    
+    .mui-input-group:first-child {
+        margin-top: 20px;
+    }
+    
+    .mui-input-group label {
+        width: 22%;
+    }
+    
+    .mui-input-row label~input,
+    .mui-input-row label~select,
+    .mui-input-row label~textarea {
+        width: 78%;
+    }
+    
+    .mui-checkbox input[type=checkbox],
+    .mui-radio input[type=radio] {
+        top: 6px;
+    }
+    
+    .mui-content-padded {
+        margin-top: 25px;
+    }
+    
+    .mui-btn {
+        padding: 10px;
+    }
+    
+    .link-area {
+        display: block;
+        margin-top: 25px;
+        text-align: center;
+    }
+    
+    .spliter {
+        color: #bbb;
+        padding: 0px 8px;
+    }
+    
+    .oauth-area {
+        position: absolute;
+        bottom: 20px;
+        left: 0px;
+        text-align: center;
+        width: 100%;
+        padding: 0px;
+        margin: 0px;
+    }
+    
+    .oauth-area .oauth-btn {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        background-size: 30px 30px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        margin: 0px 20px;
+        /*-webkit-filter: grayscale(100%); */
+        border: solid 1px #ddd;
+        border-radius: 25px;
+    }
+    
+    .oauth-area .oauth-btn:active {
+        border: solid 1px #aaa;
+    }
+    
+    .oauth-area .oauth-btn.disabled {
+        background-color: #ddd;
+    }
+</style>
+</head>
+
+
+<body>
+<header class="mui-bar mui-bar-nav">
+    <h1 class="mui-title">{$Think.lang.VAR_SYSTEM_TITLE}</h1>
+</header>
+<div class="mui-content">
+    <p style="text-align:center; margin-top:20px;"><img src="../Public/images/content-bg-m.jpg" /></p>
+    <form id='login-form' class="mui-input-group">
+        <div class="mui-input-row">
+            <label>{$Think.lang.ACCOUNT}</label>
+            <input id='account' type="text" class="mui-input-clear mui-input" placeholder="{$Think.lang.PLEASE_ENTER_ACCOUNT}" autocomplete="off" />
+        </div>
+        <div class="mui-input-row">
+            <label>{$Think.lang.VAR_PASSWD}</label>
+            <input id='password' type="password" class="mui-input-clear mui-input" placeholder="{$Think.lang.PLEASE_ENTER_PASSWORD}" autocomplete="off" />
+        </div>
+    </form>
+    <form class="mui-input-group">
+        <ul class="mui-table-view mui-table-view-chevron">
+            <li class="mui-table-view-cell">
+                {$Think.lang.REMEMBER_PASSWORD}
+                <div id="autoLogin" class="mui-switch mui-active">
+                    <div class="mui-switch-handle"></div>
+                </div>
+            </li>
+        </ul>
+    </form>
+    <div class="mui-content-padded">
+        <button id='login' class="mui-btn mui-btn-block mui-btn-primary">{$Think.lang.VAR_BTN_LOGIN}</button>
+    </div>
+</div>
+<script type="text/javascript" src="__ROOT__/Runtime/{$think_language}.js"></script>
+<script src="../Public/mui/js/mui.min.js"></script>
+<script>
+var loginBtn = document.getElementById('login');
+loginBtn.addEventListener('tap', function(e){
+    mui(loginBtn).button('loading');
+    mui.ajax($lang.curl.replace('Index/replace','Mobile/checkLogin'),{
+        data:{
+            na: document.getElementById('account').value,
+            pa: document.getElementById('password').value,
+            auto: document.getElementById("autoLogin").classList.contains("mui-active") ? 1 : 0
+        },
+        timeout: 10000,
+        type: 'post',
+        success:function(msg){
+            mui(loginBtn).button('reset');
+            if (typeof msg == 'string'){
+                msg = JSON.parse(msg);
+            }
+            if (msg.status == 0){
+                mui.openWindow({
+                    url: $lang.curl.replace('Index/replace', 'Mobile/mterm'),
+                    id: 'mobile_term'
+                });
+            }else{
+                mui.alert(msg.info, $lang.VAR_PROMPT);
+            }
+        },
+        error:function(){mui(loginBtn).button('reset')},
+        timeout:function(){mui(loginBtn).button('reset')}
+    });
+});
+</script>;
+</body>
+</html>

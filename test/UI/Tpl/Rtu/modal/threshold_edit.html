@@ -1,0 +1,42 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title">{$Think.lang.THRESHOLD_SETTING}</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="modal_fm">
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.MIN}</label>
+            <div class="col-md-8">
+                <input type="hidden" name="sns" value="%s" />
+				<input type="hidden" name="id"  value="%s" />
+                <input type="text" class="form-control" name="min" value="%s">
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-md-2">{$Think.lang.MAX}</label>
+            <div class="col-md-8">
+                 <input type="text" class="form-control" name="max" value="%s">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success submit_threshold_edit">{$Think.lang.VAR_UPDATE}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    $('.submit_threshold_edit').on('click', function(){
+		var min = $('input[name="min"]').val(),max = $('input[name="max"]').val(),id = $('input[name="id"]').val();
+        ajax(tpurl('Rtu', 'sensorTypeCustom'), {act:'custom', sn:$('input[name="sns"]').val(), id:id, min:min, max:max}, function(msg){
+            if (msg.status == 0){
+               $("#threshold_{$_REQUEST['id']}").html(min+' ~ '+max);
+               $('#myLgModal2').modal('hide');
+            }
+            $.notice(msg);
+        });
+    });
+});
+})(jQuery);
+</script>

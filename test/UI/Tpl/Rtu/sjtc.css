@@ -1,0 +1,148 @@
+/*任务列表页面样式*/
+
+#list1{
+  width: 100%;
+  display: inline-block;
+  margin-top: 5px;
+}
+#list1 .task{
+  width: 19%;
+  min-height: 215px;
+  float: left;
+  margin-right: 1%;
+  margin-bottom: 15px;
+  display: inline-block;
+  border: 1px solid #DDDDDD;
+  box-sizing: content-box;
+  position: relative;
+}
+#list1 .task img{
+  position:absolute;
+  right:20px;
+  bottom:20px;
+  width:60px;
+  cursor:pointer;
+}
+#list1 .task:hover{
+  /*cursor: pointer;*/
+  border: 1px dashed #00c0ef;
+}
+#list1 .task.active{
+  border-color: #00c0ef;;
+  /*box-shadow: 1px 1px 2px #00c0ef;*/
+}
+#list1 .task_header{
+  background: #f5f4f3;
+  font-size: 15px;
+  color: #999;
+  border-radius: 2px;
+  padding: 8px;
+}
+#list1 .task_cmd{
+    text-align: center;
+    line-height: 25px;
+}
+#list1 .task_time{
+  line-height: 25px;
+}
+#list1 .task_total{
+    margin: 10px;
+    min-height: 30px;
+}
+#list1 .task_total span font{
+  color: #00c0ef;
+  display: inline-block;
+  font-size: 20px;
+}
+#list1 .task ul{
+    list-style: square;
+    padding: 0;
+    margin: 0 28px;
+}
+#list1 .task li{
+  padding: 8px 0;
+  text-align: left;
+}
+#list1 .task_status_abnormal{
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  background: #ff0000;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  margin: 0px 10px 0px 10px;
+}
+#list1 .task_status_success{
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  background: green;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  margin: 0px 10px 0px 10px;
+}
+#list1 .task_status_waiting{
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  background: #9eacbb;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  margin: 0px 10px 0px 10px;
+}
+#list1 ul li font{
+  padding-right: 10px;
+}
+.st_total, .st_todo{
+  color: #999;
+}
+.st_succeed{
+  color: #7bf57b;
+}
+.st_failed{
+  color: #f00;
+}
+
+#list1 .chk{
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+/*分页样式*/
+#list1_paging{
+  position: relative;
+  text-align: left;
+  background: #fff;
+  border: 1px solid #cfcfcf;
+  -webkit-box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+#list1_paging .dropdown{
+  display: inline-block;
+}
+.pager>i, .pager>a {
+    color: #a39e9e;
+    display: inline-block;
+    position: relative;
+    padding: 5px;
+    min-width: 25px;
+    text-align: center;
+    margin-left: -5px;
+}
+.pager_btn_enable {
+    color: black !important;
+    cursor: pointer;
+}
+
+#list1 .task .operation i{
+  color: #ababab;
+  cursor: pointer;
+}
+#list1 .task .operation i:hover{
+  color: #00c0ef;
+}

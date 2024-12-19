@@ -1,0 +1,189 @@
+<style type="text/css">
+#modal_fm div.checkbox-inline{
+    margin-right: 15px;
+}
+#modal_fm div.checkbox-inline label{
+    cursor: pointer;
+}
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title" id="h4_add_edit">{$Think.lang.VAR_USR_EDIT}</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <form class="form-horizontal col-md-7" id="modal_fm">
+            <div class="form-group">
+                <label class="col-md-4">{$Think.lang.VAR_USER_NAME}:</label>
+                <div class="col-md-8">
+                    <input type="hidden" name="id" value="%d">
+                    <input type="text" class="form-control" name="name" value="%s" readonly="readonly">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4">{$Think.lang.VAR_USER_GROUP}:</label>
+                <div class="col-md-8">
+                    <select name="gid" class="form-control" %s>%s</select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4">{$Think.lang.VAR_USER_TYPE}:</label>
+                <div class="col-md-8">
+                    <select name="usr_type" class="form-control" %s>%s</select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4">{$Think.lang.VAR_PASSWD}:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" name="pwd" autocomplete="off" onfocus="this.type='password'" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4">{$Think.lang.VAR_USER_REPWD}:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" name="pwd2" autocomplete="off" onfocus="this.type='password'" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4">{$Think.lang.VAR_DEVICE_EMAIL}:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" name="email" value="%s">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4">{$Think.lang.MOBILE_NUMBER}:</label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" name="sim" value="%s">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4">{$Think.lang.VAR_NOTE}:</label>
+                <div class="col-md-8">
+                    <textarea class="form-control" name="info">%s</textarea>
+                </div>
+            </div>
+        </form>
+        <div class="col-md-5">
+            <div class="my-loading"></div><!--loading div-->
+            <div class="box box-solid" style="box-shadow: none; border: 1px solid #dfe2e8;">
+                <div class="box-header with-border">
+                    <i class="fa fa-users"></i>&nbsp;<h3 class="box-title">{$Think.lang.USR_PRIVILEGES}</h3>
+                    <i class="fa fa-refresh" id="reload_ps" style="float: right; font-size: 14px; color: gray; margin-top: 3px; cursor: pointer;" title="{$Think.lang.RELOAD_USER_PERMISSIONS}"></i>
+                </div>
+                <div class="box-body">
+                    <ul id="tree_tg" class="ztree" style="height: 335px; overflow-y: scroll;"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success submit_user_edit">{$Think.lang.SAVE_TEMPLATE}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    $('.submit_user_edit').on('click', function(){
+        var obj = $("#modal_fm").data('bootstrapValidator');
+        obj.validate();
+        if (!obj.isValid()){
+            return;
+        }
+        var nodes = $.fn.zTree.getZTreeObj("tree_tg").getCheckedNodes(true);
+        for (var i=0, nodes_arr=[]; i<nodes.length; i++) {
+            nodes_arr.push(nodes[i].id);
+        }
+        ajax(tpurl('Syscfg','userEdit'), $('#modal_fm').serialize()+'&nodes='+nodes_arr.join(','), function(msg){
+            $.notice(msg);
+            if (msg.status == 0){
+                $("#list2").trigger('reloadGrid');
+                $('#myLgModal').modal('hide');
+            }
+        });
+    });
+
+    $('#modal_fm').bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            pwd: {
+                validators: {
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9]{3,32}$/,
+                        message: $lang.VAR_PASSWORD_FORMAT
+                    },
+                    identical: {
+                        field: 'pwd2',
+                        message: $lang.PWD_NOT_SAME
+                    },
+                    identical: {
+                        field: 'pwd2',
+                        message: $lang.PWD_NOT_SAME
+                    }
+                }
+            },
+            pwd2: {
+                validators: {
+                    identical: {
+                        field: 'pwd',
+                        message: $lang.PWD_NOT_SAME
+                    }
+                }
+            },
+            email: {
+                validators: {
+                    emailAddress: {
+                        message: $lang.EMAIL_INVALID
+                    }
+                }
+            }
+        }
+    });
+
+    var tree_setting = {
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        check: {
+            enable: true,
+            chkStyle: 'checkbox',
+            chkboxType: {"Y": "ps", "N": "s"},
+            chkDisabledInherit: true
+        }
+    };
+    var tree_nodes = %s;
+    for (var i=0; i<tree_nodes.length; i++){
+        tree_nodes[i].name = tree_nodes[i].alias == 'ROOT' ? $lang.VAR_SYSTEM_TITLE : $lang[tree_nodes[i].alias];
+        if (tree_nodes[i].checkbox == 0) {
+            tree_nodes[i].nocheck = true;
+        }
+    }
+    $.fn.zTree.init($('#tree_tg'), tree_setting, tree_nodes);
+
+    $('#reload_ps').click(function() {
+        auto_loading(500, function(){
+            $.fn.zTree.destroy('#tree_tg');
+            $.fn.zTree.init($('#tree_tg'), tree_setting, tree_nodes);
+        });
+    });
+
+    $('#modal_fm select[name=usr_type]').on('change', function() {
+        var ps = $.gf.usr_ps_def[parseInt($(this).val())];
+        auto_loading(300, function(){
+            $.fn.zTree.destroy('#tree_tg');
+            var nodes = $.extend(true, [], tree_nodes);
+            for (var i=0; i<nodes.length; i++) {
+                nodes[i].checked = $.inArray(parseInt(nodes[i].id), ps) != -1;
+            }
+            $.fn.zTree.init($('#tree_tg'), tree_setting, nodes);
+        });
+    });
+});
+})(jQuery);
+</script>

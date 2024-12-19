@@ -1,0 +1,101 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/bootstrap_validator/bv.min.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+<!--fileinput-->
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Public/bootstrap_fileinput/css/fileinput.min.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <h3 class="box-title">{$Think.lang.COLLECTION_SETTINGS}</h3>
+            </div>
+            <div class="box-body jqgrid_c">
+              <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                <form class="form-inline" role="form" id="search_fm">
+                  <div class="btns">
+                    <button type="button" class="btn btn-default rwcs" data-act="add">
+                      <i class="fa fa-plus"></i>&nbsp;{$Think.lang.VAR_ADD}
+                    </button>
+                    <button type="button" class="btn btn-default rwcs" data-act="edit">
+                      <i class="fa fa-pencil"></i>&nbsp;{$Think.lang.VAR_EDIT}
+                    </button>
+                    <button type="button" class="btn btn-default rwcs" data-act="del">
+                      <i class="fa fa-close"></i>&nbsp;{$Think.lang.VAR_DEL}
+                    </button>
+                    <button type="button" class="btn btn-default rwcs" data-act="import">
+                      <i class="fa fa-upload"></i>&nbsp;{$Think.lang.VAR_IMPORT}
+                    </button>
+                    <button type="button" class="btn btn-default" data-act="refresh">
+                      <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                    </button>
+                  </div>
+                  <div class="input-group">
+                    <input type="text" name="searchString" class="form-control" placeholder="{$Think.lang.VAR_QUERY}" style="width: 130px" data-toggle="tooltip"  title="{$Think.lang.VAR_NAME}">
+                    <span class="input-group-btn">
+                      <button type="submit" class="btn btn-flat btn-search-border"><i class="fa fa-search"></i></button>
+                    </span>
+                  </div>
+                </form>
+              </div>
+              <table id="list2"></table>
+              <div id="pager2" style="margin-top: 5px !important;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+<!--模态框-->
+<div class="modal fade" id="myLgModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<!--模态框 import-->
+<div class="modal fade" id="myLgModal2">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_BTN_SURE}</span></button>
+                <h4 class="modal-title">{$Think.lang.VAR_IMPORT}</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" id="modal_fm2">
+                    <div class="form-group">
+                      <label class="col-md-2" style="text-align: right;">{$Think.lang.VAR_UPGRADE_FILE}:<span class="required-field"></span></label>
+                      <div class="col-md-8">
+                        <input type="file" id="filedata" name="filedata">
+                      </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning download_tpl">{$Think.lang.EXCEL_TEMPLATE}</button>
+                <button type="button" class="btn btn-success save_import">{$Think.lang.VAR_BTN_SURE}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<include file="Homepage/footer"/>
+<script type="text/javascript" src="../Public/bootstrap_validator/bv.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/bootstrap_validator/lang/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--jqgrid-->
+<script type="text/javascript" src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- export excel -->
+<script type="text/javascript" src="../Public/js/buttons/jszip.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/js/buttons/buttons.html5.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!--fileinput-->
+<script type="text/javascript" src="__ROOT__/Tpl/Public/bootstrap_fileinput/js/fileinput.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="__ROOT__/Tpl/Public/bootstrap_fileinput/js/locales/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">$.gf.lang = '<?PHP echo $lang?>';</script>
+<script type="text/javascript" src="__ROOT__/Tpl/Rtu/sjlx.js?rand={$Think.const.CACHE_VERSION}"></script>

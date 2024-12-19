@@ -1,0 +1,132 @@
+<include file="Homepage/header"/>
+<link rel="stylesheet" type="text/css" href="../Public/css/header.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="__ROOT__/Tpl/Taskmgr/rwlb.css?rand={$Think.const.CACHE_VERSION}">
+<!--jqGrid-->
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/css/ui.jqgrid.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/jquery-ui-1.10.4.custom.min.css?rand={$Think.const.CACHE_VERSION}">
+<link rel="stylesheet" type="text/css" href="../Public/jqgrid/theme/gray/custom.css?rand={$Think.const.CACHE_VERSION}">
+  <div class="content-wrapper">
+    <section class="content padding-top-0">
+      <div class="row" style="position: relative">
+        <div class="my-loading"></div><!--loading div-->
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box" style="cursor: pointer">
+            <!-- <span class="info-box-icon bg-aqua"><i class="fa fa-bar-chart-o"></i></span> -->
+            <span class="info-box-icon"><img src="../Public/images/banner/total.png" /></span>
+            <div class="info-box-content" onclick="javascript:$.gf.getStaticsInfo();" title="{$Think.lang.VAR_REFRESH}">
+              <span class="info-box-text">{$Think.lang.TASK_TOTAL}</span>
+              <span class="info-box-number" id="info_box_task_total">0</span>
+              <!-- <img class="tips" src="../Public/images/banner/refresh.png" /> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box" style="cursor: pointer">
+            <!-- <span class="info-box-icon bg-green"><i class="fa fa-check"></i></span> -->
+            <span class="info-box-icon"><img src="../Public/images/banner/success.png" /></span>
+            <div class="info-box-content" onclick="javascript:$.gf.getStaticsInfo();" title="{$Think.lang.VAR_REFRESH}">
+              <span class="info-box-text">{$tsa[3]}</span>
+              <span class="info-box-number" id="info_box_task_success">0</span>
+              <!-- <img class="tips" src="../Public/images/banner/refresh.png" /> -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box" style="cursor: pointer">
+            <!-- <span class="info-box-icon bg-yellow"><i class="fa fa-close"></i></span> -->
+            <span class="info-box-icon"><img src="../Public/images/banner/exception.png" /></span>
+            <div class="info-box-content" onclick="javascript:$.gf.taskDetail(this, '4,5,6,7');" title="{$Think.lang.VAR_INFO}">
+              <span class="info-box-text">{$Think.lang.TASK_ABNORMAL}</span>
+              <span class="info-box-number" id="info_box_task_failed">0</span>
+              <img class="tips" src="../Public/images/banner/dot.png" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="info-box" style="cursor: pointer">
+            <!-- <span class="info-box-icon bg-gray-light"><i class="fa fa-clock-o"></i></span> -->
+            <span class="info-box-icon"><img src="../Public/images/banner/wait.png" /></span>
+            <div class="info-box-content" onclick="javascript:$.gf.taskDetail(this, '0,1,2,8');" title="{$Think.lang.VAR_INFO}">
+              <span class="info-box-text">{$tsa[0]}</span>
+              <span class="info-box-number" id="info_box_task_waiting">0</span>
+              <img class="tips" src="../Public/images/banner/dot.png" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="/*margin-top: 15px;*/">
+        <div class="col-md-12">
+          <div class="box box-solid">
+            <div class="box-body jqgrid_c" style="position: relative;">
+              <div class="my-loading"></div><!--loading div-->
+              <div class="nav-tabs-custom">
+                <ul class="nav nav-pills" id="tab_groups">
+                  <li class="active"><a href="#tab_all" data-toggle="tab" data-ttid="all">{$Think.lang.VAR_ALL_TASK}</a></li>
+                  <?PHP foreach ($tta as $k=>$row){
+                    echo '<li><a href="#tab_'.$row['id'].'" data-toggle="tab" data-ttid="'.$row['id'].'">'.$row['name'].'</a></li>';
+                  }?>
+                </ul>
+              </div>
+              <div class="btn-toolbar" role="toolbar" style="margin: 0 0 15px; width: 100%">
+                <form class="form-inline" role="form" id="search_fm">
+                  <div class="btns btn-task-acts">
+                    <button type="button" class="btn btn-default rwcs" data-act="taskEnable" data-is_enable="1">
+                      <i class="fa fa-check-square"></i>&nbsp;{$Think.lang.VAR_ENABLE}
+                    </button>
+                    <button type="button" class="btn btn-default rwcs" data-act="taskEnable" data-is_enable="0">
+                      <i class="fa fa-minus-square"></i>&nbsp;{$Think.lang.VAR_DISABLE}
+                    </button>
+                    <button type="button" class="btn btn-default rwcs" data-act="taskDel">
+                      <i class="fa fa-close"></i>&nbsp;{$Think.lang.VAR_DEL}
+                    </button>
+                    <button type="button" class="btn btn-default" data-act="refresh">
+                      <i class="fa fa-refresh"></i>&nbsp;{$Think.lang.VAR_REFRESH}
+                    </button>
+                  </div>
+                  <div class="input-group">
+                    <input type="text" name="searchString" class="form-control" placeholder="{$Think.lang.VAR_QUERY}" style="width: 130px" data-toggle="tooltip"  title="{$Think.lang.VAR_CREATOR}">
+                    <span class="input-group-btn">
+                      <button type="submit" class="btn btn-flat btn-search-border"><i class="fa fa-search"></i></button>
+                    </span>
+                  </div>
+                </form>
+              </div>
+              <p style="color: #999;"><i class="fa fa-question-circle" style="margin:0 5px 0 3px; color:#000;"></i>{$Think.lang.RWGL_KEY_TIPS}</p>
+              <div id="list1" style="min-height:150px"></div>
+              <div id="list1_paging" style="padding:5px; margin-top:-5px; display:none;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+<!--模态框，任务查看 -->
+<div class="modal fade" id="gridviewTask" data-init="0" data-task-status="">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+        <h4 class="modal-title">{$Think.lang.VAR_MENU2_TASK}</h4>
+      </div>
+      <div class="modal-body">
+        <table id="list3"></table>
+        <div id="pager3" style="margin-top: 30px !important;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" onclick="javascript:$.gf.taskDetailDel();"><i class="fa fa-close"></i>&nbsp;{$Think.lang.VAR_DEL}</button>
+        <button type="button" class="btn btn-info" onclick="javascript:$('#list3').trigger('reloadGrid');">{$Think.lang.VAR_REFRESH}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<include file="Homepage/footer"/>
+<script type="text/javascript" src="__ROOT__/Tpl/Taskmgr/taskpaging.js?rand={$Think.const.CACHE_VERSION}"></script>
+<!-- jqgrid -->
+<script type="text/javascript" src="../Public/js/jquery.browser.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/i18n/<?PHP echo $lang?>.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript" src="../Public/jqgrid/js/jquery.jqGrid.min.js?rand={$Think.const.CACHE_VERSION}"></script>
+<script type="text/javascript">
+  $.gf.prev_page = "{$_SERVER['HTTP_REFERER']}".indexOf('rwxq');
+</script>
+<script type="text/javascript" src="__ROOT__/Tpl/Taskmgr/dsrwlb.js?rand={$Think.const.CACHE_VERSION}"></script>

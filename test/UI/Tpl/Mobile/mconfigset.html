@@ -1,0 +1,862 @@
+<include file="Mobile/mheader" />
+    <style>
+        .domain_rule, .info_rule{background:#dfe8f6 !important;}
+        .tr_rule td{padding:3px;}
+    </style>
+    <div class="mui-card">
+        <ul class="mui-table-view">
+            <!--安全参数-->
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.VAR_TERM_PARAM_SECURITY}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.HTTP_USERNAME}</label>
+                            <input type="text" name="http_username" id="tpid_http_username" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.HTTP_PASSWD}</label>
+                            <input type="password" name="http_passwd" id="tpid_http_passwd" />
+                        </div>                    
+                    </form>
+                </div>
+            </li>
+
+            <!--基本网络 WAN网络-->
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.WAN_NETWORK}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.BK_CHECK_TYPE}</label>
+                            <select class="mui-btn" style="width:35%;" name="bk_check_type" id="tpid_bk_check_type">
+                                <option value="">{$Think.lang.PLEASE_SELECT}</option>
+								<option value="0">NONE</option>
+                                <option value="1">PING</option>
+                                <option value="2">HTTP</option>
+                                <option value="3">BOTH</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.BK_CHECK_PING_INTVAL}</label>
+                            <input type="text" name="bk_check_ping_intval" id="tpid_bk_check_ping_intval" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.BK_CHECK_PING_TIMEOUT}</label>
+                            <input type="text" name="bk_check_ping_timeout" id="tpid_bk_check_ping_timeout" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.BK_CHECK_PING_RETRY}</label>
+                            <input type="text" name="bk_check_ping_retry" id="tpid_bk_check_ping_retry" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.BK_CHECK_PING_ADDR}</label>
+                            <input type="text" name="bk_check_ping_addr" id="tpid_bk_check_ping_addr" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.BK_CHECK_HTTP_INTVAL}</label>
+                            <input type="text" name="bk_check_http_intval" id="tpid_bk_check_http_intval" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.BK_CHECK_HTTP_TIMEOUT}</label>
+                            <input type="text" name="bk_check_http_timeout" id="tpid_bk_check_http_timeout"/>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.BK_CHECK_HTTP_RETRY}</label>
+                            <input type="text" name="bk_check_http_retry" id="tpid_bk_check_http_retry"  />
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.BK_CHECK_HTTP_ADDR}</label>
+                            <input type="text" name="bk_check_http_addr" id="tpid_bk_check_http_addr" />
+                        </div>
+                    </form>
+                </div>
+            </li>
+
+
+           <!--局域网络-->
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.VAR_TERM_PARAM_LAN}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.LAN_IPADDR}</label>
+                            <input type="text" name="lan_ipaddr" id="tpid_lan_ipaddr" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.LAN_NETMASK}</label>
+                            <input type="text" name="lan_netmask" id="tpid_lan_netmask" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.LAN_PROTO}</label>
+                            <div class="mui-switch" name="lan_proto" id="tpid_lan_proto">
+                                <div class="mui-switch-handle"></div>
+                            </div>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.VAR_IP_RANGE}</label>
+                            <input type="text" name="dhcp_startip" id="tpid_dhcp_startip" placeholder="{$Think.lang.DHCP_STARTIP}" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label></label>
+                            <input type="text" name="dhcp_endip" id="tpid_dhcp_endip" placeholder="{$Think.lang.DHCP_ENDIP}" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.DHCP_LEASE}</label>
+                            <input type="text" name="dhcp_lease" id="tpid_dhcp_lease" placeholder="{$Think.lang.VAR_MINUTE}" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.ET0MACADDR}</label>
+                            <input type="text" name="et0macaddr" id="tpid_et0macaddr" />
+                        </div>
+                    </form>
+                </div>
+            </li>
+
+            <!--高级网络 热点推送-->
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.PORTAL}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row">
+                           <label>{$Think.lang.IS_ENABLE}</label>
+                            <div class="mui-switch" name="xdog_on" id="tpid_xdog_on">
+                                <div class="mui-switch-handle"></div>
+                            </div>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.AUTH_TYPE}</label>
+                            <select class="mui-btn" style="width:35%;" name="xdog_auth" id="tpid_xdog_auth">
+                                <option value="">{$Think.lang.PLEASE_SELECT}</option>
+								<option value="0">NONE</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.ROUTER_WEB_DIR}</label>
+                             <select class="mui-btn" style="width:35%;" name="xdog_root" id="tpid_xdog_root">
+                                <option value="">{$Think.lang.PLEASE_SELECT}</option>
+								<option value="0">{$Think.lang.VAR_DEFAULT}</option>
+								<option value="1">{$Think.lang.INTERNAL_STORAGE}</option>
+								<option value="2">{$Think.lang.EXTERNAL_STORAGE}</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.XDOG_WHOST}</label>
+                            <input type="text" name="xdog_whost" id="tpid_xdog_whost" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.XDOG_PHOST}</label>
+                            <input type="text" name="xdog_phost" id="tpid_xdog_phost" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.XDOG_LOGIN_TIMEOUT}</label>
+                            <input type="text" name="xdog_login_timeout" id="tpid_xdog_login_timeout"  placeholder="分"/>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.CLIENTIDLETIMEOUT_2}</label>
+                            <input type="text" name="xdog_idle_timeout" id="tpid_xdog_idle_timeout"  />
+                        </div>
+						<div class="mui-input-row">
+                           <label>{$Think.lang.PORTAL_IGNORE_LAN}</label>
+                            <div class="mui-switch" name="xdog_iglan" id="tpid_xdog_iglan">
+                                <div class="mui-switch-handle"></div>
+                            </div>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.REDIRECTURL_2}</label>
+                            <input type="text" name="xdog_redir" id="tpid_xdog_redir" />
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.TRUSTEDMACLIST_2}</label>
+                            <input type="text" name="xdog_trustmac" id="tpid_xdog_trustmact" />
+                        </div>
+						<div class="mui-input-row">
+                           <label>{$Think.lang.XDOG_QOS_DON}</label>
+                            <div class="mui-switch" name="xdog_qos_don" id="tpid_xdog_qos_don">
+                                <div class="mui-switch-handle"></div>
+                            </div>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.XDOG_QOS_DT}</label>
+                            <input type="text" name="xdog_qos_dt" id="tpid_xdog_qos_dt" />
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.XDOG_QOS_DS}</label>
+                            <input type="text" name="xdog_qos_ds" id="tpid_xdog_qos_ds" />
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.XDOG_QOS_DSC}</label>
+                            <input type="text" name="xdog_qos_dsc" id="tpid_xdog_qos_dsc" />
+                        </div>
+						<div class="mui-input-row">
+                           <label>{$Think.lang.F_XDOG_QOS_UON}</label>
+                            <div class="mui-switch" name="xdog_qos_uon" id="tpid_xdog_qos_uon">
+                                <div class="mui-switch-handle"></div>
+                            </div>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.XDOG_QOS_DT}</label>
+                            <input type="text" name="xdog_qos_ut" id="tpid_xdog_qos_ut" />
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.XDOG_QOS_DS}</label>
+                            <input type="text" name="xdog_qos_us" id="tpid_xdog_qos_us" />
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.XDOG_QOS_DSC}</label>
+                            <input type="text" name="xdog_qos_usc" id="tpid_xdog_qos_usc" />
+                        </div>
+                    </form>
+                </div>
+            </li>
+			
+			  <!--串口应用-->
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.SERIAL_APPLICATION}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IPOC_MODE}</label>
+                            <select class="mui-btn" style="width:35%;" name="ipoc_mode" id="tpid_ipoc_mode">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="serial">Serial</option>
+                                <option value="modbus">Modbus</option>
+                            </select>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.SERIAL_APP_NETWORK_MODE}</label>
+                            <select class="mui-btn" style="width:35%;" name="dtu_mode" id="tpid_dtu_mode">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="disable">Disabled</option>
+                                <option value="server">Server</option>
+								<option value="client">Client</option>
+                            </select>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.CENTRAL_HOST_IP_PORT}</label>
+                            <input type="text" name="server_ip" id="tpid_server_ip" placeholder="IP" />
+                        </div>
+                        <div class="mui-input-row">
+                            <label></label>
+                            <input type="text" name="server_port" id="tpid_server_port" placeholder="Port" />
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.SOCKET_TYPE}</label>
+                            <select class="mui-btn" style="width:35%;" name="socket_type" id="tpid_socket_type">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="tcp">TCP</option>
+                                <option value="udp">UDP</option>
+                            </select>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.SOCKET_TIMEOUT1}</label>
+                            <input type="text" name="socket_timeout" id="tpid_socket_timeout"  />
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.SERIAL_TIMEOUT1}</label>
+                            <input type="text" name="serial_timeout" id="tpid_serial_timeout" />
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.PROTOCOL_PACKAGE_SIZE}</label>
+                            <input type="text" name="packet_len" id="tpid_packet_len"  />
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.LINK_HEARTBEAT_INTERVAL}</label>
+                            <input type="text" name="heartbeat_intval" id="tpid_heartbeat_intval"/>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.PORT_TYPE}</label>
+                            <select class="mui-btn" style="width:35%;" name="port_type" id="tpid_port_type">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="0">Console</option>
+                                <option value="1">RS485/RS232</option>
+                            </select>
+                        </div>
+						<div class="mui-input-row">
+                           <label>{$Think.lang.DEBUG_ENABLE}</label>
+                            <div class="mui-switch" name="debug_enable" id="tpid_debug_enable">
+                                <div class="mui-switch-handle"></div>
+                            </div>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.DEBUG_DATA_LENGTH}</label>
+                            <input type="text" name="debug_num" id="tpid_debug_num"/>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_RATE}</label>
+                            <select class="mui-btn" style="width:35%;" name="modbus_serial_rate" id="tpid_modbus_serial_rate">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="300">300</option>
+                                <option value="600">600</option>
+                                <option value="1200">1200</option>
+                                <option value="2400">2400</option>
+                                <option value="4800">4800</option>
+                                <option value="9600">9600</option>
+                                <option value="19200">19200</option>
+                                <option value="38400">38400</option>
+                                <option value="57600">57600</option>
+                                <option value="115200">115200</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_PARITY}</label>
+                            <select class="mui-btn" style="width:35%;" name="modbus_serial_parity" id="tpid_modbus_serial_parity">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="none">{$Think.lang.VAR_NONE}</option>
+                                <option value="even">{$Think.lang.VAR_EVEN}</option>
+                                <option value="odd">{$Think.lang.VAR_ODD}</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_DATABITS}</label>
+                            <select class="mui-btn" style="width:35%;" name="modbus_serial_databits" id="tpid_modbus_serial_databits">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="7">8</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_STOPBITS}</label>
+                            <select class="mui-btn" style="width:35%;" name="modbus_serial_stopbits" id="tpid_modbus_serial_stopbits">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IOT_CYCLE_INTERVAL}</label>
+                            <input type="text" name="iot_cycle_interval" id="tpid_iot_cycle_interval" />
+                        </div>
+                    </form>
+                </div>
+            </li>
+
+            <!--防火墙 域名过滤-->
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.DOMAIN_FILTER}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+						<div class="mui-input-row">
+                           <label>{$Think.lang.IS_ENABLE}</label>
+                            <div class="mui-switch" name="portfilterenabled" id="tpid_portfilterenabled">
+                                <div class="mui-switch-handle"></div>
+                            </div>
+                        </div>
+                          <div class="mui-input-row">
+                            <label>{$Think.lang.DEFAULTFIREWALLPOLICY}</label>
+                            <select class="mui-btn" style="width:35%;" name="defaultfirewallpolicy" id="tpid_defaultfirewallpolicy">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="1">{$Think.lang.VAR_TERM_PARAM_BLACKLIST}</option>
+                                <option value="0">{$Think.lang.VAR_TERM_PARAM_WHITELIST}</option>
+                            </select>
+                        </div>
+                        <div class="mui-table-view-cell">
+                            <table style="width:100%;" class="mui-table-view-cell" id="tb_rule">
+                                <tr width="100%">
+                                    <th style="background:#dfe8f6;width:30%;">{$Think.lang.VAR_RULE_ENABLE}</th>
+                                    <th style="background:#dfe8f6;width:30%;">{$Think.lang.VAR_RULE_DOMAIN}</th>
+                                    <th style="background:#dfe8f6;width:30%;">{$Think.lang.VAR_RULE_DESC}</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" align="center">
+                                        <button type="button" class="mui-btn mui-btn-primary addrule">{$Think.lang.VAR_ADD}</button>&nbsp;&nbsp;
+                                        <button type="button" class="mui-btn mui-btn-danger delrule">{$Think.lang.VAR_DEL}</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+            </li>
+
+			<!--RTU参数 采集功能设置-->
+			<li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.ACQUISITION_FUNCTION_SETTINGS}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+						<div class="mui-input-row">
+                            <label>{$Think.lang.SLAVE_ID}</label>
+                            <input type="text" name="slave_id1" id="tpid_slave_id1" />
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_RATE}</label>
+                            <select class="mui-btn" style="width:35%;" name="serial_rate1" id="tpid_serial_rate1">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="300">300</option>
+                                <option value="600">600</option>
+                                <option value="1200">1200</option>
+                                <option value="2400">2400</option>
+                                <option value="4800">4800</option>
+                                <option value="9600">9600</option>
+                                <option value="19200">19200</option>
+                                <option value="38400">38400</option>
+                                <option value="57600">57600</option>
+                                <option value="115200">115200</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_PARITY}</label>
+                            <select class="mui-btn" style="width:35%;" name="serial_parity1" id="tpid_serial_parity1">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="none">{$Think.lang.VAR_NONE}</option>
+                                <option value="even">{$Think.lang.VAR_EVEN}</option>
+                                <option value="odd">{$Think.lang.VAR_ODD}</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_DATABITS}</label>
+                            <select class="mui-btn" style="width:35%;" name="serial_databits1" id="tpid_erial_databits1">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="7">8</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_STOPBITS}</label>
+                            <select class="mui-btn" style="width:35%;" name="serial_stopbits1" id="tpid_serial_stopbits1">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.SLAVE_ID}2</label>
+                            <input type="text" name="slave_id2" id="tpid_slave_id2" />
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_RATE} 2</label>
+                            <select class="mui-btn" style="width:35%;" name="serial_rate2" id="tpid_serial_rate2">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="300">300</option>
+                                <option value="600">600</option>
+                                <option value="1200">1200</option>
+                                <option value="2400">2400</option>
+                                <option value="4800">4800</option>
+                                <option value="9600">9600</option>
+                                <option value="19200">19200</option>
+                                <option value="38400">38400</option>
+                                <option value="57600">57600</option>
+                                <option value="115200">115200</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_PARITY} 2</label>
+                            <select class="mui-btn" style="width:35%;" name="serial_parity2" id="tpid_serial_parity2">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="none">{$Think.lang.VAR_NONE}</option>
+                                <option value="even">{$Think.lang.VAR_EVEN}</option>
+                                <option value="odd">{$Think.lang.VAR_ODD}</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_DATABITS} 2</label>
+                            <select class="mui-btn" style="width:35%;" name="serial_databits2" id="tpid_erial_databits2">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="7">8</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_STOPBITS} 2</label>
+                            <select class="mui-btn" style="width:35%;" name="serial_stopbits2" id="tpid_serial_stopbits2">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.SLAVE_ID}3</label>
+                            <input type="text" name="slave_id3" id="tpid_slave_id3" />
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_RATE} 3</label>
+                            <select class="mui-btn" style="width:35%;" name="serial_rate3" id="tpid_serial_rate3">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="300">300</option>
+                                <option value="600">600</option>
+                                <option value="1200">1200</option>
+                                <option value="2400">2400</option>
+                                <option value="4800">4800</option>
+                                <option value="9600">9600</option>
+                                <option value="19200">19200</option>
+                                <option value="38400">38400</option>
+                                <option value="57600">57600</option>
+                                <option value="115200">115200</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_PARITY} 3</label>
+                            <select class="mui-btn" style="width:35%;" name="serial_parity3" id="tpid_serial_parity3">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="none">{$Think.lang.VAR_NONE}</option>
+                                <option value="even">{$Think.lang.VAR_EVEN}</option>
+                                <option value="odd">{$Think.lang.VAR_ODD}</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_DATABITS} 3</label>
+                            <select class="mui-btn" style="width:35%;" name="serial_databits3" id="tpid_erial_databits3">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="7">8</option>
+                            </select>
+                        </div>
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.IBST_SERIAL_STOPBITS} 3</label>
+                            <select class="mui-btn" style="width:35%;" name="serial_stopbits3" id="tpid_serial_stopbits3">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+			        </form>
+                </div>
+            </li>
+			
+			<!--系统设置 路由器标识-->
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.ROUTER_IDENTIFICATION}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.ROUTER_NAME}</label>
+                            <input type="text" name="router_name" id="tpid_router_name" />
+                        </div>
+						 <div class="mui-input-row">
+                            <label>{$Think.lang.WAN_HOSTNAME}</label>
+                            <input type="text" name="wan_hostname" id="tpid_wan_hostname" />
+                        </div>
+						 <div class="mui-input-row">
+                            <label>{$Think.lang.WAN_DOMAIN}</label>
+                            <input type="text" name="wan_domain" id="tpid_wan_domain" />
+                        </div>
+                    </form>
+                </div>
+            </li>
+			
+			<!--定时重启-->
+			 <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.SCHEDULED_REBOOT}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row">
+                           <label>{$Think.lang.IS_ENABLE}</label>
+                            <div class="mui-switch" name="rboot_enabled" id="rboot_enabled">
+                                <div class="mui-switch-handle"></div>
+                            </div>
+                        </div>
+						 <div class="mui-input-row">
+                            <label>{$Think.lang.EXEC_TIME}</label>
+                            <select class="mui-btn" style="width:35%;" name="rboot_time" id="tpid_rboot_time">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="0">12:00 AM</option>
+								<option value="15">12:15 AM</option>
+                                <option value="30">12:30 AM</option>
+                                <option value="45">12:45 AM</option>
+								<option value="60">1:00 AM</option>
+								<option value="75">1:15 AM</option>
+								<option value="90">1:30 AM</option>
+								<option value="105">1:45 AM</option>
+								<option value="120">2:00 AM</option>
+								<option value="135">2:15 AM</option>
+								<option value="150">2:30 AM</option>
+								<option value="165">2:45 AM</option>
+								<option value="180">3:00 AM</option>
+								<option value="195">3:15 AM</option>
+								<option value="210">3:30 AM</option>
+								<option value="225">3:45 AM</option>
+								<option value="240">4:00 AM</option>
+								<option value="255">4:15 AM</option>
+								<option value="270">4:30 AM</option>
+								<option value="285">4:45 AM</option>
+								<option value="300">5:00 AM</option>
+								<option value="315">5:15 AM</option>
+								<option value="330">5:30 AM</option>
+								<option value="345">5:45 AM</option>
+								<option value="360">6:00 AM</option>
+								<option value="375">6:15 AM</option>
+								<option value="390">6:30 AM</option>
+								<option value="405">6:45 AM</option>
+								<option value="420">7:00 AM</option>
+								<option value="435">7:15 AM</option>
+								<option value="450">7:30 AM</option>
+								<option value="465">7:45 AM</option>
+								<option value="480">8:00 AM</option>
+								<option value="495">8:15 AM</option>
+								<option value="510">8:30 AM</option>
+								<option value="525">8:45 AM</option>
+								<option value="540">9:00 AM</option>
+								<option value="555">9:15 AM</option>
+								<option value="570">9:30 AM</option>
+								<option value="585">9:45 AM</option>
+								<option value="600">10:00 AM</option>
+								<option value="615">10:15 AM</option>
+								<option value="630">10:30 AM</option>
+								<option value="645">10:45 AM</option>
+								<option value="660">11:00 AM</option>
+								<option value="675">11:15 AM</option>
+								<option value="690">11:30 AM</option>
+								<option value="705">11:45 AM</option>
+								<option value="720">12:00 PM</option>
+								<option value="735">12:15 PM</option>
+                                <option value="750">12:30 PM</option>
+                                <option value="765">12:45 PM</option>
+								<option value="780">1:00 PM</option>
+								<option value="795">1:15 PM</option>
+								<option value="810">1:30 PM</option>
+								<option value="825">1:45 PM</option>
+								<option value="840">2:00 PM</option>
+								<option value="855">2:15 PM</option>
+								<option value="870">2:30 PM</option>
+								<option value="885">2:45 PM</option>
+								<option value="900">3:00 PM</option>
+								<option value="915">3:15 PM</option>
+								<option value="930">3:30 PM</option>
+								<option value="945">3:45 PM</option>
+								<option value="960">4:00 PM</option>
+								<option value="975">4:15 PM</option>
+								<option value="990">4:30 PM</option>
+								<option value="1005">4:45 PM</option>
+								<option value="1020">5:00 PM</option>
+								<option value="1035">5:15 PM</option>
+								<option value="1050">5:30 PM</option>
+								<option value="1065">5:45 PM</option>
+								<option value="1080">6:00 PM</option>
+								<option value="1095">6:15 PM</option>
+								<option value="1110">6:30 PM</option>
+								<option value="1125">6:45 PM</option>
+								<option value="1140">7:00 PM</option>
+								<option value="1155">7:15 PM</option>
+								<option value="1170">7:30 PM</option>
+								<option value="1185">7:45 PM</option>
+								<option value="1200">8:00 PM</option>
+								<option value="1215">8:15 PM</option>
+								<option value="1230">8:30 PM</option>
+								<option value="1245">8:45 PM</option>
+								<option value="1260">9:00 PM</option>
+								<option value="1275">9:15 PM</option>
+								<option value="1290">9:30 PM</option>
+								<option value="1305">9:45 PM</option>
+								<option value="1320">10:00 PM</option>
+								<option value="1335">10:15 PM</option>
+								<option value="1350">10:30 PM</option>
+								<option value="1365">10:45 PM</option>
+								<option value="1380">11:00 PM</option>
+								<option value="1395">11:15 PM</option>
+								<option value="1410">11:30 PM</option>
+								<option value="1425">11:45 PM</option>
+								<option value="-60">Every Hour</option>
+								<option value="-720">Every 12 Hours</option>
+								<option value="-1440">Every 24 Hours</option>
+                            </select>
+                        </div>
+						 <div class="mui-table-view-cell">
+                            <label>{$Think.lang.EXEC_INTERVAL}</label>
+								<label  style="margin-left: 10px"><input type="checkbox" name="ck_days" value="">&nbsp;&nbsp;日&nbsp;&nbsp;</label>
+								<label  style="margin-left: 10px"><input type="checkbox" name="ck_days" value="">&nbsp;&nbsp;一&nbsp;&nbsp;</label>
+								<label  style="margin-left: 10px"><input type="checkbox" name="ck_days" value="">&nbsp;&nbsp;二&nbsp;&nbsp;</label>
+								<label  style="margin-left: 10px"><input type="checkbox" name="ck_days" value="">&nbsp;&nbsp;三&nbsp;&nbsp;</label>
+								<label  style="margin-left: 10px"><input type="checkbox" name="ck_days" value="">&nbsp;&nbsp;四&nbsp;&nbsp;</label>
+								<label  style="margin-left: 10px"><input type="checkbox" name="ck_days" value="">&nbsp;&nbsp;五&nbsp;&nbsp;</label>
+								<label  style="margin-left: 10px"><input type="checkbox" name="ck_days" value="">&nbsp;&nbsp;六&nbsp;&nbsp;</label>												
+                        </div>
+                    </form>
+                </div>
+            </li>
+					
+			<!--存储介质-->
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.STORAGE_MANAGE}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.STORAGE_UDISK}</label>
+                             <select class="mui-btn" style="width:35%;" name="storage_udisk" id="tpidstorage_udisk">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="0">{$Think.lang.ROUTER}</option>
+                                <option value="1">{$Think.lang.MOVING_MEDIA}</option>								
+                            </select>
+                        </div>						 
+                    </form>
+                </div>
+            </li>
+			
+			<!--M2M平台参数-->
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">{$Think.lang.VAR_TERM_PARAM_PLATFORM}</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row">
+                            <label>{$Think.lang.EXCEPTION_HANDLING}</label>
+                             <select class="mui-btn" style="width:35%;" name="m2m_error_action" id="tpid_m2m_error_action">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="0">{$Think.lang.RESTART_M2M}</option>
+                                <option value="1">{$Think.lang.RECONNECT_NETWORK}</option>
+								<option value="2">{$Think.lang.REBOOT_SYSTEM}</option>
+                            </select>
+                        </div>
+						 <div class="mui-input-row">
+                            <label>{$Think.lang.VAR_SN1}</label>
+                            <input type="text" name="m2m_product_id" id="tpid_m2m_product_id" />
+                        </div>
+						 <div class="mui-input-row">
+                            <label>{$Think.lang.M2M_SERVER_DOMAIN}</label>
+                            <input type="text" name="m2m_server_domain" id="tpid_m2m_server_domain" />
+                        </div>
+						 <div class="mui-input-row">
+                            <label>{$Think.lang.M2M_SERVER_PORT}</label>
+                            <input type="text" name="m2m_server_port" id="tpid_m2m_server_port" />
+                        </div>
+						 <div class="mui-input-row">
+                            <label>{$Think.lang.M2M_HEARTBEAT_INTVAL}</label>
+                            <input type="text" name="m2m_heartbeat_intval" id="tpid_m2m_heartbeat_intval" />
+                        </div>
+						 <div class="mui-input-row">
+                            <label>{$Think.lang.M2M_HEARTBEAT_RETRY}</label>
+                            <input type="text" name="m2m_heartbeat_retry" id="tpid_m2m_heartbeat_retry" />
+                        </div>
+						<div class="mui-input-row">
+                           <label>{$Think.lang.URL_REPORT_ENABLE}</label>
+                            <div class="mui-switch" name="url_report_enable" id="tpid_url_report_enable">
+                                <div class="mui-switch-handle"></div>
+                            </div>
+                        </div>
+						<div class="mui-input-row">
+                           <label>{$Think.lang.REMOTE_MANAGEMENT}</label>
+                            <div class="mui-switch" name="remote_management" id="tpid_remote_management">
+                                <div class="mui-switch-handle"></div>
+                            </div>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.N2N_BOOTMODE}</label>
+                             <select class="mui-btn" style="width:35%;" name="n2n_bootmode" id="tpid_n2n_bootmode">
+                                <option value="-100">{$Think.lang.PLEASE_SELECT}</option>
+                                <option value="0">{$Think.lang.REMOTE_CONNECT}</option>
+                                <option value="1">{$Think.lang.AUTO_CONNECT}</option>
+                            </select>
+                        </div>
+						<div class="mui-input-row">
+                            <label>{$Think.lang.REMOTE_CHANNEL_PORT}</label>
+                            <input type="text" name="n2n_server" id="tpid_n2n_server" />
+                        </div>
+                    </form>
+                </div>
+            </li>
+			
+            <!--Http_send-->
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">Http send</a>
+                <div class="mui-collapse-content">
+                    <form class="mui-input-group">
+                        <div class="mui-input-row">
+                            <label>Http send</label>
+                            <input type="text" name="http_send" id="tpid_http_send" />
+                        </div>
+						 <div class="mui-input-row">
+                            <label>Script</label>
+                            <input type="text" name="send_script" id="tpid_send_script" />
+                        </div>
+                    </form>
+                </div>
+            </li>
+
+            <li class="mui-table-view-cell">
+                <div class="mui-button-row">
+                    <button type="button" class="mui-btn mui-btn-sm mui-btn-primary saveparamsedit">{$Think.lang.VAR_BTN_SURE}</button>&nbsp;&nbsp;
+                    <button type="button" class="mui-btn btn-sm mui-btn-danger cancelparamsedit">{$Think.lang.VAR_BTN_CANCLE}</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <a class="mui-icon mui-icon-back mui-pull-left"></a>
+        <h1 class="mui-title">{$Think.lang.VAR_EDIT_PARAM}</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script type="text/javascript" src="__ROOT__/Tpl/Mobile/termparams.js"></script>
+<script>
+function initpage($, doc){
+    $(doc.body).on('tap', '#webheader .mui-icon-back', function(e){
+        history.go(-1);
+    });
+
+    //load params
+    var tp = new TermParams();
+    tp.bindEvent();
+    tp.paramsLoading = true;
+    mui.ajax($lang.curl.replace('Index/replace','	Term/loadTermParams'),{
+        data:{
+            sn: '{$sn}'
+        },
+        timeout: 3000,
+        type: 'post',
+        success:function(msg){
+            if (typeof msg == 'string'){
+                msg = JSON.parse(msg);
+            }
+            tp.setFieldsValue(msg);
+            tp.paramsLoading = false;
+        }
+    });
+
+    $(doc.body).on('tap', '.saveparamsedit', function(e){
+        var savebtn = this, p = location.href.split('?');
+        var names=[], vals=[];
+        tp.getRules();
+        for (key in tp.changedParams) {
+            names.push(key);
+            vals.push(tp.changedParams[key]);
+        }
+        if (names.length == 0) {
+            mui.alert($lang.VAR_NO_CHANGE, $lang.VAR_PROMPT);
+            return;
+        }
+        mui.confirm($lang.OPERATE_CONFIRM, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(){
+            if (arguments[0].index == 0){
+                p = p[1] + '&names=' + names.join(',');
+                p += '&vals=' + vals.join('{###}');
+                mui(savebtn).button('loading');
+                mui.ajax($lang.curl.replace('Index/replace','Task/configSet'),{
+                    data: p,
+                    timeout: 5000,
+                    type: 'post',
+                    success:function(msg){
+                        mui(savebtn).button('reset');
+                        if (typeof msg == 'string'){
+                            msg = JSON.parse(msg);
+                        }
+                        mui.alert(msg.info, $lang.VAR_PROMPT);
+                    },
+                    error:function(){mui(savebtn).button('reset')},
+                    timeout:function(){mui(savebtn).button('reset')}
+                });
+            }
+        });
+    });
+
+    $(doc.body).on('tap', '.cancelparamsedit', function(e){
+        history.go(-1);
+    });
+
+    //Add rule
+    $(doc.body).on('tap', '.addrule', function(){
+        tp.addRule({enable:1, domain:'', info:''});
+    });
+
+    //Delete rule
+    $(doc.body).on('tap', '.delrule', function(){
+        var tb = doc.getElementById('tb_rule'), tr = doc.activeElement.parentNode.parentNode;
+        if (tr && tr.className && tr.className.indexOf('tr_rule') != -1){
+            tb.lastChild.removeChild(tr);
+        }
+    });
+}
+</script>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title><?PHP echo L('VAR_SYSTEM_TITLE').' - '.L('VAR_USER_LOGIN')?></title>
+<link rel="icon" href="__ROOT__/favicon.ico" type="image/x-icon">
+<link type="text/css" rel="stylesheet" href="../Public/login2/images/login2.css?rand={$Think.const.CACHE_VERSION}">
+<script type="text/javascript" src="../Public/js/jquery.min.js?rand={$Think.const.CACHE_VERSION}" ></script>
+</head>
+
+
+<body>
+<div class="swiper"></div>
+<div class="swiper2"></div>
+<div class="head">
+	<div class="wrapper">
+        <img src="../Public/login/images/web_logo.png" style="height:26px; float:left; margin-top:12px;">
+        <div class="menu">
+            <a href="{:U('Index/index')}?l=zh-cn" id="menu1" tabindex="-1">中文</a>
+            <span>|</span>
+            <a href="{:U('Index/index')}?l=en-us" id="menu2" tabindex="-1">English</a>
+            <span>|</span>
+            <a href="{:U('Index/index')}?l=zh-tw" id="menu3" tabindex="-1">繁體</a>
+            <span>|</span>
+            <a href="http://www.detran.com.cn/" id="menu4" target="_blank" tabindex="-1">{$Think.lang.VAR_VISIT_US}</a>
+            <?PHP if (C('LOAD_BALANCING')){ ?>
+            <span>|</span>
+            <a href="javascript:;" id="menu5" tabindex="-1">{$Think.lang.LOAD_BALANCING}</a>
+            <?PHP } ?>
+            <?PHP if (C('SHOW_SIM_ADMIN')){ ?>
+            <span>|</span>
+            <a href="http://detran.cmpyun.com/" id="menu6" tabindex="-1">物联网卡管理</a>
+            <?PHP } ?>
+        </div>
+    </div>
+</div>
+<div class="banner_area" id="banner_list">
+    <div class="main_cont">
+        <div class="wrapper">
+            <form name="loginForm" id="loginForm" action="{:U('Index/checkLogin')}" method="post">
+                <dl class="xl_info clearfix">
+                    <dt class="hide">{$Think.lang.VAR_USER_LOGIN}</dt>
+                    <dd><input type="text" name="na" class="srh" placeholder="{$Think.lang.PLEASE_ENTER_ACCOUNT}" autocomplete="off"></dd>
+                    <dd><input type="password" name="pa" class="srh" placeholder="{$Think.lang.PLEASE_ENTER_PASSWORD}" autocomplete="off">
+                        <input type="hidden" name="login_type" value="">
+                    </dd>
+                    <dd><input type="checkbox" name="remember" class="remember"><span>{$Think.lang.REMEMBER_PASSWORD}</span></dd>
+                    <dd>
+                        <input class="button blue radius4 shenqing" type="submit" value="{$Think.lang.VAR_BTN_LOGIN}">
+                        <input class="button blue radius4 lj" type="button" value="{$Think.lang.VAR_BTN_RESET}" id="resetForm" style="background: #ededed; color: #7d6f6f; border-color: #d6c4c4;"  tabindex="-1">
+                    </dd>
+                </dl>
+            </form>
+        </div>
+        <div class="bg"></div>
+    </div>
+</div>
+<div class="foot">
+    <p><a href="javascript:;" tabindex="-1">Copyright © 2014 - <?PHP echo date('Y')?></a></p>
+    <p class="font14"><a href="javascript:;" tabindex="-1">{$Think.lang.VAR_COPYRIGHT_1}: {$Think.const.UI_VERSION}</a>|<a href="javascript:;" tabindex="-1">{$Think.lang.VAR_COPYRIGHT_2}: {$Think.const.UI_RELEASE_DATE}</a></p>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('.swiper, .swiper2').css('height', $(window).height());
+    $('.main_cont').css('top', $(window).height() * 0.32);
+    $('#resetForm').click(function(){
+        document.getElementById('loginForm').reset();
+    });
+    $('input[name=na]').focus();
+    $('.xl_info dd input.remember').next('span').click(function(){
+        $(this).prev().click();
+    });
+
+    $('#menu5').click(function(){
+        var txt = '{$Think.lang.LOAD_BALANCING}';
+        if ($(this).find('i').size() == 0){
+            $(this).html('<i class="fa fa-check-circle-o">&nbsp;'+txt+'</i>');
+            $('input[name=login_type]').val('fzjh');
+        }else{
+            $(this).html(txt);
+            $('input[name=login_type]').val('');
+        }
+    });
+
+    setInterval(function(){
+        var w = $('.swiper').width();
+        if ($('.swiper2').css('z-index') == '1') {
+            // 隐藏 swiper
+            $('.swiper').animate({left:-w}, 800, 'swing', function(){
+                $('.swiper2').css('z-index', 2);
+                $('.swiper').css('z-index', 1);
+                $('.swiper').css('left', 0);
+            });
+        } else {
+            //隐藏 swiper2
+            $('.swiper2').animate({left:-w}, 800, 'swing', function(){
+                $('.swiper').css('z-index', 2);
+                $('.swiper2').css('z-index', 1);
+                $('.swiper2').css('left', 0);
+            });
+        }
+    }, 5000);
+});
+</script>
+</body>
+</html>

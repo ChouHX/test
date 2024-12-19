@@ -1,0 +1,65 @@
+<style type="text/css">
+#modal_fm div.checkbox-inline{
+    margin-right: 15px;
+}
+#modal_fm div.checkbox-inline label{
+    cursor: pointer;
+}
+</style>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+    <h4 class="modal-title" id="h4_add_edit">{$Think.lang.VAR_USR_ADD}</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal" id="modal_fm">
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_NAME}:</label>
+            <div class="col-md-8">
+                <input type="hidden" name="id" value="%d" />
+                <input type="text" class="form-control" name="name" value="%s" readonly="readonly">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2">{$Think.lang.VAR_MENU_USER_LIST}:<span class="required-field"></span></label>
+            <div class="col-md-8">%s</div>
+        </div>
+        <div class="form-group" style="margin-top: 30px;">
+            <label class="col-md-2">{$Think.lang.VAR_OPERATION}</label>
+            <div class="col-md-8">
+                <input type="button" class="btn btn-info btn-sm select_all" value="{$Think.lang.VAR_SELECT_ALL}" style="margin-right: 10px">
+                <input type="button" class="btn btn-warning btn-sm unselect_all" value="{$Think.lang.VAR_UN_SELECT_ALL}">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-success submit_group_edit">{$Think.lang.SAVE_TEMPLATE}</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+<script type="text/javascript">
+(function($){
+$(document).ready(function(){
+    $('.submit_group_edit').on('click', function(){
+        if ($("#modal_fm input[name='users[]']:checked").length == 0){
+            $.notice(1,$lang.SELECT_USER);
+            return;
+        }
+        ajax(tpurl('Syscfg','userGroupAddUser'), $('#modal_fm').serialize(), function(msg){
+            $.notice(msg);
+            if (msg.status == 0){
+                $("#list2").trigger('reloadGrid');
+                $('#myLgModal').modal('hide');
+            }
+        });
+    });
+
+    $('#modal_fm .select_all').on('click',function(){
+        $("#modal_fm input[name='users[]']").prop('checked',true);
+    });
+
+    $('#modal_fm .unselect_all').on('click',function(){
+        $("#modal_fm input[name='users[]']").prop('checked',false);
+    });
+});
+})(jQuery);
+</script>

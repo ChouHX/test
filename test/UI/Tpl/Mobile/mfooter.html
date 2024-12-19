@@ -1,0 +1,92 @@
+</div></div><div class="mui-off-canvas-backdrop"></div></div></div>
+</body>
+<script type="text/javascript" src="__ROOT__/Runtime/{$think_language}.js"></script>
+<script src="../Public/mui/js/mui.min.js"></script>
+<script>
+mui.ready(function(){
+(function($,doc) {
+    $.init();
+    //设置header
+    var e = doc.getElementById('webheaderhidden');
+    if (e){
+        doc.getElementById('webheader').innerHTML = e.innerHTML;
+    }
+
+    var aname = '{$Think.ACTION_NAME}';
+    $('#nav0').on('tap', '.mui-tab-item', function(e){
+        var url = this.getAttribute('href');
+        if (url.indexOf(aname) == -1){
+            $.openWindow({
+                id: aname,
+                url: url
+            });
+        }
+    });
+
+    $('#nav0 .mui-tab-item').each(function(e){
+        if (this.getAttribute('href').indexOf(aname) != -1){
+            this.classList.add('mui-active');
+        }
+    });
+
+    $('.mui-bar-nav').on('tap', '.mui-action-menu', function(e){
+        $('.mui-off-canvas-wrap').offCanvas('show');
+    });
+
+    $('.mui-scroll-wrapper').scroll({
+        deceleration: 0.0006
+    });
+
+    var pagebar = doc.getElementById('ul_2');
+    if (pagebar){
+        currentpage = 1;
+        maxpage = 1;
+        pagebar.className = 'mui-pagination mui-pagination-sm';
+        $('.mui-pagination').on('tap', 'a', function() {
+            var li = this.parentNode;
+            var classList = li.classList;
+            if (!classList.contains('mui-active') && !classList.contains('mui-disabled')) {
+                var active = li.parentNode.querySelector('.mui-active');
+                if (classList.contains('mui-previous')) {
+                    if (active) {
+                        var previous = active.previousElementSibling;
+                        if (previous && !previous.classList.contains('mui-previous')) {
+                            active.classList.remove('mui-active');
+                            previous.classList.add('mui-active');
+                        }
+                    }
+                } else if (classList.contains('mui-next')) {
+                    if (active) {
+                        var next = active.nextElementSibling;
+                        if (next && !next.classList.contains('mui-next')) {
+                            active.classList.remove('mui-active');
+                            next.classList.add('mui-active');
+                        }
+                    }
+                } else if (classList.contains('first-page')) {
+                    active.classList.remove('mui-active');
+                    li.parentNode.querySelector('.first-page').classList.add('mui-active');
+                } else if (classList.contains('last-page')) {
+                    active.classList.remove('mui-active');
+                    li.parentNode.querySelector('.last-page').classList.add('mui-active');
+                } else {
+                    active.classList.remove('mui-active');
+                    classList.add('mui-active');
+                }
+                var currentA = mui('#ul_2 .mui-active a')[0];
+                if (currentA.parentNode.className.indexOf('first-page') != -1){
+                    currentpage = 1;
+                }else if (currentA.parentNode.className.indexOf('last-page') != -1){
+                    currentpage = maxpage;
+                }else{
+                    currentpage = currentA.innerHTML;
+                }
+            }
+            loadTerm(currentA);
+        });
+    }
+    initpage($, doc);
+})(mui,document);
+});
+</script>
+</html>

@@ -1,0 +1,35 @@
+html,body {
+  height: 100%;
+}
+
+.dropright-menu{
+  /*display: block;*/
+  position: relative;
+}
+.dropright{
+  width: 100%;
+  position: absolute;
+  left: 101%;
+  top: 0;
+  background-color: #fff;
+  border-radius: 4px;
+  text-align: left;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  display: none;
+}
+.dropright li{
+  height: 26px;
+  list-style: none
+}
+.dropright li a{
+  display: block;
+  padding: 3px 20px;
+  color: #777;
+}
+.dropright li a:hover {
+  text-decoration: underline;
+}
+.dropright-menu:hover .dropright{
+  display: block;
+}

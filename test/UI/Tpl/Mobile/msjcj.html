@@ -1,0 +1,109 @@
+<include file="Mobile/mheader" />
+	<div class="mui-card">
+        <div class="mui-input-row mui-search">
+            <input id="queryterm" type="search" class="mui-input-clear" placeholder="">
+        </div>
+        <ul id="ul_1" class="mui-table-view">
+        </ul>
+        <div class="mui-content-padded" style="text-align:center;">
+            <ul id="ul_2" class="mui-pagination">
+                <li class="mui-previous mui-disabled"><a href="#">&laquo;</a></li>
+                <li class="mui-active"><a id="btn0" href="#">1</a></li>
+                <li class="mui-next mui-disabled"><a href="#">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <a class="mui-icon mui-action-menu iconfont icon-fenzu mui-pull-left"></a>
+        <h1 class="mui-title">{$Think.lang.VAR_MENU_RTU} <span id="title_gname"></span></h1>    
+    </header>
+<include file="Mobile/mfooter" />
+<script>
+function loadTerm(loginBtn){
+    var data = {
+        page: currentpage,
+        query: document.getElementById('queryterm').value 
+    };
+    var li = mui('.mui-li-active')[0], tgname = '';
+    if (li){
+        data.gid = li.getAttribute('data-id');
+        tgname = '('+li.getAttribute('data-name')+')';
+    }
+    document.getElementById('title_gname').innerHTML = tgname;
+    mui(loginBtn).button('loading');
+    mui.ajax($lang.curl.replace('Index/replace','Mdata/loadLoraData'),{
+        data: data,
+        timeout: 10000,
+        type: 'get',
+        success:function(msg){
+            if (typeof msg == 'string'){
+                msg = JSON.parse(msg);
+            }
+            mui(loginBtn).button('reset');
+            if (typeof msg.data == 'undefined') return;
+            msg = msg.data;			
+            for (var i=0,len=msg.rows.length,str=''; i<len; i++){
+                str += 
+                '<li class="mui-table-view-cell" data-id="'+msg.rows[i].sn+'">\
+                        <div class="mui-table-cell rtuinfo">\
+                            <p>\
+                                <span style="margin-right:30px;">'+$lang.VAR_TERM_STATUS+': <img src="../Public/images/icons/term_'+(msg.rows[i].status=='1'?'on':'off')+'.gif" /></span>\
+                            <p>\
+                            <p>\
+                                '+$lang.VAR_SN2+': '+msg.rows[i].sn+'</span><br>\
+                                '+$lang.VAR_LAST_LOGIN+'：'+msg.rows[i].last_time
+                            '</p>\
+                        </div>\
+                </li>';
+            }
+            document.getElementById('ul_1').innerHTML = str;
+            document.getElementById('ul_2').innerHTML = msg.pstr;
+            maxpage = msg.maxpage;
+        },
+        error:function(){mui(loginBtn).button('reset')},
+        timeout:function(){mui(loginBtn).button('reset')}
+    });
+}
+
+function initpage($, doc){
+    //终端分组
+    $(doc.body).on('tap', '#ul_tg li', function(){
+        var tgid = this.getAttribute('data-id'), lis = $('#ul_tg li');
+        for (var i=0; i<lis.length; i++){
+            lis[i].className = lis[i].className.replace('mui-li-active','');
+        }
+        this.className += ' mui-li-active';
+        doc.getElementById('queryterm').value = '';
+        loadTerm(mui('#ul_2 a')[0]);
+    });
+
+    //---------------分页开始-------------
+    loadTerm(doc.getElementById('btn0'));
+
+    doc.getElementById("queryterm").addEventListener('keyup',function(e){
+        if (e && e.keyCode == 13){
+            currentpage = 1;
+            var li = $('.mui-li-active')[0];
+            if (li) li.className = li.className.replace('mui-li-active','');
+            loadTerm($('#ul_2 a')[0]);
+        }
+    });
+
+    doc.getElementById('queryterm').addEventListener('focus', function(){
+        mui(".mui-icon-clear")[0].addEventListener('tap',function(){
+            $('#ul_tg li')[0].className += ' mui-li-active';
+            loadTerm(mui('#ul_2 a')[0]);
+        });
+    });
+    //---------------分页结束-------------
+
+
+    $(doc.body).on('tap', '.rtuinfo', function(){
+        var id = this.parentNode.getAttribute('data-id');
+        mui.openWindow({
+            id: 'term-detail',
+            url: "{:U('Mobile/mrtuinfo')}?id="+id
+        });
+    });
+}
+</script>

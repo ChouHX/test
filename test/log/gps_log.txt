@@ -1,0 +1,55 @@
+[2024-12-19 01:25:56]Connecting to database...
+[2024-12-19 01:25:56]Error : connect to database failed. Retry in 10 seconds later.
+[2024-12-19 01:26:06]OK.
+[2024-12-19 01:26:06]Load config ok, name = enable_electronic_fence, value = 0
+[2024-12-19 01:26:06]Create socket ok.
+[2024-12-19 01:26:06]Create message queen ok.
+[2024-12-19 01:26:06]Create recv/send thread ok.
+[2024-12-19 01:26:06]Init network ok.
+[2024-12-19 01:26:06]Init server OK. Version : M2M GPS Server V3.2.04 Build 2023-04-11
+[2024-12-19 01:34:08]Connecting to database...
+[2024-12-19 01:34:08]Error : connect to database failed. Retry in 10 seconds later.
+[2024-12-19 01:34:18]OK.
+[2024-12-19 01:34:18]Load config ok, name = enable_electronic_fence, value = 0
+[2024-12-19 01:34:18]Create socket ok.
+[2024-12-19 01:34:18]Create message queen ok.
+[2024-12-19 01:34:18]Create recv/send thread ok.
+[2024-12-19 01:34:18]Init network ok.
+[2024-12-19 01:34:18]Init server OK. Version : M2M GPS Server V3.2.04 Build 2023-04-11
+[2024-12-19 01:37:30]Connecting to database...
+[2024-12-19 01:37:30]Error : connect to database failed. Retry in 10 seconds later.
+[2024-12-19 01:37:40]OK.
+[2024-12-19 01:37:40]Load config ok, name = enable_electronic_fence, value = 0
+[2024-12-19 01:37:40]Create socket ok.
+[2024-12-19 01:37:40]Create message queen ok.
+[2024-12-19 01:37:40]Create recv/send thread ok.
+[2024-12-19 01:37:40]Init network ok.
+[2024-12-19 01:37:40]Init server OK. Version : M2M GPS Server V3.2.04 Build 2023-04-11
+[2024-12-19 01:52:12]Connecting to database...
+[2024-12-19 01:52:12]Error : connect to database failed. Retry in 10 seconds later.
+[2024-12-19 01:52:22]OK.
+[2024-12-19 01:52:22]Load config ok, name = enable_electronic_fence, value = 0
+[2024-12-19 01:52:22]Create socket ok.
+[2024-12-19 01:52:22]Create message queen ok.
+[2024-12-19 01:52:22]Create recv/send thread ok.
+[2024-12-19 01:52:22]Init network ok.
+[2024-12-19 01:52:22]Init server OK. Version : M2M GPS Server V3.2.04 Build 2023-04-11
+[2024-12-19 02:16:34]Connecting to database...
+[2024-12-19 02:16:34]Error : connect to database failed. Retry in 10 seconds later.
+[2024-12-19 02:16:44]OK.
+[2024-12-19 02:16:44]Load config ok, name = enable_electronic_fence, value = 0
+[2024-12-19 02:16:44]Create socket ok.
+[2024-12-19 02:16:44]Create message queen ok.
+[2024-12-19 02:16:44]Create recv/send thread ok.
+[2024-12-19 02:16:44]Init network ok.
+[2024-12-19 02:16:44]Init server OK. Version : M2M GPS Server V3.2.04 Build 2023-04-11
+[2024-12-19 02:19:20]Connecting to database...
+[2024-12-19 02:19:20]Error : connect to database failed. Retry in 10 seconds later.
+[2024-12-19 02:19:30]Error : connect to database failed. Retry in 10 seconds later.
+[2024-12-19 02:19:40]OK.
+[2024-12-19 02:19:40]Load config ok, name = enable_electronic_fence, value = 0
+[2024-12-19 02:19:40]Create socket ok.
+[2024-12-19 02:19:40]Create message queen ok.
+[2024-12-19 02:19:40]Create recv/send thread ok.
+[2024-12-19 02:19:40]Init network ok.
+[2024-12-19 02:19:40]Init server OK. Version : M2M GPS Server V3.2.04 Build 2023-04-11

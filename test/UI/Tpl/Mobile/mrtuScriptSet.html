@@ -1,0 +1,53 @@
+<include file="Mobile/mheader" />
+    <div class="mui-card">
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell">
+				<div class="mui-input-row" >
+					<textarea id="textarea" rows="6" placeholder="请输入脚本"></textarea>
+				</div>
+			</li>
+			<li class="mui-table-view-cell">
+				<div class="mui-button-row">
+					<button class="mui-btn mui-btn-primary save" type="button">{$Think.lang.VAR_BTN_SURE}</button>&nbsp;&nbsp;
+					<button class="mui-btn mui-btn-danger cancel" type="button">{$Think.lang.VAR_BTN_CANCLE}</button>
+				</div>
+			</li>
+		</ul>
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <a class="mui-icon mui-icon-back mui-pull-left"></a>
+        <h1 class="mui-title">设置RTU采集脚本</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script>
+function initpage($, doc){	
+    $(doc.body).on('tap', '#webheader .mui-icon-back', function(e){
+        history.go(-1);
+    });
+
+    $(doc.body).on('tap', '.save', function(){
+        var p = location.href.split('?');
+		var rtu_script = escape(doc.getElementById('textarea').value);
+		p = p[1]+"&rtu_script="+rtu_script;
+        mui.confirm($lang.OPERATE_CONFIRM, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(){
+            if (arguments[0].index == 0){
+                mui.ajax($lang.curl.replace('Index/replace', 'Task/rtuScriptSet'),{
+                    data: p,
+                    timeout: 5000,
+                    type: 'post',
+                    success:function(msg){
+                        if (typeof msg == 'string'){
+                            msg = JSON.parse(msg);
+                        }
+                        mui.alert(msg.info, $lang.VAR_PROMPT);
+                    }
+                });
+            }
+        });
+    });
+	
+	$(doc.body).on('tap', '.cancel', function(e){
+         history.go(-1);
+    });
+}
+</script>

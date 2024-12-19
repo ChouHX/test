@@ -1,0 +1,12 @@
+{
+    "Syscfg": {
+        "icon": "fa-cubes",
+        "lang":  "LOAD_BALANCING",
+        "childrens": [
+            {"action": "fwq", "icon": "fa-angle-right", "lang": "APP_SERVER"},
+            {"action": "fwqyxjl", "icon": "fa-angle-right", "lang": "APP_SERVER_RUN_RECORD"}
+        ]
+    }
+}
+
+

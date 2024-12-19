@@ -1,0 +1,208 @@
+<style type="text/css">
+  /*tab style*/
+  #tbl_res tr{
+    cursor: pointer;
+  }
+  #tbl_res input{
+    vertical-align: middle;
+  }
+  .tr_selected_cfg{
+    background: #aedae4;
+  }
+  .params-tab-content .tab-pane{
+    padding-top: 10px;
+  }
+  #fm_rwcs{
+    margin-top: 10px;
+  }
+
+  /*params input style*/
+  .ck-top-0{
+    top: 0;
+  }
+  .form-horizontal label.input-notes{
+    text-align: left;
+    color: gray;
+  }
+
+  /*loading*/
+  .my-loading{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%%;
+    height: 100%%;
+    background: rgba(255,255,255,.6) url(../Public/images/loading.gif) no-repeat center;
+  }
+
+  /*task dest ul*/
+  .task-dest{
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+  }
+  .task-dest li{
+    float: left;
+    background-color: #ecf0f5;
+    margin: 0 20px 15px 0;
+    line-height: 30px;
+    padding: 0 5px;
+    border-radius: 3px;
+  }
+  .timed-task-params{
+    display: none;
+  }
+  .timed-task-params .checkbox-inline{
+    min-width: 45px;
+  }
+</style>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{$Think.lang.VAR_CLOSE}</span></button>
+  <h4 class="modal-title">{$Think.lang.ETHERNET_PORT_STATUS}</h4>
+</div>
+<div class="modal-body">
+  <form class="form-horizontal" role="form" id="fm_rwcs" style="margin-top: 20px; text-align: center;">
+    <div class="form-group">
+      <div class="col-lg-2"></div>
+      <div class="col-lg-2 lan0-t">WAN</div>
+      <div class="col-lg-2 lan1-t">LAN1</div>
+      <div class="col-lg-2 lan2-t">LAN2</div>
+      <div class="col-lg-2 lan3-t">LAN3</div>
+      <div class="col-lg-2 lan4-t">LAN4</div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-2">{$Think.lang.LINK_STATUS}：</div>
+      <div class="col-lg-2 lan0-img">
+        <image class="wan" src='../Public/images/offline.png'>
+      </div>
+      <div class="col-lg-2 lan1-img">
+        <image class="lan1" src='../Public/images/offline.png'>
+      </div>
+      <div class="col-lg-2 lan2-img">
+        <image class="lan2" src='../Public/images/offline.png'>
+      </div>
+      <div class="col-lg-2 lan3-img">
+        <image class="lan3" src='../Public/images/offline.png'>
+      </div>
+      <div class="col-lg-2 lan4-img">
+        <image class="lan4" src='../Public/images/offline.png'>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-2">&nbsp;</div>
+      <div class="col-lg-2 wan_online  lan0-s">{$Think.lang.VAR_TERM_STATUS_OFFLINE}</div>
+      <div class="col-lg-2 lan1_online lan1-s">{$Think.lang.VAR_TERM_STATUS_OFFLINE}</div>
+      <div class="col-lg-2 lan2_online lan2-s">{$Think.lang.VAR_TERM_STATUS_OFFLINE}</div>
+      <div class="col-lg-2 lan3_online lan3-s">{$Think.lang.VAR_TERM_STATUS_OFFLINE}</div>
+      <div class="col-lg-2 lan4_online lan4-s">{$Think.lang.VAR_TERM_STATUS_OFFLINE}</div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-2">{$Think.lang.ENABLE_STATUS}：</div>
+      <div class="col-lg-2 lan0-slt">
+        <select class="form-control lanSelect" id="lan0">
+          <option value="0">{$Think.lang.VAR_DISABLE}</option>
+          <option value="1">{$Think.lang.VAR_ENABLE}</option>
+        </select>
+      </div>
+      <div class="col-lg-2 lan1-slt">
+        <select class="form-control lanSelect" id="lan1">
+          <option value="0">{$Think.lang.VAR_DISABLE}</option>
+          <option value="1">{$Think.lang.VAR_ENABLE}</option>
+        </select>
+      </div>
+      <div class="col-lg-2 lan2-slt">
+        <select class="form-control lanSelect" id="lan2">
+          <option value="0">{$Think.lang.VAR_DISABLE}</option>
+          <option value="1">{$Think.lang.VAR_ENABLE}</option>
+        </select>
+      </div>
+      <div class="col-lg-2 lan3-slt">
+        <select class="form-control lanSelect" id="lan3">
+          <option value="0">{$Think.lang.VAR_DISABLE}</option>
+          <option value="1">{$Think.lang.VAR_ENABLE}</option>
+        </select>
+      </div>
+      <div class="col-lg-2 lan4-slt">
+        <select class="form-control lanSelect" id="lan4">
+          <option value="0">{$Think.lang.VAR_DISABLE}</option>
+          <option value="1">{$Think.lang.VAR_ENABLE}</option>
+        </select>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" data-dismiss="modal">{$Think.lang.VAR_CLOSE}</button>
+</div>
+
+<script type="text/javascript">
+  (function($) {
+    var wan = %s;
+    var lan = %s.reverse();
+    var param = %s;
+    //lan0-t, lan0-img, lan0-s, lan0-slt
+    var term_model = '%s';
+    var lans_def = {
+      R10: {lan1:'LAN'},
+      R20: {lan0:'WAN/CON', lan1:'LAN'},
+      R21: {lan0:'WAN/LAN', lan1:'LAN'},
+      G20: {lan0:'WAN/LAN', lan1:'LAN'}
+    };
+    console.log(term_model, lans_def[term_model]);
+    if (term_model && typeof lans_def[term_model] != 'undefined') {
+      for (var i=0; i<5; i++) {
+        var title = typeof lans_def[term_model]['lan'+i] == 'undefined' ? '' : lans_def[term_model]['lan'+i];
+        if (title) {
+          $('.lan'+i+'-t').html(title);
+          $('.lan'+i+'-t').show();
+          $('.lan'+i+'-img').show();
+          $('.lan'+i+'-s').show();
+          $('.lan'+i+'-slt').show();
+        } else {
+          $('.lan'+i+'-t').hide();
+          $('.lan'+i+'-img').hide();
+          $('.lan'+i+'-s').hide();
+          $('.lan'+i+'-slt').hide();
+        }
+      }
+    }
+
+    if (wan == 1 && param[0] == 1) {
+      $('.wan').attr('src','../Public/images/online.gif');
+      $('.wan_online').html($lang.VAR_TERM_STATUS_ONLINE);
+    }
+
+    lan.map(function(value,index){
+      if (value == 1 && param[index + 1] == 1) {
+        $('.lan' + (index + 1)).attr('src','../Public/images/online.gif');
+        $('.lan' + (index + 1) + '_online').html($lang.VAR_TERM_STATUS_ONLINE);
+      }
+    });
+
+    param.map(function(value,index){
+      $('#lan' + index).val(value);
+    });
+
+    $('.lanSelect').on('change', function() {
+      var v = $(this).val();
+      var index = $(this).attr('id');
+      var sns = $('#list2').jqGrid('getGridParam','selarrrow');
+      $.confirm($lang.MODIFY_NETWORK_PORT_STATUS, function(){
+        var params = {
+          seq: index.slice(-1),
+          value: v,
+          term_list: sns[0],
+        };
+        ajax(tpurl('Task', $.gf.tp.task_type), params, function(msg) {
+          msg.data ? $.notice(1, msg.info) : $.notice(msg);
+          if (msg.status == 0 || msg.status == 1) {
+            $('#rwcs2Modal').modal('hide');
+            $.gf.getStaticsInfo();
+          }
+        });
+      });
+    });
+  })(jQuery);
+</script>

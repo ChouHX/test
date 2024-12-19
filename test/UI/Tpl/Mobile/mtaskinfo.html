@@ -1,0 +1,223 @@
+<include file="Mobile/mheader" />
+    <div class="mui-card">
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.PPTP_CLIENT_ENABLE}:</span><img src="../Public/images/icons/<?PHP echo $row['is_enable']=='1'?'accept':'nobuy'?>.png" />
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_USER_NAME}:</span>{$row['username']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_CMD_NAME}:</span>{$row['cmd']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_CMD_PARAM}:</span>{$row['value']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_CMD_CREATETIME}:</span>{$row['create_time']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_CP_START}:</span>{$row['start_time']}
+            </li>
+            <li class="mui-table-view-cell">
+                <span style="display:inline-block;margin-top:5px;margin-right:10px;">{$Think.lang.VAR_CP_end}:</span>{$row['end_time']}
+            </li>
+            <li class="mui-table-view-cell">
+                <div class="mui-button-row">
+                    <button type="button" class="mui-btn mui-btn-primary enabletask" data-enable="1" style="display:none;">{$Think.lang.ENABLE_TASK}</button>&nbsp;&nbsp;
+                    <button type="button" class="mui-btn mui-btn-danger  enabletask" data-enable="0" style="display:none;">{$Think.lang.STOP_TASK}</button>&nbsp;&nbsp;
+                    <button type="button" class="mui-btn mui-btn-success  retryall">{$Think.lang.VAR_RETRY_ALL}</button>
+                </div>
+            </li>
+        </ul>
+        <ul id="ul_1" class="mui-table-view">
+        </ul>
+        <div class="mui-content-padded" style="text-align:center;">
+            <ul id="ul_2" class="mui-pagination">
+                <li class="mui-previous mui-disabled"><a href="#">&laquo;</a></li>
+                <li class="mui-active"><a id="btn0" href="#">1</a></li>
+                <li class="mui-next mui-disabled"><a href="#">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+    <header id="webheaderhidden" style="display:none;">
+        <a class="mui-icon mui-icon-back mui-pull-left"></a>
+        <h1 class="mui-title">{$Think.lang.VAR_TASK_DETAIL}</h1>
+    </header>
+<include file="Mobile/mfooter" />
+<script>
+function loadTerm(loginBtn){
+    mui(loginBtn).button('loading');
+    mui.ajax($lang.curl.replace('Index/replace','Mdata/loadTaskDetail'),{
+        data:{
+            task_id: "{$_REQUEST['id']}",
+            page: currentpage
+        },
+        timeout: 5000,
+        type: 'get',
+        success:function(msg){
+            if (typeof msg == 'string'){
+                msg = JSON.parse(msg);
+            }
+            mui(loginBtn).button('reset');
+            if (typeof msg.data == 'undefined') return;
+            msg = msg.data;
+            for (var i=0,len=msg.rows.length,str=''; i<len; i++){
+                str += 
+                '<li class="mui-table-view-cell mui-left">\
+                    <div class="mui-slider-right mui-disabled" data-id="'+msg.rows[i].id+'" data-status-o="'+msg.rows[i].status_o+'">\
+                        <a class="mui-btn mui-btn-success mui-icon mui-icon-refresh-filled act-task-download-retry"></a>\
+                        <a class="mui-btn mui-btn-red mui-icon mui-icon-trash act-task-detail-delete"></a>\
+                    </div>\
+                    <div class="mui-slider-handle">\
+                        <div class="mui-table-cell">\
+                            <p>\
+                                '+$lang.VAR_SN2+': '+msg.rows[i].sn+'<br>\
+                                '+$lang.VAR_CMD_STATUS+': '+msg.rows[i].status+'<br>\
+                                '+$lang.VAR_TASK_SEND_TIME+': '+msg.rows[i].send_time+'<br>\
+                                '+$lang.VAR_TASK_FINISH_TIME+': '+msg.rows[i].recv_time+'<br>\
+                                '+$lang.VAR_TASK_FINISH_TIME2+': '+msg.rows[i].finish_time+'<br>\
+                                '+$lang.VAR_TIPS_DETAIL_INFO+'：'+msg.rows[i].error_info+
+                            '</p>\
+                        </div>\
+                    </div>\
+                </li>';
+            }
+            document.getElementById('ul_1').innerHTML = str;
+            document.getElementById('ul_2').innerHTML = msg.pstr;
+            maxpage = msg.maxpage;
+        },
+        error:function(){mui(loginBtn).button('reset')},
+        timeout:function(){mui(loginBtn).button('reset')}
+    });
+}
+
+function initpage($, doc){
+    //---------------分页开始-------------
+    loadTerm(doc.getElementById('btn0'));
+    //---------------分页结束-------------
+
+    $(doc.body).on('tap', '#webheader .mui-icon-back', function(e){
+        $.openWindow({
+            id: 'mobile-term',
+            url: "{:U('Mobile/mtask')}"
+        });
+    });
+
+    //显示 启用/停止任务按钮
+    $('.enabletask')[parseInt("{$row['is_enable']}")].style.display = 'inline-block';
+
+    $(doc.body).on('tap', '.enabletask', function(e){
+        var is_enable = this.getAttribute('data-enable'), savebtn = this;
+		console.log(is_enable);
+        mui.confirm(is_enable==1?$lang.TASK_ENABLE_CONFIRM:$lang.TASK_DISABLE_CONFIRM, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(){
+            if (arguments[0].index == 0){
+                mui(savebtn).button('loading');
+                mui.ajax($lang.curl.replace('Index/replace','Taskmgr/taskEnable'),{
+                    data:{
+                        ids: "{$_REQUEST['id']}",
+                        is_enable: is_enable
+                    },
+                    timeout: 5000,
+                    type: 'post',
+                    success:function(msg){
+                        mui(savebtn).button('reset');
+                        if (typeof msg == 'string'){
+                            msg = JSON.parse(msg);
+                        }
+                        mui.alert(msg.info, $lang.VAR_PROMPT, $lang.VAR_BTN_SURE, function(){
+                            location.reload(true);
+                        });
+                    },
+                    error:function(){mui(savebtn).button('reset')},
+                    timeout:function(){mui(savebtn).button('reset')}
+                });
+            }
+        });
+    });
+
+    //重试所有
+    $(doc.body).on('tap', '.retryall', function(e){
+        var savebtn = this;
+        mui.confirm($lang.VAR_RETRY_ALL_CONFIRM, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(){
+            if (arguments[0].index == 0){
+                mui(savebtn).button('loading');
+                mui.ajax($lang.curl.replace('Index/replace','Taskmgr/taskDetailRetry'),{
+                    data:{
+                        tid: "{$_REQUEST['id']}",
+                        type: 'all'
+                    },
+                    timeout: 5000,
+                    type: 'post',
+                    success:function(msg){
+                        mui(savebtn).button('reset');
+                        if (typeof msg == 'string'){
+                            msg = JSON.parse(msg);
+                        }
+                        reloadpage(msg);
+                    },
+                    error:function(){mui(savebtn).button('reset')},
+                    timeout:function(){mui(savebtn).button('reset')}
+                });
+            }
+        });
+    });
+
+    //重试一条
+    $(doc.body).on('tap', '.act-task-download-retry', function(e){
+        var status_o = parseInt(this.parentNode.getAttribute('data-status-o'));
+        if (status_o != 4 && status_o != 6){
+            mui.alert($lang.VAR_SELECT_DATA3, $lang.VAR_PROMPT);
+            return;
+        }
+        var ids = this.parentNode.getAttribute('data-id');
+        mui.confirm($lang.OPERATE_CONFIRM, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(){
+            if (arguments[0].index == 0){
+                mui.ajax($lang.curl.replace('Index/replace','Taskmgr/taskDetailRetry'),{
+                    data:{
+                        ids: ids,
+                        type: 'select'
+                    },
+                    timeout: 5000,
+                    type: 'post',
+                    success:function(msg){
+                        if (typeof msg == 'string'){
+                            msg = JSON.parse(msg);
+                        }
+                        reloadpage(msg);
+                    }
+                });
+            }
+        });
+    });
+
+    //删除任务详情
+    $(doc.body).on('tap', '.act-task-detail-delete', function(e){
+        var ids = this.parentNode.getAttribute('data-id');
+        mui.confirm($lang.VAR_CONFIRM_DEL_TASK, $lang.VAR_PROMPT, [$lang.VAR_BTN_SURE, $lang.VAR_BTN_CANCLE], function(){
+            if (arguments[0].index == 0){
+                mui.ajax($lang.curl.replace('Index/replace','Taskmgr/taskDetailDel'),{
+                    data:{ids: ids},
+                    timeout: 5000,
+                    type: 'post',
+                    success:function(msg){
+                        if (typeof msg == 'string'){
+                            msg = JSON.parse(msg);
+                        }
+                        reloadpage(msg);
+                    }
+                });
+            }
+        });
+    });
+
+    var reloadpage = function(msg){
+        mui.alert(msg.info, $lang.VAR_PROMPT, $lang.VAR_BTN_SURE, function(){
+            if (msg.status == 0){
+                var active = doc.getElementById('ul_2').querySelector('.mui-active');
+                $.trigger(active.querySelector('a'), 'tap');
+            }
+        });
+    }
+}
+</script>
